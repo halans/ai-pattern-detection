@@ -1,0 +1,54 @@
+// Type definitions for AI Detection Tool
+
+export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+
+export type Classification = 'Likely AI-generated' | 'Mixed/Uncertain' | 'Likely Human-written';
+
+export interface Pattern {
+  id: string;
+  name: string;
+  description: string;
+  regex: RegExp;
+  severity: Severity;
+  weight: number;
+  examples: string[];
+}
+
+export interface PatternMatch {
+  patternId: string;
+  patternName: string;
+  severity: Severity;
+  matches: Array<{
+    text: string;
+    context: string;
+    index: number;
+  }>;
+  count: number;
+}
+
+export interface AnalysisResult {
+  classification: Classification;
+  confidence_score: number;
+  patterns_detected: PatternMatch[];
+  explanation: string;
+  metadata: AnalysisMetadata;
+}
+
+export interface AnalysisMetadata {
+  character_count: number;
+  word_count: number;
+  pattern_engine_version: string;
+  analysis_duration: number;
+  timestamp: string;
+  warnings: string[];
+}
+
+export interface TextAnalysisRequest {
+  text: string;
+}
+
+export interface FileAnalysisRequest {
+  file: File | ArrayBuffer;
+  filename: string;
+  mimeType: string;
+}

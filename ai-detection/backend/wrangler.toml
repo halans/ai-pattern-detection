@@ -1,0 +1,6 @@
+name = "ai-detection-backend"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+
+[env.production]
+name = "ai-detection-backend-prod"

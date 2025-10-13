@@ -1,0 +1,78 @@
+# 1) Prompt-refusal / "as an AI language model" disclaimers  (flags: iu)
+\b(?:as an? (?:ai|large language) model|i['’]m sorry\b[^.!?]{0,80}\b(?:can(?:not|'t)|unable to))\b
+# Ref: “Prompt refusal” words to watch include “as an AI language model…”, “I’m sorry…”.  [oai_citation:0‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 2) Knowledge-cutoff + “based on available information” hedges  (flags: iu)
+\b(?:as of my last (?:knowledge|training) update|up to my last training update|based on available information|in the (?:provided|available) (?:sources|search results))\b
+# Ref: “Knowledge-cutoff disclaimers…” words to watch.  [oai_citation:1‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 3) Section-ending summary clichés  (flags: imu)
+(?m)^\s*(?:in (?:summary|conclusion)|overall)\b[,:]?
+# Ref: “Section summaries” encourages spotting “In summary / In conclusion / Overall…”.  [oai_citation:2‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 4) Promotional puffery (tourism/PR-y hype)  (flags: iu)
+\b(?:rich|vibrant)\s+cultural\s+(?:heritage|tapestry)\b|\bbreathtaking\b|\bmust[- ](?:visit|see)\b|\bnestled\b|\bin the heart of\b
+# Ref: “Promotional language” words to watch.  [oai_citation:3‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 5) Overstated symbolism/importance  (flags: iu)
+\b(?:stands as|serves as|is a testament|plays a (?:vital|significant|crucial) role|underscores its importance|highlights its significance|continues to captivate|leaves a lasting impact|watershed moment|key turning point|deeply rooted|profound heritage|steadfast dedication|indelible mark|solidifies)\b
+# Ref: “Undue emphasis on symbolism and importance” words to watch.  [oai_citation:4‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 6) Superficial present-participle analyses  (flags: iu)
+\b(?:ensuring|highlighting|emphasizing|reflecting|underscoring)(?:\s+\w+){0,6}\b
+# Ref: “Superficial analyses” often uses -ing participles as rhetorical tics.  [oai_citation:5‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 7) Vague/weasel attributions of opinion  (flags: iu)
+\b(?:industry reports|observers have cited|some (?:critics|experts|scholars) (?:argue|say|believe))\b
+# Ref: “Vague attributions of opinion” words to watch.  [oai_citation:6‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 8) Letter-like salutation/subject formatting  (flags: imu)
+(?m)^(?:subject:\s.*\n)?\s*(?:dear (?:wikipedia )?(?:editors|administrators)|i hope this message finds you well|i am writing to)\b
+# Ref: “Letter-like writing” incl. “Subject:”, “Dear Wikipedia Editors…”, “I hope this message finds you well…”.  [oai_citation:7‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 9) Chatty collaborative closers/fillers  (flags: iu)
+\b(?:i hope this helps|of course!?|certainly!?|you(?:'re| are) absolutely right!?|would you like|is there anything else|let me know|here is a)\b
+# Ref: “Collaborative communication” phrases.  [oai_citation:8‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 10) Curly quotes/apostrophes present  (flags: u)
+[“”‘’]
+# Ref: “Curly quotation marks and apostrophes”. (Presence alone isn’t proof.)  [oai_citation:9‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 11) Markdown-style headings in article-like prose  (flags: mu)
+(?m)^\s{0,3}#{2,6}\s+\S+
+# Ref: “Use of Markdown” headings (“## …”) leaking into contexts where it doesn’t belong.  [oai_citation:10‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 12) List items with bolded mini-headers followed by a colon  (flags: mu)
+(?m)^\s*(?:[-*]|\d+\.)\s*(?:\*\*[^*]+\*\*|'''[^']+''')\s*:\s
+# Ref: “Vertical lists” with inline bold ‘header: description’ formatting.  [oai_citation:11‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 13) Placeholder dates used in citations  (flags: iu)
+\b20\d{2}-xx-xx\b
+# Ref: Placeholder “2025-xx-xx” in access-date/date parameters.  [oai_citation:12‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 14) Bracketed template placeholders left in text  (flags: imu)
+\[(?:URL of [^\]]+|Describe the [^\]]+|Note:\s?Actual Wikipedia articles require verifiable citations[^\]]*)\]
+# Ref: Phrasal templates/placeholders like “[URL of source…]”, “[Describe…]”.  [oai_citation:13‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 15) Knowledge-gap hedges (“not widely documented/disclosed/available”)  (flags: iu)
+\b(?:not (?:widely )?(?:available|documented|disclosed)|while specific details (?:are|remain) (?:limited|scarce))\b
+# Ref: Same “Knowledge-cutoff…/gaps in sources” list.  [oai_citation:14‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
+
+
+# 16) Conclusion sections named “Challenges / Future Outlook” pattern  (flags: imu)
+(?m)^\s*(?:challenges(?:\s+and\s+legacy)?|future outlook)\s*$
+# Ref: “Outline-like conclusions about challenges and future prospects”.  [oai_citation:15‡Wikipedia](https://en.wikipedia.org/wiki/Wikipedia%3ASigns_of_AI_writing)
