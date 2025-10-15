@@ -90,6 +90,40 @@ describe('Pattern Registry', () => {
       expect("There's a summary".match(pattern!.regex)).toBeFalsy();
     });
 
+    it('should detect placeholder templates', () => {
+      const pattern = PATTERNS.find(p => p.id === 'placeholder-template');
+      expect(pattern).toBeDefined();
+
+      const shouldMatch = [
+        'Please insert username here',
+        '{PLACEHOLDER VALUE}',
+        'This section is TBD.',
+        'lorem ipsum dolor sit amet',
+        'Test User account information',
+        'John Doe will be replaced',
+        'your company name here',
+        'AcmeCompany',
+        'Name: ____',
+        '[TOPIC]',
+        '[SUBJECT]',
+        '[placeholder text]',
+        '[Placeholder text]',
+        '[placeholder]',
+        '[PLACEHOLDER]',
+        'PLACEHOLDER',
+      ];
+
+      shouldMatch.forEach(sample => {
+        const regex = new RegExp(pattern!.regex.source, pattern!.regex.flags);
+        expect(regex.test(sample)).toBe(true);
+      });
+
+      const negative = new RegExp(pattern!.regex.source, pattern!.regex.flags);
+      expect(negative.test('Meaningful production-grade sentence.')).toBe(false);
+      expect(negative.test('[Topic]')).toBe(false);
+      expect(negative.test('[PLACEHOLD]')).toBe(false);
+    });
+
     it('should match business jargon', () => {
       const pattern = PATTERNS.find(p => p.id === 'business-jargon');
       expect(pattern).toBeDefined();

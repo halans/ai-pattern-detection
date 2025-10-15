@@ -8,6 +8,28 @@ const SEVERITY_WEIGHTS: Record<Severity, number> = {
   LOW: 2,
 };
 
+const PLACEHOLDER_TEMPLATE_REGEX = new RegExp(
+  [
+    '\\b(?:[Ii]nsert|[Ee]nter)\\s+(?:[A-Za-z0-9_]+\\s*)[Hh]ere\\b',
+    '(?:\\[(?!PLACEHOLD\\])[A-Z0-9 _]+\\]|\\{[A-Z0-9 _]+\\}|<[A-Z0-9 _]+>)',
+    '\\b[Pp][Ll][Aa][Cc][Ee][Hh][Oo][Ll][Dd][Ee][Rr]\\b',
+    '\\[(?:[Pp][Ll][Aa][Cc][Ee][Hh][Oo][Ll][Dd][Ee][Rr](?:\\s+[Tt][Ee][Xx][Tt])?)\\]',
+    '\\b(?:REPLACE_ME|REPLACE THIS|TO_BE_FILLED|TO BE FILLED)\\b',
+    '\\b(?:TBD|TBA|[Tt]o be [Dd]etermined|[Tt]o be [Aa]nnounced)\\b',
+    '\\b[Ll]orem\\s+[Ii]psum\\b',
+    '\\b(?:[Ff]oo|[Bb]ar|[Bb]az|[Qq]ux)\\b',
+    '\\b(?:[Tt]est\\s+[Uu]ser|[Tt]est\\s+[Aa]ccount)\\b',
+    '\\b(?:John\\s+Doe|Jane\\s+Doe|A\\.?\\s*N\\.?\\s*Other|AN\\s+Other|Ann\\s+Other)\\b',
+    '\\b[Yy]our\\s+[A-Za-z0-9_ ]+\\s+[Hh]ere\\b',
+    '\\b(?:[A-Za-z]+(?:Company|Organization|Location|City|State|Country|Realm|Nation)s?)\\b',
+    '(?:__+|—{2,}|–{2,})',
+    '(?:\\[[^\\]]*\\.{3,}[^\\]]*\\]|\\{[^}]*\\.{3,}[^}]*\\}|<[^>]*\\.{3,}[^>]*>)',
+    '\\([\\s\\-–—]{2,}\\)',
+    '(?:Name|Title|Location|Role|Date|Time)\\s*:\\s*__+',
+  ].join('|'),
+  'gu'
+);
+
 export const PATTERNS: Pattern[] = [
   // CRITICAL patterns - definitive AI signals
   {
@@ -52,10 +74,18 @@ export const PATTERNS: Pattern[] = [
     id: 'placeholder-template',
     name: 'Placeholder Template',
     description: 'Placeholder text patterns',
-    regex: /\[.*placeholder.*\]/gi,
+    regex: PLACEHOLDER_TEMPLATE_REGEX,
     severity: 'HIGH',
     weight: SEVERITY_WEIGHTS.HIGH,
-    examples: ['[insert example here]', '[placeholder text]'],
+    examples: [
+      'insert name here',
+      '[PLACEHOLDER]',
+      '[placeholder text]',
+      'PLACEHOLDER',
+      'lorem ipsum',
+      'Test User',
+      '[TOPIC]',
+    ],
   },
   {
     id: 'collaborative-certainly',
