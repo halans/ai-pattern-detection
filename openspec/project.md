@@ -190,11 +190,6 @@ The detection pipeline operates in **three layers**:
 - Cloudflare Workers (TypeScript)
 - Hono or similar lightweight framework
 
-### ML Service
-- Python with FastAPI
-- HuggingFace Transformers
-- PyTorch/TensorFlow
-
 ### File Processing
 - pdf-parse (PDF extraction)
 - mammoth (DOCX parsing)
@@ -202,7 +197,6 @@ The detection pipeline operates in **three layers**:
 
 ### Infrastructure
 - Cloudflare Workers (API layer)
-- Kubernetes (ML service)
 - Object storage (temporary file cache)
 
 
@@ -216,7 +210,7 @@ The detection pipeline operates in **three layers**:
 - Named exports preferred over default exports
 
 ### Architecture Patterns
-- Clean separation: Frontend → API Gateway → ML Service
+- Clean separation: Frontend → API Gateway → Analysis Service
 - RESTful API design
 - Stateless workers for horizontal scaling
 - Event-driven model updates via MLOps pipeline
