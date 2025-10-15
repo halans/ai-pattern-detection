@@ -2,14 +2,17 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import type { AnalysisResult } from './types';
-import { analyzeText } from './utils/api';
+import { analyzeText, downloadJSON, downloadMarkdown } from './utils/api';
 
 vi.mock('./utils/api', () => ({
   analyzeText: vi.fn(),
   downloadJSON: vi.fn(),
+  downloadMarkdown: vi.fn(),
 }));
 
 const analyzeTextMock = vi.mocked(analyzeText);
+const downloadJSONMock = vi.mocked(downloadJSON);
+const downloadMarkdownMock = vi.mocked(downloadMarkdown);
 
 describe('App clear text workflow', () => {
   const sampleResult: AnalysisResult = {
@@ -78,5 +81,31 @@ describe('App clear text workflow', () => {
       expect(clearButton).toBeDisabled();
       expect(screen.queryByText(/server error/i)).not.toBeInTheDocument();
     });
+  });
+
+  it('allows downloading JSON and Markdown reports', async () => {
+    const user = userEvent.setup();
+    analyzeTextMock.mockResolvedValueOnce(sampleResult);
+
+    render(<App />);
+
+    const analyzeButton = screen.getByRole('button', { name: /analyze text/i });
+    const textarea = screen.getByLabelText(/enter text to analyze/i);
+
+    await act(async () => {
+      await user.type(textarea, 'a'.repeat(150));
+      await user.click(analyzeButton);
+    });
+
+    await screen.findByText(/analysis results/i);
+
+    const jsonButton = screen.getByRole('button', { name: /download json/i });
+    const markdownButton = screen.getByRole('button', { name: /download markdown/i });
+
+    await user.click(jsonButton);
+    await user.click(markdownButton);
+
+    expect(downloadJSONMock).toHaveBeenCalledTimes(1);
+    expect(downloadMarkdownMock).toHaveBeenCalledTimes(1);
   });
 });

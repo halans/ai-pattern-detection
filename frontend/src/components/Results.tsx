@@ -1,5 +1,5 @@
 import { AnalysisResult, Severity } from '../types';
-import { downloadJSON } from '../utils/api';
+import { downloadJSON, downloadMarkdown } from '../utils/api';
 
 interface ResultsProps {
   result: AnalysisResult;
@@ -164,6 +164,14 @@ export function Results({ result }: ResultsProps) {
                    transition-colors"
         >
           Download JSON
+        </button>
+        <button
+          onClick={() => downloadMarkdown(result)}
+          className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium
+                   hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                   transition-colors"
+        >
+          Download Markdown
         </button>
       </div>
     </div>
