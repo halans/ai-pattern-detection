@@ -1,4 +1,4 @@
-# AI Detection Tool - Implementation Summary
+# Slop Detection Tool - Implementation Summary
 
 ## Overview
 

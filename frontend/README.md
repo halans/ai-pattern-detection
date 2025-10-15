@@ -1,6 +1,6 @@
-# AI Detection Tool - Frontend
+# Slop Detection Tool - Frontend
 
-React + TypeScript + Vite frontend for the AI Detection Tool.
+React + TypeScript + Vite frontend for the Slop Detection Tool.
 
 ## Features
 

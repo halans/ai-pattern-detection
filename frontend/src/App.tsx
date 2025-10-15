@@ -29,7 +29,7 @@ function App() {
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold">AI Detection Tool</h1>
+          <h1 className="text-3xl font-bold">Slop Detection Tool</h1>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Pattern-based analysis for detecting AI-generated content
           </p>
@@ -66,7 +66,7 @@ function App() {
             <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
               <p>
                 This tool uses <strong>pattern-based detection</strong> to identify common
-                characteristics of AI-generated text. It analyzes <strong>21 linguistic patterns</strong>{' '}
+                characteristics of AI-generated text. It analyzes <strong>45 linguistic patterns</strong>{' '}
                 including:
               </p>
               <ul className="list-disc list-inside ml-4 space-y-2">
@@ -96,7 +96,7 @@ function App() {
       {/* Footer */}
       <footer className="mt-16 py-8 border-t border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>AI Detection Tool • Pattern Engine v1.2.0 (45 patterns) • Zero Data Retention</p>
+          <p>Slop Detection Tool • Pattern Engine v1.2.0 (45 patterns) • Zero Data Retention</p>
         </div>
       </footer>
     </div>

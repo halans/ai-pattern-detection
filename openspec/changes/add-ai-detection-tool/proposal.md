@@ -1,4 +1,4 @@
-# Change Proposal: Add AI Detection Tool
+# Change Proposal: Add Slop Detection Tool
 
 **Change ID:** `add-ai-detection-tool`
 **Author:** Halans

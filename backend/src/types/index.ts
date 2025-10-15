@@ -1,4 +1,4 @@
-// Type definitions for AI Detection Tool
+// Type definitions for Slop Detection Tool
 
 export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 

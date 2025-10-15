@@ -1,7 +1,7 @@
 {
   "name": "ai-detection-backend",
   "version": "1.0.0",
-  "description": "Pattern-based AI detection tool backend (Cloudflare Workers)",
+  "description": "Pattern-based Slop Detection Tool backend (Cloudflare Workers)",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",

@@ -1,7 +1,7 @@
 {
   "name": "ai-detection-frontend",
   "version": "1.0.0",
-  "description": "Frontend for AI Detection Tool",
+  "description": "Frontend for Slop Detection Tool",
   "type": "module",
   "scripts": {
     "dev": "vite",

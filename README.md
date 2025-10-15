@@ -1,4 +1,4 @@
-# AI Detection Tool
+# Slop Detection Tool
 
 A simple, pattern-based AI detection system that analyzes text for AI-generated content signals.
 

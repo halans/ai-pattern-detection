@@ -1,4 +1,4 @@
-# 🧠 OpenSpec Change Proposal: AI Detection Tool
+# 🧠 OpenSpec Change Proposal: Slop Detection Tool
 
 **Author:** Halans
 **Date:** 2025-10-13  
@@ -10,7 +10,7 @@
 
 ## 1. Summary
 
-This proposal introduces an **AI Detection Tool** that analyzes text or uploaded files to determine whether the content was written by an **AI** or a **human**. The tool leverages linguistic, statistical, and stylistic signals—aligned with established indicators of AI-generated text (see: [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing))—to generate a confidence score and detailed report.
+This proposal introduces an **Slop Detection Tool** that analyzes text or uploaded files to determine whether the content was written by an **AI** or a **human**. The tool leverages linguistic, statistical, and stylistic signals—aligned with established indicators of AI-generated text (see: [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing))—to generate a confidence score and detailed report.
 
 ---
 

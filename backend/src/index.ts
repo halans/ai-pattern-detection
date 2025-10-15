@@ -20,7 +20,7 @@ const analyzer = new PatternAnalyzer();
 // Health check endpoint
 app.get('/', (c) => {
   return c.json({
-    service: 'AI Detection Tool',
+    service: 'Slop Detection Tool',
     version: '1.0.0',
     status: 'operational',
   });

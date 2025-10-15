@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get the AI Detection Tool running in 5 minutes.
+Get the Slop Detection Tool running in 5 minutes.
 
 ## Prerequisites
 
