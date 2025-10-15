@@ -57,9 +57,9 @@ export class TextNormalizer {
    * Strip HTML tags from text
    */
   static stripHtml(html: string): string {
-    // Remove script and style tags with their content
-    let text = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    text = text.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+    // Remove script and style tags with their content (simplified to avoid backtracking)
+    let text = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+    text = text.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
 
     // Remove all other HTML tags
     text = text.replace(/<[^>]+>/g, ' ');

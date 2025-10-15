@@ -40,7 +40,10 @@ export class PatternAnalyzer {
     pattern: Pattern
   ): Array<{ text: string; context: string; index: number }> {
     const matches: Array<{ text: string; context: string; index: number }> = [];
-    const regex = new RegExp(pattern.regex.source, pattern.regex.flags);
+    const flags = pattern.regex.flags.includes('g')
+      ? pattern.regex.flags
+      : `${pattern.regex.flags}g`;
+    const regex = new RegExp(pattern.regex.source, flags);
     let match: RegExpExecArray | null;
 
     while ((match = regex.exec(text)) !== null) {
@@ -126,7 +129,7 @@ export class PatternAnalyzer {
 
       return `The text shows strong AI writing patterns including: ${topPatterns}. Multiple characteristic AI signals were detected.`;
     } else if (classification === 'Mixed/Uncertain') {
-      return 'The text shows some AI-like patterns alongside human characteristics. It may be AI-generated with human editing, or human writing influenced by AI style.';
+      return 'Mixed/Uncertain classification indicates the text has some AI-like patterns alongside human characteristics. It may be AI-generated with human editing, or human writing influenced by AI style.';
     } else {
       if (matches.length === 0) {
         return 'No significant AI writing patterns detected. The text exhibits natural human writing characteristics.';

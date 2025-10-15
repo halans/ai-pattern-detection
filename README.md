@@ -8,7 +8,7 @@ This tool uses **regex-based pattern matching** to detect characteristic pattern
 
 ## Features
 
-- **20+ Detection Patterns**: Significance statements, AI meta-text, collaborative phrases, cultural clichés, and more
+- **45 Detection Patterns**: Significance statements, AI meta-text, collaborative phrases, cultural clichés, AI-favored vocabulary, business jargon, data analysis phrases, and more
 - **Fast Analysis**: <50ms CPU time per request
 - **Privacy-First**: Zero data retention, ephemeral processing
 - **Transparent**: See exactly which patterns were detected
@@ -62,7 +62,7 @@ Frontend runs on `http://localhost:3000`
 
 ## Pattern Detection
 
-The system detects **21 AI writing patterns** grouped by severity:
+The system detects **45 AI writing patterns** grouped by severity:
 
 ### CRITICAL (20 points each)
 - **AI self-references** - "as an AI language model", "as an AI assistant"
@@ -74,6 +74,8 @@ The system detects **21 AI writing patterns** grouped by severity:
 - **Editorializing** - "it's important to note", "it is important to remember"
 - **Placeholder templates** - "[insert example here]", "[placeholder text]"
 - **Helpful closings** - "Certainly!", "Of course!", "here's a summary"
+- **Data analysis jargon** - "deliver actionable insights through in-depth data analysis", "leveraging data-driven insights", "drive insightful data-driven decisions"
+- **Business/tech jargon** - "bandwidth", "stakeholders", "value proposition", "scalable", "paradigm shift", "synergy", "ROI"
 
 ### MEDIUM (5 points each)
 - **Cultural clichés** - "rich cultural heritage", "profound legacy", "rich historical tapestry"
@@ -81,10 +83,27 @@ The system detects **21 AI writing patterns** grouped by severity:
 - **Vague attributions** - "studies show", "research suggests", "experts indicate"
 - **Challenges/prospects** - "despite these challenges", "despite its challenges"
 - **Worth mentioning** - "worth mentioning that", "it is worth mentioning"
+- **Stock phrases** - "a testament to", "it's important to note that", "this is not an exhaustive list"
+- **Communication styles** - "furthermore", "on the other hand", "as previously mentioned"
+- **Action words** - "unlock the secrets", "delve into", "harness", "revolutionize", "elevate", "envision", "transcend", "galvanize"
+- **Contextual phrases** - "in the world of", "in today's digital age/era", "when it comes to", "folks"
+- **Conductor/music analogies** - "like a conductor", "orchestrate", "symphony"
+- **Hyperbolic phrases** - "break barriers", "cannot be overstated", "unwavering"
+- **Connectives** - "conversely", "along with", "amidst", "towards"
+- **Empowerment verbs** - "empower", "embrace", "grasp", "hinder"
+- **Deep + noun patterns** - "deep understanding", "deep insights", "deep dive"
+- **Hustle and bustle** - Urban energy cliché phrase
+- **Quantity phrases** - "a plethora of", "a multitude of", "a journey of"
+- **Significance intensifiers** - "paramount", "pivotal", "undeniable", "demonstrates significant"
 - **Broken citations** - "[citation needed]", "[source]"
 - **Emoji headings** - "# 🎯 Getting Started", "## 🚀 Features"
 
 ### LOW (2 points each)
+- **AI transitional words** - "accordingly", "moreover", "nevertheless", "nonetheless", "thus", "undoubtedly"
+- **AI-favored adjectives** - "robust", "seamless", "innovative", "holistic", "nuanced", "multifaceted", "groundbreaking", "quintessential", "visionary", "revolutionary", "paradigm-shifting"
+- **AI-favored nouns** - "landscape", "realm", "tapestry", "expertise", "paradigm", "kaleidoscope", "epitome", "odyssey", "pinnacle", "nexus", "spectrum"
+- **AI-favored verbs** - "delve", "facilitate", "underscore", "augment", "leverage", "utilize"
+- **AI descriptors** - "meticulous", "ever-evolving", "cutting-edge", "labyrinthine", "gossamer", "key", "valuable", "fresh perspectives"
 - **Ritual conclusions** - "in summary", "overall", "in conclusion"
 - **Artificial ranges** - "from beginners to experts", "from design to deployment"
 - **Title case headings** - "# The Complete Guide To Modern Development"
@@ -123,7 +142,7 @@ Classification Thresholds:
   "metadata": {
     "character_count": 1500,
     "word_count": 250,
-    "pattern_engine_version": "1.0.0",
+    "pattern_engine_version": "1.2.0",
     "analysis_duration": 45,
     "timestamp": "2025-10-13T...",
     "warnings": []
@@ -178,15 +197,88 @@ npm run build
 
 ## Testing
 
-```bash
-# Backend tests
-cd backend
-npm test
+### Backend Tests
 
-# Frontend tests
+The backend includes comprehensive test coverage using Vitest:
+
+```bash
+cd backend
+npm test                  # Run all tests
+npm run test:coverage     # Run tests with coverage report
+```
+
+**Test Suites:**
+- **Pattern Registry Tests** (`registry.test.ts`) - 22 tests
+  - Pattern structure validation
+  - Pattern matching accuracy
+  - Helper function correctness
+  - Version validation
+
+- **Analyzer Tests** (`analyzer.test.ts`) - 18 tests
+  - Text analysis accuracy
+  - Score calculation
+  - Classification thresholds
+  - Performance benchmarks
+
+- **API Endpoint Tests** (`index.test.ts`) - 15 tests
+  - Request/response validation
+  - Error handling
+  - Input validation
+  - CORS configuration
+  - Performance testing
+
+**Total: 55+ backend tests**
+
+### Frontend Tests
+
+Frontend testing can be added using Vitest + React Testing Library:
+
+```bash
 cd frontend
 npm test
 ```
+
+### Running Specific Tests
+
+```bash
+# Run only pattern registry tests
+npm test -- --run registry.test.ts
+
+# Run only analyzer tests
+npm test -- --run analyzer.test.ts
+
+# Run only API tests
+npm test -- --run index.test.ts
+
+# Run with watch mode (development)
+npm test
+```
+
+### Test Configuration
+
+The tests use Vitest with a custom configuration (`vitest.config.ts`) that:
+- Uses single fork mode to prevent memory issues
+- Sets appropriate timeouts for pattern matching tests
+- Enables Node environment for backend testing
+
+### Known Issues & Workarounds
+
+**Memory Issues:** Due to the comprehensive regex pattern matching (45 patterns), tests may encounter memory limits when run all together.
+
+**Recommended approach:**
+```bash
+# Run test files individually
+npm test -- --run registry.test.ts
+npm test -- --run analyzer.test.ts
+npm test -- --run index.test.ts
+
+# Or increase Node memory limit
+NODE_OPTIONS="--max-old-space-size=4096" npm test -- --run
+```
+
+**Why this happens:** The pattern analyzer processes text against 45 complex regex patterns. While individual file tests work fine, running all tests concurrently can exceed default memory limits.
+
+**Production impact:** None - the API runs efficiently in Cloudflare Workers with proper memory management. This only affects comprehensive test execution.
 
 ## OpenSpec
 
@@ -215,4 +307,4 @@ JJ Halans
 
 ## Version
 
-1.0.0 - Pattern Engine
+1.2.0 - Pattern Engine (45 patterns - Comprehensive coverage of AI writing patterns including business jargon, vocabulary, and contextual phrases)
