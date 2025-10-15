@@ -56,6 +56,13 @@ describe('Pattern Registry', () => {
         expect(pattern.examples.length).toBeGreaterThan(0);
       });
     });
+
+    it('should include repetition n-gram pattern', () => {
+      const repetition = PATTERNS.find(p => p.id === 'repetition-ngrams');
+      expect(repetition).toBeDefined();
+      expect(repetition!.severity).toBe('LOW');
+      expect(repetition!.weight).toBeGreaterThan(0);
+    });
   });
 
   describe('Pattern Matching', () => {

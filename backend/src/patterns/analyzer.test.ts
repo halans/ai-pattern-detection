@@ -70,6 +70,53 @@ describe('PatternAnalyzer', () => {
       expect(jargon).toBeDefined();
       expect(jargon!.count).toBeGreaterThan(0);
     });
+
+    it('should detect repetition of targeted words based on thresholds', () => {
+      const text =
+        'Also we can share updates. Also, the system highlights patterns. Also it repeats frequently.';
+      const matches = analyzer.analyze(text);
+
+      const repetition = matches.find(m => m.patternId === 'repetition-ngrams');
+      expect(repetition).toBeDefined();
+      expect(repetition!.count).toBeGreaterThanOrEqual(3);
+      expect(repetition!.matches[0].text.toLowerCase()).toContain('also');
+    });
+
+    it('should require higher repetitions for medium length text', () => {
+      const filler = 'word '.repeat(1300); // ~6500 characters
+      const phrase = 'Let us explore new ideas. ';
+      const text = `${filler}${phrase.repeat(4)}`;
+
+      const matches = analyzer.analyze(text);
+      const repetition = matches.find(
+        m => m.patternId === 'repetition-ngrams' && m.patternName.includes('let us')
+      );
+
+      expect(repetition).toBeDefined();
+      expect(repetition!.count).toBeGreaterThanOrEqual(4);
+    });
+
+    it('should require higher repetitions for long text', () => {
+      const filler = 'content '.repeat(2200); // > 11000 characters
+      const phrase = 'As well as new options. ';
+      const text = `${filler}${phrase.repeat(5)}`;
+
+      const matches = analyzer.analyze(text);
+      const repetition = matches.find(
+        m => m.patternId === 'repetition-ngrams' && m.patternName.includes('as well as')
+      );
+
+      expect(repetition).toBeDefined();
+      expect(repetition!.count).toBeGreaterThanOrEqual(5);
+    });
+
+    it('should not flag repetitions below threshold', () => {
+      const text = 'Also we consider this. Also it matters.';
+      const matches = analyzer.analyze(text);
+
+      const repetition = matches.find(m => m.patternId === 'repetition-ngrams');
+      expect(repetition).toBeUndefined();
+    });
   });
 
   describe('calculateScore', () => {

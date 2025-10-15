@@ -1,6 +1,11 @@
 // Pattern Analyzer - Applies patterns to text and generates matches
 import { Pattern, PatternMatch } from '../types';
-import { PATTERNS } from './registry';
+import {
+  PATTERNS,
+  REPETITION_BIGRAMS,
+  REPETITION_TRIGRAMS,
+  REPETITION_WORDS,
+} from './registry';
 
 export class PatternAnalyzer {
   private patterns: Pattern[];
@@ -27,6 +32,15 @@ export class PatternAnalyzer {
           count: matches.length,
         });
       }
+    }
+
+    if (text.trim().length === 0) {
+      return results;
+    }
+
+    const repetitionMatches = this.detectRepetitionPatterns(text);
+    if (repetitionMatches.length > 0) {
+      results.push(...repetitionMatches);
     }
 
     return results;
@@ -111,6 +125,92 @@ export class PatternAnalyzer {
     } else {
       return 'Likely Human-written';
     }
+  }
+
+  private detectRepetitionPatterns(text: string): PatternMatch[] {
+    const patternInfo = this.patterns.find((p) => p.id === 'repetition-ngrams');
+    if (!patternInfo) {
+      return [];
+    }
+
+    const threshold = this.determineRepetitionThreshold(text.length);
+    if (threshold === Infinity) {
+      return [];
+    }
+
+    const units = [
+      ...REPETITION_WORDS,
+      ...REPETITION_BIGRAMS,
+      ...REPETITION_TRIGRAMS,
+    ];
+
+    const results: PatternMatch[] = [];
+
+    for (const unit of units) {
+      const occurrences = this.findUnitOccurrences(text, unit);
+      if (occurrences.length >= threshold) {
+        const matches = occurrences.slice(0, 5).map((occurrence) => ({
+          text: occurrence.matched,
+          context: this.extractContext(text, occurrence.index, occurrence.matched.length),
+          index: occurrence.index,
+        }));
+
+        results.push({
+          patternId: patternInfo.id,
+          patternName: `${patternInfo.name} (${unit})`,
+          severity: patternInfo.severity,
+          matches,
+          count: occurrences.length,
+        });
+      }
+    }
+
+    return results;
+  }
+
+  private determineRepetitionThreshold(length: number): number {
+    if (length <= 0) {
+      return Infinity;
+    }
+    if (length <= 5000) {
+      return 3;
+    }
+    if (length <= 10000) {
+      return 4;
+    }
+    return 5;
+  }
+
+  private findUnitOccurrences(
+    text: string,
+    unit: string
+  ): Array<{ index: number; matched: string }> {
+    const regex = this.buildUnitRegex(unit);
+    const occurrences: Array<{ index: number; matched: string }> = [];
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      occurrences.push({ index: match.index, matched: match[0] });
+      if (regex.lastIndex === match.index) {
+        regex.lastIndex++;
+      }
+    }
+
+    return occurrences;
+  }
+
+  private buildUnitRegex(unit: string): RegExp {
+    const words = unit.split(/\s+/).filter(Boolean);
+    if (words.length === 1) {
+      return new RegExp(`\\b${this.escapeRegExp(words[0])}\\b`, 'gi');
+    }
+
+    const pattern = words.map((word) => `\\b${this.escapeRegExp(word)}\\b`).join('\\s+');
+    return new RegExp(pattern, 'gi');
+  }
+
+  private escapeRegExp(value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   /**
