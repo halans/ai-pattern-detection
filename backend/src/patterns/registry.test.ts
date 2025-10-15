@@ -81,6 +81,15 @@ describe('Pattern Registry', () => {
       expect('Of course!'.match(pattern!.regex)).toBeTruthy();
     });
 
+    it('should match only "here is" collaborative phrases', () => {
+      const pattern = PATTERNS.find(p => p.id === 'collaborative-here-is');
+      expect(pattern).toBeDefined();
+      expect("Here's a summary".match(pattern!.regex)).toBeTruthy();
+      expect('Here is a breakdown'.match(pattern!.regex)).toBeTruthy();
+      expect('There is a breakdown'.match(pattern!.regex)).toBeFalsy();
+      expect("There's a summary".match(pattern!.regex)).toBeFalsy();
+    });
+
     it('should match business jargon', () => {
       const pattern = PATTERNS.find(p => p.id === 'business-jargon');
       expect(pattern).toBeDefined();

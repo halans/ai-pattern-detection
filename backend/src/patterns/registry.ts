@@ -88,7 +88,7 @@ export const PATTERNS: Pattern[] = [
     id: 'collaborative-here-is',
     name: 'Collaborative: Here Is',
     description: 'Presenting information formally',
-    regex: /here('s| is) a/gi,
+    regex: /\bhere(?:'s| is) a/gi,
     severity: 'HIGH',
     weight: SEVERITY_WEIGHTS.HIGH,
     examples: ["here's a summary", 'here is a breakdown'],
