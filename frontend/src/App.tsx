@@ -38,7 +38,14 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
-        <TextInput onAnalyze={handleAnalyze} isLoading={isLoading} />
+        <TextInput
+          onAnalyze={handleAnalyze}
+          onClear={() => {
+            setResult(null);
+            setError(null);
+          }}
+          isLoading={isLoading}
+        />
 
         {/* Loading State */}
         {isLoading && (
