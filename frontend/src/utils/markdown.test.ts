@@ -45,7 +45,7 @@ describe('analysisResultToMarkdown', () => {
     expect(markdown).toContain('## Patterns');
     expect(markdown).toContain('### Critical Patterns');
     expect(markdown).toContain('AI Self-Reference');
-    expect(markdown).toContain('Match: `as an AI language model`');
+    expect(markdown).toContain('Match: _`as an AI language model`_');
     expect(markdown).toContain('Context: ...');
     expect(markdown).toContain('## Metadata');
     expect(markdown).toContain('Pattern Engine Version');

@@ -17,7 +17,7 @@ function formatMatch(match: PatternMatch['matches'][number]): string {
   const snippet = normalizeWhitespace(match.text);
   const context = normalizeWhitespace(match.context);
   const contextLine = context ? `   \n      Context: ${context}` : '';
-  return `    - Match: \`${snippet}\`${contextLine}`;
+  return `    - Match: _\`${snippet}\`_ ${contextLine}`;
 }
 
 function formatPatternsSection(patterns: PatternMatch[]): string {

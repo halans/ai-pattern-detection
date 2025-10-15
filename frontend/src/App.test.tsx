@@ -2,17 +2,19 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import type { AnalysisResult } from './types';
-import { analyzeText, downloadJSON, downloadMarkdown } from './utils/api';
+import { analyzeText, downloadJSON, downloadMarkdown, downloadPDF } from './utils/api';
 
 vi.mock('./utils/api', () => ({
   analyzeText: vi.fn(),
   downloadJSON: vi.fn(),
   downloadMarkdown: vi.fn(),
+  downloadPDF: vi.fn(),
 }));
 
 const analyzeTextMock = vi.mocked(analyzeText);
 const downloadJSONMock = vi.mocked(downloadJSON);
 const downloadMarkdownMock = vi.mocked(downloadMarkdown);
+const downloadPDFMock = vi.mocked(downloadPDF);
 
 describe('App clear text workflow', () => {
   const sampleResult: AnalysisResult = {
@@ -83,7 +85,7 @@ describe('App clear text workflow', () => {
     });
   });
 
-  it('allows downloading JSON and Markdown reports', async () => {
+  it('allows downloading JSON, Markdown, and PDF reports', async () => {
     const user = userEvent.setup();
     analyzeTextMock.mockResolvedValueOnce(sampleResult);
 
@@ -101,11 +103,14 @@ describe('App clear text workflow', () => {
 
     const jsonButton = screen.getByRole('button', { name: /download json/i });
     const markdownButton = screen.getByRole('button', { name: /download markdown/i });
+    const pdfButton = screen.getByRole('button', { name: /download pdf/i });
 
     await user.click(jsonButton);
     await user.click(markdownButton);
+    await user.click(pdfButton);
 
     expect(downloadJSONMock).toHaveBeenCalledTimes(1);
     expect(downloadMarkdownMock).toHaveBeenCalledTimes(1);
+    expect(downloadPDFMock).toHaveBeenCalledTimes(1);
   });
 });
