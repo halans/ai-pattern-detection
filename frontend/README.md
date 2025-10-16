@@ -5,26 +5,33 @@ React + TypeScript + Vite frontend for the Slop Detection Tool.
 ## Features
 
 - **Text Input**: Textarea with character counter and validation
+- **File Upload**: Support for text, PDF, DOCX, Markdown, and HTML files
 - **Results Display**: Clear visualization of analysis results
 - **Pattern Breakdown**: Grouped by severity with examples
 - **Confidence Score**: Visual progress bar and color coding
-- **Export**: Download results as JSON
+- **Export**: Download results as JSON, Markdown, or PDF
 - **Responsive**: Mobile-friendly design with TailwindCSS
-- **Dark Mode**: Automatic dark mode support
+- **Theme Toggle**: Light/dark mode with system preference detection
+- **Accessibility**: WCAG 2.1 compliant with full keyboard navigation
 
 ## Architecture
 
 ```
 src/
 ├── components/
-│   ├── TextInput.tsx     # Text input with validation
+│   ├── TextInput.tsx     # Text input with validation and file upload
 │   └── Results.tsx       # Results display with visualization
+├── theme/
+│   └── ThemeProvider.tsx # Theme state management and persistence
 ├── types/
 │   └── index.ts          # TypeScript type definitions
 ├── utils/
-│   └── api.ts            # API client and utilities
+│   ├── api.ts            # API client and download utilities
+│   ├── pdf.ts            # PDF export generation
+│   ├── markdown.ts       # Markdown conversion
+│   └── fileParser.ts     # File upload parsing
 ├── App.tsx               # Main application component
-├── main.tsx              # React entry point
+├── main.tsx              # React entry point with ThemeProvider
 └── index.css             # Global styles and Tailwind
 ```
 
@@ -71,6 +78,28 @@ npm run build
 ```
 
 Output in `dist/` directory.
+
+### Testing
+
+**Note**: Make sure you're in the `frontend/` directory before running these commands.
+
+```bash
+cd frontend  # Run this first!
+
+# Run unit tests
+npm test
+
+# Run e2e tests with Playwright
+npm run test:e2e
+
+# Run e2e tests in UI mode (interactive)
+npm run test:e2e:ui
+
+# View last test report
+npm run test:e2e:report
+```
+
+See [PLAYWRIGHT_GUIDE.md](PLAYWRIGHT_GUIDE.md) for detailed testing documentation.
 
 ## Components
 
