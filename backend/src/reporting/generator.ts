@@ -7,7 +7,7 @@ export class ReportGenerator {
    * Generate complete analysis report
    */
   static generate(
-    classification: 'Likely AI-generated' | 'Mixed/Uncertain' | 'Likely Human-written',
+    classification: 'Likely AI Slop' | 'Mixed/Uncertain' | 'Likely Human',
     score: number,
     patterns: PatternMatch[],
     explanation: string,
@@ -43,6 +43,8 @@ export class ReportGenerator {
       HIGH: [],
       MEDIUM: [],
       LOW: [],
+      VERY_LOW: [],
+      INFORMATIONAL: [],
     };
 
     for (const pattern of patterns) {
@@ -59,7 +61,14 @@ export class ReportGenerator {
     return [...patterns]
       .sort((a, b) => {
         // Sort by total contribution (count × weight)
-        const weightMap = { CRITICAL: 20, HIGH: 10, MEDIUM: 5, LOW: 2 };
+        const weightMap = {
+          CRITICAL: 20,
+          HIGH: 10,
+          MEDIUM: 5,
+          LOW: 2,
+          VERY_LOW: 1,
+          INFORMATIONAL: 0.2,
+        } as Record<string, number>;
         const scoreA = a.count * weightMap[a.severity];
         const scoreB = b.count * weightMap[b.severity];
         return scoreB - scoreA;

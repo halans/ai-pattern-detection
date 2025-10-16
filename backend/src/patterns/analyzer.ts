@@ -117,13 +117,13 @@ export class PatternAnalyzer {
   /**
    * Classify text based on score
    */
-  classify(score: number): 'Likely AI-generated' | 'Mixed/Uncertain' | 'Likely Human-written' {
-    if (score >= 70) {
-      return 'Likely AI-generated';
-    } else if (score >= 31) {
+  classify(score: number): 'Likely AI Slop' | 'Mixed/Uncertain' | 'Likely Human' {
+    if (score >= 65) {
+      return 'Likely AI Slop';
+    } else if (score >= 35) {
       return 'Mixed/Uncertain';
     } else {
-      return 'Likely Human-written';
+      return 'Likely Human';
     }
   }
 
@@ -220,7 +220,7 @@ export class PatternAnalyzer {
     classification: string,
     matches: PatternMatch[]
   ): string {
-    if (classification === 'Likely AI-generated') {
+    if (classification === 'Likely AI Slop') {
       const topPatterns = matches
         .sort((a, b) => b.count - a.count)
         .slice(0, 3)

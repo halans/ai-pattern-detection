@@ -125,8 +125,8 @@ describe('PatternAnalyzer', () => {
       const matches = analyzer.analyze(text);
       const score = analyzer.calculateScore(matches);
 
-      // AI self-reference (CRITICAL, 20 points) + collaborative phrase (HIGH, 10 points)
-      expect(score).toBeGreaterThanOrEqual(30);
+      // AI self-reference (CRITICAL, 15 points) + collaborative phrase (HIGH, 8 points)
+      expect(score).toBeGreaterThanOrEqual(23);
     });
 
     it('should cap score at 100', () => {
@@ -158,29 +158,29 @@ describe('PatternAnalyzer', () => {
   });
 
   describe('classify', () => {
-    it('should classify score >= 70 as Likely AI-generated', () => {
-      expect(analyzer.classify(70)).toBe('Likely AI-generated');
-      expect(analyzer.classify(85)).toBe('Likely AI-generated');
-      expect(analyzer.classify(100)).toBe('Likely AI-generated');
+    it('should classify score >= 65 as Likely AI Slop', () => {
+      expect(analyzer.classify(65)).toBe('Likely AI Slop');
+      expect(analyzer.classify(85)).toBe('Likely AI Slop');
+      expect(analyzer.classify(100)).toBe('Likely AI Slop');
     });
 
-    it('should classify score 31-69 as Mixed/Uncertain', () => {
-      expect(analyzer.classify(31)).toBe('Mixed/Uncertain');
+    it('should classify score 35-64 as Mixed/Uncertain', () => {
+      expect(analyzer.classify(35)).toBe('Mixed/Uncertain');
       expect(analyzer.classify(50)).toBe('Mixed/Uncertain');
-      expect(analyzer.classify(69)).toBe('Mixed/Uncertain');
+      expect(analyzer.classify(64)).toBe('Mixed/Uncertain');
     });
 
-    it('should classify score 0-30 as Likely Human-written', () => {
-      expect(analyzer.classify(0)).toBe('Likely Human-written');
-      expect(analyzer.classify(15)).toBe('Likely Human-written');
-      expect(analyzer.classify(30)).toBe('Likely Human-written');
+    it('should classify score 0-34 as Likely Human', () => {
+      expect(analyzer.classify(0)).toBe('Likely Human');
+      expect(analyzer.classify(15)).toBe('Likely Human');
+      expect(analyzer.classify(34)).toBe('Likely Human');
     });
   });
 
   describe('generateExplanation', () => {
-    it('should generate explanation for AI-generated classification', () => {
+    it('should generate explanation for AI Slop classification', () => {
       const matches = analyzer.analyze('As an AI language model, I hope this helps! Certainly!');
-      const explanation = analyzer.generateExplanation('Likely AI-generated', matches);
+      const explanation = analyzer.generateExplanation('Likely AI Slop', matches);
 
       expect(explanation).toContain('strong AI writing patterns');
       expect(explanation.length).toBeGreaterThan(50);
@@ -202,7 +202,7 @@ describe('PatternAnalyzer', () => {
 
     it('should include top patterns in AI explanation', () => {
       const matches = analyzer.analyze('As an AI language model, I hope this helps! Let me know if you need more.');
-      const explanation = analyzer.generateExplanation('Likely AI-generated', matches);
+      const explanation = analyzer.generateExplanation('Likely AI Slop', matches);
 
       // Should mention at least one pattern name
       expect(explanation.length).toBeGreaterThan(50);
@@ -220,7 +220,7 @@ describe('PatternAnalyzer', () => {
 
       expect(matches.length).toBeGreaterThan(3);
       expect(score).toBeGreaterThan(40);
-      expect(['Likely AI-generated', 'Mixed/Uncertain']).toContain(classification);
+      expect(['Likely AI Slop', 'Mixed/Uncertain']).toContain(classification);
     });
 
     it('should correctly analyze typical human-written text', () => {
@@ -232,7 +232,7 @@ describe('PatternAnalyzer', () => {
       const classification = analyzer.classify(score);
 
       expect(score).toBeLessThan(40);
-      expect(['Likely Human-written', 'Mixed/Uncertain']).toContain(classification);
+      expect(['Likely Human', 'Mixed/Uncertain']).toContain(classification);
     });
 
     it('should handle empty text', () => {

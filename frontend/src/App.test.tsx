@@ -18,7 +18,7 @@ const downloadPDFMock = vi.mocked(downloadPDF);
 
 describe('App clear text workflow', () => {
   const sampleResult: AnalysisResult = {
-    classification: 'Likely AI-generated',
+    classification: 'Likely AI Slop',
     confidence_score: 72,
     patterns_detected: [],
     explanation: 'Sample explanation',

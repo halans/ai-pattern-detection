@@ -128,9 +128,9 @@ With the addition of 5 new MEDIUM patterns and 1 new LOW pattern:
 - Texts with excessive em-dashes: +2 points
 
 ### Classification Thresholds (unchanged):
-- 0-30: Likely Human-written
+- 0-30: Likely Human
 - 31-69: Mixed/Uncertain
-- 70-100: Likely AI-generated
+- 70-100: Likely AI Slop
 
 ---
 

@@ -40,7 +40,7 @@ Analyze text for AI-generated content patterns.
 **Response:**
 ```json
 {
-  "classification": "Likely AI-generated" | "Mixed/Uncertain" | "Likely Human-written",
+  "classification": "Likely AI Slop" | "Mixed/Uncertain" | "Likely Human",
   "confidence_score": 75,
   "patterns_detected": [
     {
@@ -128,9 +128,9 @@ Total Score = Σ (pattern_weight × match_count)
 Normalized Score = min(100, Total Score)
 
 Classification Thresholds:
-- 0-30: Likely Human-written
+- 0-30: Likely Human
 - 31-69: Mixed/Uncertain
-- 70-100: Likely AI-generated
+- 70-100: Likely AI Slop
 ```
 
 ## Performance

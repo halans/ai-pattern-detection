@@ -3,7 +3,7 @@ import type { AnalysisResult } from '../types';
 
 describe('analysisResultToMarkdown', () => {
   const baseResult: AnalysisResult = {
-    classification: 'Likely AI-generated',
+    classification: 'Likely AI Slop',
     confidence_score: 88,
     explanation: 'Mock explanation about AI indicators.',
     patterns_detected: [
@@ -40,7 +40,7 @@ describe('analysisResultToMarkdown', () => {
 
     expect(markdown).toContain('# Slop Detection Analysis Report');
     expect(markdown).toContain('## Summary');
-    expect(markdown).toContain('**Classification:** Likely AI-generated');
+    expect(markdown).toContain('**Classification:** Likely AI Slop');
     expect(markdown).toContain('**Confidence Score:** 88');
     expect(markdown).toContain('## Patterns');
     expect(markdown).toContain('### Critical Patterns');

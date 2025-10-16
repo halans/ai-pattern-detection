@@ -31,7 +31,7 @@ vi.mock('jspdf', () => {
 
 describe('downloadPDF', () => {
   const sampleResult: AnalysisResult = {
-    classification: 'Likely AI-generated',
+    classification: 'Likely AI Slop',
     confidence_score: 88,
     explanation: 'Sample explanation for PDF export.',
     patterns_detected: [

@@ -2,7 +2,7 @@
 
 export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
-export type Classification = 'Likely AI-generated' | 'Mixed/Uncertain' | 'Likely Human-written';
+export type Classification = 'Likely AI Slop' | 'Mixed/Uncertain' | 'Likely Human';
 
 export interface PatternMatch {
   patternId: string;

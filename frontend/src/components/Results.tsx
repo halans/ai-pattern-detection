@@ -9,7 +9,7 @@ export function Results({ result }: ResultsProps) {
   const { classification, confidence_score, patterns_detected, explanation, metadata } = result;
 
   const getClassificationColor = () => {
-    if (classification === 'Likely AI-generated') return 'text-red-600 dark:text-red-400';
+    if (classification === 'Likely AI Slop') return 'text-red-600 dark:text-red-400';
     if (classification === 'Mixed/Uncertain') return 'text-yellow-600 dark:text-yellow-400';
     return 'text-green-600 dark:text-green-400';
   };
@@ -28,7 +28,14 @@ export function Results({ result }: ResultsProps) {
     return acc;
   }, {} as Record<Severity, typeof patterns_detected>);
 
-  const severityOrder: Severity[] = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+  const severityOrder: Severity[] = [
+    'CRITICAL',
+    'HIGH',
+    'MEDIUM',
+    'LOW',
+    'VERY_LOW',
+    'INFORMATIONAL',
+  ];
 
   const getSeverityColor = (severity: Severity) => {
     switch (severity) {
@@ -40,6 +47,10 @@ export function Results({ result }: ResultsProps) {
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
       case 'LOW':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'VERY_LOW':
+        return 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200';
+      case 'INFORMATIONAL':
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     }
   };
 
@@ -106,7 +117,7 @@ export function Results({ result }: ResultsProps) {
                         </span>
                         {pattern.matches.length > 0 && (
                           <div className="mt-1 ml-4 text-xs text-gray-500 dark:text-gray-400 italic">
-                            Example: "{pattern.matches[0].text}"
+                            Example: "{pattern.matches[0].text.trim()}" 
                           </div>
                         )}
                       </li>

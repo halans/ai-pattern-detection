@@ -19,7 +19,7 @@ describe('Pattern Registry', () => {
     });
 
     it('should have valid severity levels', () => {
-      const validSeverities = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+      const validSeverities = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'VERY_LOW', 'INFORMATIONAL'];
       PATTERNS.forEach(pattern => {
         expect(validSeverities).toContain(pattern.severity);
       });
@@ -38,9 +38,9 @@ describe('Pattern Registry', () => {
       const mediumPatterns = PATTERNS.filter(p => p.severity === 'MEDIUM');
       const lowPatterns = PATTERNS.filter(p => p.severity === 'LOW');
 
-      criticalPatterns.forEach(p => expect(p.weight).toBe(20));
-      highPatterns.forEach(p => expect(p.weight).toBe(10));
-      mediumPatterns.forEach(p => expect(p.weight).toBe(5));
+      criticalPatterns.forEach(p => expect(p.weight).toBe(15));
+      highPatterns.forEach(p => expect(p.weight).toBe(8));
+      mediumPatterns.forEach(p => expect(p.weight).toBe(4));
       lowPatterns.forEach(p => expect(p.weight).toBe(2));
     });
 
@@ -60,7 +60,7 @@ describe('Pattern Registry', () => {
     it('should include repetition n-gram pattern', () => {
       const repetition = PATTERNS.find(p => p.id === 'repetition-ngrams');
       expect(repetition).toBeDefined();
-      expect(repetition!.severity).toBe('LOW');
+      expect(repetition!.severity).toBe('VERY_LOW');
       expect(repetition!.weight).toBeGreaterThan(0);
     });
   });

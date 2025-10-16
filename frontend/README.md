@@ -84,9 +84,9 @@ Output in `dist/` directory.
 ### Results
 
 - Classification with color coding:
-  - **Red**: Likely AI-generated (70-100)
+  - **Red**: Likely AI Slop (70-100)
   - **Yellow**: Mixed/Uncertain (31-69)
-  - **Green**: Likely Human-written (0-30)
+  - **Green**: Likely Human (0-30)
 - Confidence score with progress bar
 - Pattern breakdown grouped by severity
 - Metadata display

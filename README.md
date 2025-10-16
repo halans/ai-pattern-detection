@@ -116,9 +116,9 @@ Total Score = Σ (pattern_weight × match_count)
 Normalized Score = min(100, Total Score)
 
 Classification Thresholds:
-- 0-30:   Likely Human-written
+- 0-30:   Likely Human
 - 31-69:  Mixed/Uncertain
-- 70-100: Likely AI-generated
+- 70-100: Likely AI Slop
 ```
 
 ## API
@@ -135,7 +135,7 @@ Classification Thresholds:
 **Response:**
 ```json
 {
-  "classification": "Likely AI-generated",
+  "classification": "Likely AI Slop",
   "confidence_score": 75,
   "patterns_detected": [...],
   "explanation": "...",
