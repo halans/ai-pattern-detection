@@ -113,4 +113,15 @@ describe('App clear text workflow', () => {
     expect(downloadMarkdownMock).toHaveBeenCalledTimes(1);
     expect(downloadPDFMock).toHaveBeenCalledTimes(1);
   });
+
+  it('provides a skip link for keyboard navigation', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const skipLink = screen.getByText(/skip to main content/i);
+    expect(skipLink).toBeInTheDocument();
+
+    await user.tab();
+    expect(skipLink).toHaveFocus();
+  });
 });

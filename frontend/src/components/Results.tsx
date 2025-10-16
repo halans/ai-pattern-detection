@@ -57,8 +57,14 @@ export function Results({ result }: ResultsProps) {
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
       {/* Classification and Score */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">Analysis Results</h2>
+      <section
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+        aria-labelledby="analysis-summary-heading"
+        role="region"
+      >
+        <h2 id="analysis-summary-heading" className="text-2xl font-bold mb-4">
+          Analysis Results
+        </h2>
 
         <div className="space-y-4">
           <div>
@@ -86,12 +92,16 @@ export function Results({ result }: ResultsProps) {
             <p className="text-sm text-gray-700 dark:text-gray-300">{explanation}</p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Pattern Breakdown */}
       {patterns_detected.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4">
+        <section
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+          aria-labelledby="pattern-breakdown-heading"
+          role="region"
+        >
+          <h3 id="pattern-breakdown-heading" className="text-xl font-bold mb-4">
             Detected Patterns ({patterns_detected.length})
           </h3>
 
@@ -127,12 +137,18 @@ export function Results({ result }: ResultsProps) {
               );
             })}
           </div>
-        </div>
+        </section>
       )}
 
       {/* Metadata */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Analysis Metadata</h3>
+      <section
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+        aria-labelledby="analysis-metadata-heading"
+        role="region"
+      >
+        <h3 id="analysis-metadata-heading" className="text-xl font-bold mb-4">
+          Analysis Metadata
+        </h3>
         <dl className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <dt className="font-medium text-gray-600 dark:text-gray-400">Character Count</dt>
@@ -164,11 +180,12 @@ export function Results({ result }: ResultsProps) {
             </ul>
           </div>
         )}
-      </div>
+      </section>
 
       {/* Export Buttons */}
-      <div className="flex gap-4">
+      <div className="flex gap-4" role="group" aria-label="Download report options">
         <button
+          tabIndex={0}
           onClick={() => downloadJSON(result)}
           className="px-6 py-2 bg-gray-600 text-white rounded-lg font-medium
                    hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500
@@ -177,6 +194,7 @@ export function Results({ result }: ResultsProps) {
           Download JSON
         </button>
         <button
+          tabIndex={0}
           onClick={() => downloadMarkdown(result)}
           className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium
                    hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
@@ -185,6 +203,7 @@ export function Results({ result }: ResultsProps) {
           Download Markdown
         </button>
         <button
+          tabIndex={0}
           onClick={() => {
             void downloadPDF(result);
           }}
