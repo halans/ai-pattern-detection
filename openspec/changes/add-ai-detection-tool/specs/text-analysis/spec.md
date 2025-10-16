@@ -230,23 +230,25 @@ The system SHALL calculate an overall AI likelihood score based on pattern match
 #### Scenario: Calculate score from pattern weights
 - **WHEN** text has 2 CRITICAL patterns, 3 HIGH patterns, 2 MEDIUM patterns
 - **THEN** the score is calculated as weighted sum normalized to 0-100
-- **AND** the classification is "Likely AI-generated" (score ≥70)
+- **AND** the classification is "Likely AI Slop" (score ≥70)
 
 #### Scenario: Low pattern count yields low score
 - **WHEN** text has only 1 LOW severity pattern
 - **THEN** the score is <30
-- **AND** the classification is "Likely Human-written"
+- **AND** the classification is "Likely Human"
 
 **Severity Weights:**
-- CRITICAL: 20 points per match
-- HIGH: 10 points per match
-- MEDIUM: 5 points per match
+- CRITICAL: 15 points per match
+- HIGH: 8 points per match
+- MEDIUM: 4 points per match
 - LOW: 2 points per match
+- VERY LOW: 1 point per match
+- INFORMATIONAL: 0.2 points per match
 
 **Score Thresholds:**
-- 0-30: "Likely Human-written"
+- 0-30: "Likely Human"
 - 31-69: "Mixed/Uncertain"
-- 70-100: "Likely AI-generated"
+- 70-100: "Likely AI Slop"
 
 ---
 
