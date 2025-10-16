@@ -110,6 +110,19 @@ describe('PatternAnalyzer', () => {
       expect(repetition!.count).toBeGreaterThanOrEqual(5);
     });
 
+    it('should treat informational patterns with minimal weight', () => {
+      const text =
+        'Additionally, however, moreover, consequently, indeed. Furthermore, accordingly, thus, undoubtedly.';
+      const matches = analyzer.analyze(text);
+      const score = analyzer.calculateScore(matches);
+
+      const informational = matches.find(m => m.patternId === 'transitional-words');
+      expect(informational).toBeDefined();
+      expect(informational!.severity).toBe('INFORMATIONAL');
+      expect(informational!.count).toBeGreaterThanOrEqual(5);
+      expect(score).toBeLessThan(30);
+    });
+
     it('should not flag repetitions below threshold', () => {
       const text = 'Also we consider this. Also it matters.';
       const matches = analyzer.analyze(text);
