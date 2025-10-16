@@ -50,7 +50,7 @@ export function Results({ result }: ResultsProps) {
       case 'VERY_LOW':
         return 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200';
       case 'INFORMATIONAL':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+        return 'bg-surface-alt text-text-muted dark:bg-surface-dark-alt dark:text-text-dark-muted';
     }
   };
 
@@ -58,7 +58,7 @@ export function Results({ result }: ResultsProps) {
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
       {/* Classification and Score */}
       <section
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+        className="bg-surface-alt dark:bg-surface-dark-alt rounded-lg shadow-lg p-6 transition-colors"
         aria-labelledby="analysis-summary-heading"
         role="region"
       >
@@ -80,7 +80,7 @@ export function Results({ result }: ResultsProps) {
               <span className="text-xl font-bold">{confidence_score}</span>
             </div>
 
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
+            <div className="w-full bg-primary-soft/20 dark:bg-primary/40 rounded-full h-4">
               <div
                 className={`h-4 rounded-full ${getProgressBarColor()} transition-all duration-500`}
                 style={{ width: `${confidence_score}%` }}
@@ -89,7 +89,7 @@ export function Results({ result }: ResultsProps) {
           </div>
 
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-700 dark:text-gray-300">{explanation}</p>
+            <p className="text-sm text-text-muted dark:text-text-dark-muted">{explanation}</p>
           </div>
         </div>
       </section>
@@ -97,7 +97,7 @@ export function Results({ result }: ResultsProps) {
       {/* Pattern Breakdown */}
       {patterns_detected.length > 0 && (
         <section
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+          className="bg-surface-alt dark:bg-surface-dark-alt rounded-lg shadow-lg p-6 transition-colors"
           aria-labelledby="pattern-breakdown-heading"
           role="region"
         >
@@ -121,12 +121,12 @@ export function Results({ result }: ResultsProps) {
                     {patterns.map((pattern) => (
                       <li key={pattern.patternId} className="text-sm">
                         <span className="font-medium">{pattern.patternName}</span>
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-text-muted dark:text-text-dark-muted">
                           {' '}
                           — {pattern.count} match{pattern.count !== 1 ? 'es' : ''}
                         </span>
                         {pattern.matches.length > 0 && (
-                          <div className="mt-1 ml-4 text-xs text-gray-500 dark:text-gray-400 italic">
+                          <div className="mt-1 ml-4 text-xs text-text-muted dark:text-text-dark-muted italic">
                             Example: "{pattern.matches[0].text.trim()}" 
                           </div>
                         )}
@@ -142,28 +142,28 @@ export function Results({ result }: ResultsProps) {
 
       {/* Metadata */}
       <section
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+        className="bg-surface-alt dark:bg-surface-dark-alt rounded-lg shadow-lg p-6 transition-colors"
         aria-labelledby="analysis-metadata-heading"
         role="region"
       >
         <h3 id="analysis-metadata-heading" className="text-xl font-bold mb-4">
           Analysis Metadata
         </h3>
-        <dl className="grid grid-cols-2 gap-4 text-sm">
+        <dl className="grid grid-cols-2 gap-4 text-sm text-text-muted dark:text-text-dark-muted">
           <div>
-            <dt className="font-medium text-gray-600 dark:text-gray-400">Character Count</dt>
+            <dt className="font-medium">Character Count</dt>
             <dd className="mt-1">{metadata.character_count.toLocaleString()}</dd>
           </div>
           <div>
-            <dt className="font-medium text-gray-600 dark:text-gray-400">Word Count</dt>
+            <dt className="font-medium">Word Count</dt>
             <dd className="mt-1">{metadata.word_count.toLocaleString()}</dd>
           </div>
           <div>
-            <dt className="font-medium text-gray-600 dark:text-gray-400">Analysis Duration</dt>
+            <dt className="font-medium">Analysis Duration</dt>
             <dd className="mt-1">{metadata.analysis_duration}ms</dd>
           </div>
           <div>
-            <dt className="font-medium text-gray-600 dark:text-gray-400">Engine Version</dt>
+            <dt className="font-medium">Engine Version</dt>
             <dd className="mt-1">{metadata.pattern_engine_version}</dd>
           </div>
         </dl>
@@ -185,31 +185,34 @@ export function Results({ result }: ResultsProps) {
       {/* Export Buttons */}
       <div className="flex gap-4" role="group" aria-label="Download report options">
         <button
-          tabIndex={0}
+          type="button"
           onClick={() => downloadJSON(result)}
-          className="px-6 py-2 bg-gray-600 text-white rounded-lg font-medium
-                   hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500
+          className="px-6 py-2 bg-primary text-white rounded-lg font-medium
+                   hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light
                    transition-colors"
+          aria-label="Download report as JSON"
         >
           Download JSON
         </button>
         <button
-          tabIndex={0}
+          type="button"
           onClick={() => downloadMarkdown(result)}
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium
-                   hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500
+          className="px-6 py-2 bg-primary-light text-white rounded-lg font-medium
+                   hover:bg-primary-soft focus:outline-none focus:ring-2 focus:ring-primary-light
                    transition-colors"
+          aria-label="Download report as Markdown"
         >
           Download Markdown
         </button>
         <button
-          tabIndex={0}
+          type="button"
           onClick={() => {
             void downloadPDF(result);
           }}
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg font-medium
-                   hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500
+          className="px-6 py-2 bg-accent text-text-primary rounded-lg font-medium
+                   hover:bg-[#d99d1f] focus:outline-none focus:ring-2 focus:ring-accent
                    transition-colors"
+          aria-label="Download report as PDF"
         >
           Download PDF
         </button>

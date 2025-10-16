@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "jspdf": "^3.0.3",
@@ -17,6 +20,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^14.2.2",
     "@testing-library/user-event": "^14.5.2",
