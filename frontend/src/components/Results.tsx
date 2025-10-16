@@ -186,6 +186,7 @@ export function Results({ result }: ResultsProps) {
       <div className="flex gap-4" role="group" aria-label="Download report options">
         <button
           type="button"
+          tabIndex={0}
           onClick={() => downloadJSON(result)}
           className="px-6 py-2 bg-primary text-white rounded-lg font-medium
                    hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light
@@ -196,6 +197,7 @@ export function Results({ result }: ResultsProps) {
         </button>
         <button
           type="button"
+          tabIndex={0}
           onClick={() => downloadMarkdown(result)}
           className="px-6 py-2 bg-primary-light text-white rounded-lg font-medium
                    hover:bg-primary-soft focus:outline-none focus:ring-2 focus:ring-primary-light
@@ -206,6 +208,7 @@ export function Results({ result }: ResultsProps) {
         </button>
         <button
           type="button"
+          tabIndex={0}
           onClick={() => {
             void downloadPDF(result);
           }}
