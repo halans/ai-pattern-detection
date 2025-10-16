@@ -86,7 +86,7 @@ function App() {
               </ul>
               <p>
                 Each pattern is weighted by severity (CRITICAL, HIGH, MEDIUM, LOW) and combined
-                into a confidence score (0-100).
+                into a confidence score (0-100). Unfortunately, this does not exclude human-written academic text.
               </p>
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                 <h3 className="font-semibold mb-2">Privacy Guarantee</h3>
