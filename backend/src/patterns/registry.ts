@@ -30,7 +30,7 @@ const PLACEHOLDER_TEMPLATE_REGEX = new RegExp(
   'gu'
 );
 
-export const REPETITION_WORDS = ['also', 'various', 'however', 'because', 'therefore'];
+export const REPETITION_WORDS = ['also', 'various', 'however', 'because', 'therefore', 'although', 'moreover', 'furthermore', 'indeed', 'notably', 'specifically', 'importantly', 'consequently', 'additionally', 'alternatively', 'essentially', 'arguably', 'ultimately', 'generally', 'meanwhile', 'nevertheless', 'nonetheless', 'thus', 'hence', 'accordingly', 'similarly', 'likewise'];
 export const REPETITION_BIGRAMS = [
   'lay ahead',
   'let us',
@@ -310,7 +310,7 @@ export const PATTERNS: Pattern[] = [
     id: 'communication-styles',
     name: 'AI Communication Style Patterns',
     description: 'Formal transitional and connective phrases typical of AI writing',
-    regex: /\b(?:it(?:'|'| i)s important to note|in summary|remember that(?:\.\.\.|…)?|furthermore|additionally|specifically|consequently|importantly|indeed|notably|despite|essentially|alternatively|also|even though|because|in contrast|although|due to|given that|arguably|you may want to|on the other hand|as previously mentioned|it(?:'|'| i)s worth noting(?: that)?|to summarize|ultimately|to put it simply|as a result|as such|for (?:example|instance)|generally speaking|going forward|in (?:brief|detail|effect|essence|general|light of|other words|particular|practice|terms of|theory)|namely|that being said|to (?:clarify|demonstrate|emphasize|illustrate|reiterate|shed light on)|with regards to|whilst)\b/iu,
+    regex: /\b(?:it(?:'|'| i)s important to note|in summary|remember that(?:\.\.\.|…)?|furthermore|additionally|specifically|consequently|importantly|indeed|notably|despite|essentially|alternatively|even though|because|in contrast|although|due to|given that|arguably|you may want to|on the other hand|as previously mentioned|it(?:'|'| i)s worth noting(?: that)?|to summarize|ultimately|to put it simply|as a result|as such|for (?:example|instance)|generally speaking|going forward|in (?:brief|detail|effect|essence|general|light of|other words|particular|practice|terms of|theory)|namely|that being said|to (?:clarify|demonstrate|emphasize|illustrate|reiterate|shed light on)|with regards to|whilst)\b/iu,
     severity: 'MEDIUM',
     weight: SEVERITY_WEIGHTS.MEDIUM,
     examples: ["it's important to note", 'furthermore', 'as a result', 'for example', 'generally speaking', 'in essence', 'that being said'],
