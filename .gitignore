@@ -5,6 +5,10 @@ node_modules/
 
 # Testing
 coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+**/*-snapshots/
 
 # Production
 build/
