@@ -1,6 +1,12 @@
 // Type definitions matching backend API
 
-export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+export type Severity =
+  | 'CRITICAL'
+  | 'HIGH'
+  | 'MEDIUM'
+  | 'LOW'
+  | 'VERY_LOW'
+  | 'INFORMATIONAL';
 
 export type Classification = 'Likely AI Slop' | 'Mixed/Uncertain' | 'Likely Human';
 

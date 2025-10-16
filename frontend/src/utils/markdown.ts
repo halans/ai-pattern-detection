@@ -1,12 +1,14 @@
 import type { AnalysisResult, PatternMatch, Severity } from '../types';
 
-const severityOrder: Severity[] = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+const severityOrder: Severity[] = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'VERY_LOW', 'INFORMATIONAL'];
 
 const severityTitles: Record<Severity, string> = {
   CRITICAL: 'Critical',
   HIGH: 'High',
   MEDIUM: 'Medium',
   LOW: 'Low',
+  VERY_LOW: 'Very Low',
+  INFORMATIONAL: 'Informational',
 };
 
 function normalizeWhitespace(value: string): string {
