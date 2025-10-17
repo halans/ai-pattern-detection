@@ -1,8 +1,8 @@
-# Design Document: Slop Detection Tool (Pattern-Based)
+# Design Document: Slop Detector (Pattern-Based)
 
 ## Context
 
-The Slop Detection Tool provides a simple, pattern-based system for analyzing text and documents to detect AI-generated content. Unlike complex ML-based solutions, this approach uses regex patterns to identify linguistic signals characteristic of AI writing, making it fast, transparent, and easy to maintain.
+The Slop Detector provides a simple, pattern-based system for analyzing text and documents to detect AI-generated content. Unlike complex ML-based solutions, this approach uses regex patterns to identify linguistic signals characteristic of AI writing, making it fast, transparent, and easy to maintain.
 
 **Key Stakeholders:**
 - Educators (detecting AI in student submissions)

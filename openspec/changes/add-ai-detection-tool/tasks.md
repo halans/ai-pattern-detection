@@ -1,4 +1,4 @@
-# Implementation Tasks: Slop Detection Tool (Pattern-Based)
+# Implementation Tasks: Slop Detector (Pattern-Based)
 
 ## 1. Project Setup
 - [ ] 1.1 Initialize monorepo structure (frontend, backend)

@@ -1,4 +1,4 @@
-# Slop Detection Tool - Implementation Summary
+# Slop Detector - Implementation Summary
 
 ## Overview
 

@@ -1,4 +1,4 @@
-// Type definitions for Slop Detection Tool
+// Type definitions for Slop Detector
 
 export type Severity =
   | 'CRITICAL'

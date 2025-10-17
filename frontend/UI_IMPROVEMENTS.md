@@ -1,7 +1,7 @@
 # UI Improvements Summary
 
 ## Overview
-This document summarizes the UI improvements and fixes made to the Slop Detection Tool using Playwright end-to-end testing.
+This document summarizes the UI improvements and fixes made to the Slop Detector using Playwright end-to-end testing.
 
 ---
 
@@ -31,7 +31,7 @@ This document summarizes the UI improvements and fixes made to the Slop Detectio
 **Fix**: Updated [index.html:7](index.html#L7)
 ```diff
 - <title>Slop Detection - Pattern-based analysis...</title>
-+ <title>Slop Detection Tool - Pattern-based analysis...</title>
++ <title>Slop Detector - Pattern-based analysis...</title>
 ```
 **Impact**: Improved SEO and brand consistency
 

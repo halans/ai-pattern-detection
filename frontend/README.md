@@ -1,6 +1,6 @@
-# Slop Detection Tool - Frontend
+# Slop Detector - Frontend
 
-React + TypeScript + Vite frontend for the Slop Detection Tool.
+React + TypeScript + Vite frontend for the Slop Detector.
 
 ## Features
 

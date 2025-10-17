@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get the Slop Detection Tool running in 5 minutes.
+Get the Slop Detector running in 5 minutes.
 
 ## Prerequisites
 

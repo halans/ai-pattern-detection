@@ -19,6 +19,9 @@ export default {
         'text-dark': '#e8f2ff',
         'text-dark-muted': '#b3cbe0',
       },
+      fontFamily: {
+        sora: ['"Sora"', 'Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],

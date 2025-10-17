@@ -1,6 +1,6 @@
 # Playwright Testing Guide
 
-Quick reference for running and writing Playwright tests for the Slop Detection Tool.
+Quick reference for running and writing Playwright tests for the Slop Detector.
 
 ---
 

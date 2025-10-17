@@ -6,8 +6,8 @@ test.describe('UI Audit and Improvements', () => {
   });
 
   test('should have proper page structure and title', async ({ page }) => {
-    await expect(page).toHaveTitle(/Slop Detection Tool/i);
-    await expect(page.locator('h1')).toContainText('Slop Detection Tool');
+    await expect(page).toHaveTitle(/Slop Detector/i);
+    await expect(page.locator('h1')).toContainText('Slop Detector');
   });
 
   test('should display main UI components', async ({ page }) => {

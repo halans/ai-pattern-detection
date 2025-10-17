@@ -1,4 +1,4 @@
-# Slop Detection Tool - Backend
+# Slop Detector - Backend
 
 Pattern-based AI detection system running on Cloudflare Workers.
 

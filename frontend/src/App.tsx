@@ -51,7 +51,7 @@ function App() {
       {/* Header */}
       <header className="bg-surface-alt dark:bg-surface-dark-alt shadow-sm transition-colors">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold">Slop Detection Tool</h1>
+          <h1 className="text-3xl font-extrabold font-sora">Slop Detector</h1>
           <p className="mt-2 text-sm text-text-muted dark:text-text-dark-muted">
             Pattern-based analysis for detecting AI-generated content
           </p>
@@ -130,7 +130,7 @@ function App() {
       {/* Footer */}
       <footer className="mt-16 py-8 border-t border-primary-soft/40 dark:border-primary/40 transition-colors">
         <div className="max-w-7xl mx-auto px-4 flex flex-col gap-4 text-center text-sm text-text-muted dark:text-text-dark-muted md:flex-row md:items-center md:justify-between">
-          <p>Slop Detection Tool • Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention  • <a href="https://github.com/halans/ai-pattern-detection" target='blank' rel='me'>Github</a></p>
+          <p>Slop Detector • Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention  • <a href="https://github.com/halans/ai-pattern-detection" target='blank' rel='me'>Github</a></p>
           <button
             type="button"
             onClick={toggleTheme}
