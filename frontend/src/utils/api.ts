@@ -96,12 +96,110 @@ function wrapText(text: string, maxChars: number): string[] {
   return lines;
 }
 
-function stripMarkdownFormatting(text: string): string {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '$1')
-    .replace(/`([^`]*)`/g, '$1')
-    .replace(/_/g, '')
-    .trim();
+interface TextSegment {
+  text: string;
+  italic?: boolean;
+  monospace?: boolean;
+  bold?: boolean;
+}
+
+function parseMarkdownFormatting(text: string): TextSegment[] {
+  const segments: TextSegment[] = [];
+  let remaining = text;
+
+  // Pattern to match _`text`_ (italic monospace)
+  const italicMonoRegex = /_`([^`]+)`_/g;
+  // Pattern to match **text** (bold)
+  const boldRegex = /\*\*([^*]+)\*\*/g;
+  // Pattern to match `text` (monospace only)
+  const monoRegex = /`([^`]+)`/g;
+  // Pattern to match _text_ (italic only)
+  const italicRegex = /_([^_]+)_/g;
+
+  let lastIndex = 0;
+  const matches: Array<{ start: number; end: number; segment: TextSegment }> = [];
+
+  // Find all formatted segments
+  let match;
+
+  // Check for italic monospace first (most specific)
+  while ((match = italicMonoRegex.exec(text)) !== null) {
+    matches.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      segment: { text: match[1], italic: true, monospace: true }
+    });
+  }
+
+  // Check for bold
+  while ((match = boldRegex.exec(text)) !== null) {
+    const overlaps = matches.some(m =>
+      (match.index >= m.start && match.index < m.end) ||
+      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+    );
+    if (!overlaps) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        segment: { text: match[1], bold: true }
+      });
+    }
+  }
+
+  // Check for monospace only
+  while ((match = monoRegex.exec(text)) !== null) {
+    const overlaps = matches.some(m =>
+      (match.index >= m.start && match.index < m.end) ||
+      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+    );
+    if (!overlaps) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        segment: { text: match[1], monospace: true }
+      });
+    }
+  }
+
+  // Check for italic only
+  while ((match = italicRegex.exec(text)) !== null) {
+    const overlaps = matches.some(m =>
+      (match.index >= m.start && match.index < m.end) ||
+      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+    );
+    if (!overlaps) {
+      matches.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        segment: { text: match[1], italic: true }
+      });
+    }
+  }
+
+  // Sort by start position
+  matches.sort((a, b) => a.start - b.start);
+
+  // Build segments array with plain text between formatted segments
+  for (const match of matches) {
+    if (match.start > lastIndex) {
+      const plainText = text.slice(lastIndex, match.start);
+      if (plainText) {
+        segments.push({ text: plainText });
+      }
+    }
+    segments.push(match.segment);
+    lastIndex = match.end;
+  }
+
+  // Add remaining plain text
+  if (lastIndex < text.length) {
+    const plainText = text.slice(lastIndex);
+    if (plainText) {
+      segments.push({ text: plainText });
+    }
+  }
+
+  return segments.length > 0 ? segments : [{ text: text }];
 }
 
 export async function downloadPDF(
@@ -126,6 +224,21 @@ export async function downloadPDF(
     }
   };
 
+  const renderTextWithFormatting = (segments: TextSegment[], x: number, y: number, fontSize: number) => {
+    let currentX = x;
+
+    for (const segment of segments) {
+      const font = segment.monospace ? 'courier' : 'helvetica';
+      const style = segment.bold ? 'bold' : (segment.italic ? 'italic' : 'normal');
+
+      doc.setFont(font, style);
+      doc.setFontSize(fontSize);
+
+      doc.text(segment.text, currentX, y);
+      currentX += doc.getTextWidth(segment.text);
+    }
+  };
+
   const lines = markdown.split('\n');
 
   for (const rawLine of lines) {
@@ -141,20 +254,24 @@ export async function downloadPDF(
     let fontStyle: 'normal' | 'bold' = 'normal';
     let indent = 0;
     let lineHeight = baseLineHeight;
+    let isHeading = false;
 
     if (text.startsWith('# ')) {
       text = text.replace(/^#\s*/, '');
       fontSize = 20;
       fontStyle = 'bold';
       cursorY += baseLineHeight * 0.25;
+      isHeading = true;
     } else if (text.startsWith('## ')) {
       text = text.replace(/^##\s*/, '');
       fontSize = 16;
       fontStyle = 'bold';
+      isHeading = true;
     } else if (text.startsWith('### ')) {
       text = text.replace(/^###\s*/, '');
       fontSize = 14;
       fontStyle = 'bold';
+      isHeading = true;
     } else if (text.startsWith('- ')) {
       text = text.slice(2);
       indent = 18;
@@ -167,24 +284,40 @@ export async function downloadPDF(
       lineHeight = baseLineHeight * 0.9;
     }
 
-    text = stripMarkdownFormatting(text);
     if (!text) {
       continue;
     }
 
-    const wrappedLines = wrapText(text, Math.max(20, Math.floor((contentWidth - indent) / 6)));
+    // Parse markdown formatting for non-heading lines
+    if (!isHeading) {
+      // Remove pattern IDs from PDF (e.g., "(ID: `pattern-id`, count: 3)" becomes "(count: 3)")
+      text = text.replace(/\(ID:\s*`[^`]+`,\s*(count:\s*\d+)\)/g, '($1)');
+      // Remove standalone ID references
+      text = text.replace(/\(ID:\s*`[^`]+`\)/g, '');
 
-    doc.setFont('helvetica', fontStyle);
-    doc.setFontSize(fontSize);
+      const segments = parseMarkdownFormatting(text);
 
-    for (const line of wrappedLines) {
+      // For now, render on a single line (wrapping complex segments is difficult)
+      // If the line is too long, we'll just let it render as-is
       ensureSpace();
-      doc.text(line, margin + indent, cursorY);
+      renderTextWithFormatting(segments, margin + indent, cursorY, fontSize);
       cursorY += lineHeight;
-    }
+    } else {
+      // For headings, keep simple rendering
+      const wrappedLines = wrapText(text, Math.max(20, Math.floor((contentWidth - indent) / 6)));
 
-    if (fontStyle === 'bold') {
-      cursorY += baseLineHeight * 0.2;
+      doc.setFont('helvetica', fontStyle);
+      doc.setFontSize(fontSize);
+
+      for (const line of wrappedLines) {
+        ensureSpace();
+        doc.text(line, margin + indent, cursorY);
+        cursorY += lineHeight;
+      }
+
+      if (fontStyle === 'bold') {
+        cursorY += baseLineHeight * 0.2;
+      }
     }
   }
 

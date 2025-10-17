@@ -55,7 +55,7 @@ export function Results({ result }: ResultsProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+    <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Classification and Score */}
       <section
         className="bg-surface-alt dark:bg-surface-dark-alt rounded-lg shadow-lg p-6 transition-colors"
@@ -224,12 +224,12 @@ export function Results({ result }: ResultsProps) {
       </section>
 
       {/* Export Buttons */}
-      <div className="flex gap-4" role="group" aria-label="Download report options">
+      <div className="flex flex-col gap-4 sm:flex-row" role="group" aria-label="Download report options">
         <button
           type="button"
           tabIndex={0}
           onClick={() => downloadJSON(result)}
-          className="px-6 py-2 bg-primary text-white rounded-lg font-medium
+          className="w-full sm:w-auto px-6 py-2 bg-primary text-white rounded-lg font-medium
                    hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light
                    transition-colors"
           aria-label="Download report as JSON"
@@ -240,7 +240,7 @@ export function Results({ result }: ResultsProps) {
           type="button"
           tabIndex={0}
           onClick={() => downloadMarkdown(result)}
-          className="px-6 py-2 bg-primary-light text-white rounded-lg font-medium
+          className="w-full sm:w-auto px-6 py-2 bg-primary-light text-white rounded-lg font-medium
                    hover:bg-primary-soft focus:outline-none focus:ring-2 focus:ring-primary-light
                    transition-colors"
           aria-label="Download report as Markdown"
@@ -253,7 +253,7 @@ export function Results({ result }: ResultsProps) {
           onClick={() => {
             void downloadPDF(result);
           }}
-          className="px-6 py-2 bg-accent text-text-primary rounded-lg font-medium
+          className="w-full sm:w-auto px-6 py-2 bg-accent text-text-primary rounded-lg font-medium
                    hover:bg-[#d99d1f] focus:outline-none focus:ring-2 focus:ring-accent
                    transition-colors"
           aria-label="Download report as PDF"
