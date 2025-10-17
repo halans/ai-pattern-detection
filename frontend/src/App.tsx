@@ -130,7 +130,7 @@ function App() {
       {/* Footer */}
       <footer className="mt-16 py-8 border-t border-primary-soft/40 dark:border-primary/40 transition-colors">
         <div className="max-w-7xl mx-auto px-4 flex flex-col gap-4 text-center text-sm text-text-muted dark:text-text-dark-muted md:flex-row md:items-center md:justify-between">
-          <p>Slop Detection Tool • Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention</p>
+          <p>Slop Detection Tool • Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention  • <a href="https://github.com/halans/ai-pattern-detection" target='blank' rel='me'>Github</a></p>
           <button
             type="button"
             onClick={toggleTheme}

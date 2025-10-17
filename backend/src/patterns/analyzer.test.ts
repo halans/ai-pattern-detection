@@ -171,16 +171,16 @@ describe('PatternAnalyzer', () => {
   });
 
   describe('classify', () => {
-    it('should classify score >= 65 as Likely AI Slop', () => {
-      expect(analyzer.classify(65)).toBe('Likely AI Slop');
+    it('should classify score >= 70 as Likely AI Slop', () => {
+      expect(analyzer.classify(70)).toBe('Likely AI Slop');
       expect(analyzer.classify(85)).toBe('Likely AI Slop');
       expect(analyzer.classify(100)).toBe('Likely AI Slop');
     });
 
-    it('should classify score 35-64 as Mixed/Uncertain', () => {
+    it('should classify score 35-69 as Mixed/Uncertain', () => {
       expect(analyzer.classify(35)).toBe('Mixed/Uncertain');
       expect(analyzer.classify(50)).toBe('Mixed/Uncertain');
-      expect(analyzer.classify(64)).toBe('Mixed/Uncertain');
+      expect(analyzer.classify(69)).toBe('Mixed/Uncertain');
     });
 
     it('should classify score 0-34 as Likely Human', () => {

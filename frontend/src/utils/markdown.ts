@@ -46,12 +46,11 @@ function formatPatternsSection(patterns: PatternMatch[]): string {
           const matchLines =
             pattern.matches.length > 0
               ? pattern.matches
-                  .slice(0, 3)
                   .map((match) => formatMatch(match))
                   .join('\n')
               : '    - _No specific match excerpts available._';
 
-          return `- **${pattern.patternName}** (count: ${pattern.count})\n${matchLines}`;
+          return `- **${pattern.patternName}** (ID: \`${pattern.patternId}\`, count: ${pattern.count})\n${matchLines}`;
         })
         .join('\n');
       return `${header}\n${items}`;
