@@ -68,7 +68,7 @@ function App() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-extrabold font-sora">Slop Detector</h1>
           <p className="mt-3 text-sm text-text-muted dark:text-text-dark-muted">
-            Pattern-based analysis<wbr />for detecting AI-generated content
+            Pattern-based analysis for detecting AI&#x2011;generated&nbsp;content
           </p>
         </div>
       </header>
