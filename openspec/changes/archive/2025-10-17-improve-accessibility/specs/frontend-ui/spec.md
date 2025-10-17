@@ -1,6 +1,6 @@
 # Frontend UI Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Keyboard Navigation
 
@@ -41,4 +41,3 @@ The UI SHALL announce key updates for screen readers.
 #### Scenario: Analysis completion
 - **WHEN** an analysis finishes
 - **THEN** the system triggers an accessible announcement (e.g., aria-live region) summarizing completion.
-

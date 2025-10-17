@@ -1,6 +1,6 @@
 # Frontend UI Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: User Input Methods
 
@@ -25,4 +25,3 @@ The frontend SHALL surface submission details to the user.
 - **WHEN** the user uploads a file successfully
 - **THEN** the UI shows the filename and type prior to analysis
 - **AND** allows the user to clear or replace the file.
-

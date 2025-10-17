@@ -1,6 +1,6 @@
 # Text Analysis Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Text Input Sources
 
@@ -14,4 +14,3 @@ The analysis pipeline SHALL accept normalized text from multiple sources.
 #### Scenario: Enforce character limit after parsing
 - **WHEN** the parsed text exceeds 20,000 characters
 - **THEN** the system returns a validation error and does not run analysis.
-
