@@ -167,6 +167,7 @@ export function TextInput({ onAnalyzeText, onAnalyzeFile, onClear, isLoading }: 
             Or upload a file (.txt, .md, .html)
           </label>
           <input
+            tabIndex={0}
             id="file-upload"
             ref={fileInputRef}
             type="file"
@@ -188,6 +189,7 @@ export function TextInput({ onAnalyzeText, onAnalyzeFile, onClear, isLoading }: 
               </div>
               <div className="flex gap-2">
                 <button
+                  tabIndex={0}
                   type="button"
                   onClick={handleRemoveFile}
                   disabled={isLoading}
@@ -196,6 +198,7 @@ export function TextInput({ onAnalyzeText, onAnalyzeFile, onClear, isLoading }: 
                   Remove File
                 </button>
                 <button
+                  tabIndex={0}
                   type="button"
                   onClick={handleAnalyzeFile}
                   disabled={analyzeFileDisabled}
