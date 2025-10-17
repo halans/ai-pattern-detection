@@ -5,10 +5,18 @@ import { TextInput } from './TextInput';
 describe('TextInput', () => {
   it('enables clear button when text exists and clears input on click', async () => {
     const user = userEvent.setup();
-    const handleAnalyze = vi.fn();
+    const handleAnalyzeText = vi.fn();
+    const handleAnalyzeFile = vi.fn();
     const handleClear = vi.fn();
 
-    render(<TextInput onAnalyze={handleAnalyze} onClear={handleClear} isLoading={false} />);
+    render(
+      <TextInput
+        onAnalyzeText={handleAnalyzeText}
+        onAnalyzeFile={handleAnalyzeFile}
+        onClear={handleClear}
+        isLoading={false}
+      />
+    );
 
     const textarea = screen.getByLabelText(/enter text to analyze/i) as HTMLTextAreaElement;
     const clearButton = screen.getByRole('button', { name: /clear/i });
