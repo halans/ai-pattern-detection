@@ -212,6 +212,7 @@ export function Results({ result }: ResultsProps) {
           <a
             href="/AI_WRITING_STYLE_GUIDE.md"
             download="AI_WRITING_STYLE_GUIDE.md"
+            tabIndex={0}
             className="inline-block px-4 py-2 bg-surface dark:bg-surface-dark border border-primary text-primary dark:text-primary-light rounded-lg text-sm font-medium
                      hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary-light
                      transition-colors"
