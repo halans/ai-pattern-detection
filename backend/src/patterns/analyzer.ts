@@ -9,10 +9,40 @@ import {
 
 export class PatternAnalyzer {
   private patterns: Pattern[];
+  private patternPhrases: Set<string>;
 
   constructor() {
     // Pre-compile patterns on initialization
     this.patterns = PATTERNS;
+    this.patternPhrases = this.buildPatternPhrasesSet();
+  }
+
+  /**
+   * Build a set of lowercase phrases that are already covered by regex patterns
+   * to avoid double-counting in repetition detection
+   */
+  private buildPatternPhrasesSet(): Set<string> {
+    const phrases = new Set<string>();
+
+    // Add specific known phrases from patterns to avoid duplicates
+    const knownPhrases = [
+      // Transitional words
+      'moreover', 'furthermore', 'indeed', 'notably', 'specifically', 'importantly',
+      'consequently', 'additionally', 'alternatively', 'essentially', 'arguably',
+      'ultimately', 'generally', 'nevertheless', 'nonetheless', 'accordingly',
+      'however', 'because', 'although',
+      // Bigrams
+      'testament to', 'in today\'s', 'designed to', 'harness the', 'as a result',
+      'i hope', 'crucial role',
+      // Trigrams
+      'in order to', 'it is important', 'it is essential', 'it is worth',
+      'a testament to', 'designed to enhance', 'i hope this', 'hope this email',
+      'in the realm',
+    ];
+
+    knownPhrases.forEach(phrase => phrases.add(phrase.toLowerCase()));
+
+    return phrases;
   }
 
   /**
@@ -147,6 +177,12 @@ export class PatternAnalyzer {
     const results: PatternMatch[] = [];
 
     for (const unit of units) {
+      // Skip this unit if it's already covered by a regex pattern
+      // This prevents double-counting the same phrase
+      if (this.patternPhrases.has(unit.toLowerCase())) {
+        continue;
+      }
+
       const occurrences = this.findUnitOccurrences(text, unit);
       if (occurrences.length >= threshold) {
         const matches = occurrences.slice(0, 5).map((occurrence) => ({
@@ -229,12 +265,12 @@ export class PatternAnalyzer {
 
       return `The text shows strong AI writing patterns including: ${topPatterns}. Multiple characteristic AI signals were detected.`;
     } else if (classification === 'Mixed/Uncertain') {
-      return 'Mixed/Uncertain classification indicates the text has some AI-like patterns alongside human characteristics. It may be AI-generated with human editing, or human writing influenced by AI style.';
+      return 'Mixed/Uncertain classification indicates the text has some AI-like patterns alongside human characteristics. It may be AI-generated with human editing, or human writing influenced by AI style, or academic writing.';
     } else {
       if (matches.length === 0) {
         return 'No significant AI writing patterns detected. The text exhibits natural human writing characteristics.';
       }
-      return 'The text shows minimal AI patterns and appears to be primarily human-written.';
+      return 'The text shows minimal AI patterns and appears to be primarily human-written, for humans.';
     }
   }
 }

@@ -125,9 +125,9 @@ describe('App clear text workflow', () => {
 
     await screen.findByText(/analysis results/i);
 
-    const jsonButton = screen.getByRole('button', { name: /download json/i });
-    const markdownButton = screen.getByRole('button', { name: /download markdown/i });
-    const pdfButton = screen.getByRole('button', { name: /download pdf/i });
+    const jsonButton = screen.getByRole('button', { name: /download report as json/i });
+    const markdownButton = screen.getByRole('button', { name: /download report as markdown/i });
+    const pdfButton = screen.getByRole('button', { name: /download report as pdf/i });
 
     await user.click(jsonButton);
     await user.click(markdownButton);

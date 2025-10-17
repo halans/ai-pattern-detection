@@ -232,7 +232,7 @@ describe('PatternAnalyzer', () => {
       const classification = analyzer.classify(score);
 
       expect(matches.length).toBeGreaterThan(3);
-      expect(score).toBeGreaterThan(40);
+      expect(score).toBeGreaterThan(30); // Adjusted after removing double-counting
       expect(['Likely AI Slop', 'Mixed/Uncertain']).toContain(classification);
     });
 

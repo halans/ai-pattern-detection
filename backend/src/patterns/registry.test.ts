@@ -204,8 +204,8 @@ describe('Pattern Registry', () => {
       expect(PATTERN_ENGINE_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
     });
 
-    it('should be version 1.3.0 or higher', () => {
-      expect(PATTERN_ENGINE_VERSION).toBe('1.3.0');
+    it('should be version 1.4.0 or higher', () => {
+      expect(PATTERN_ENGINE_VERSION).toBe('1.4.0');
     });
   });
 });
