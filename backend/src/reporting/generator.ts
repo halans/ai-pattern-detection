@@ -1,6 +1,6 @@
 // Report Generator - Creates analysis reports
 import { AnalysisResult, PatternMatch, AnalysisMetadata } from '../types';
-import { PATTERN_ENGINE_VERSION } from '../patterns/registry';
+import { PATTERN_ENGINE_VERSION, SEVERITY_WEIGHTS } from '../patterns/registry';
 
 export class ReportGenerator {
   /**
@@ -60,17 +60,10 @@ export class ReportGenerator {
   static getTopPatterns(patterns: PatternMatch[], n: number = 5): PatternMatch[] {
     return [...patterns]
       .sort((a, b) => {
-        // Sort by total contribution (count × weight)
-        const weightMap = {
-          CRITICAL: 20,
-          HIGH: 10,
-          MEDIUM: 5,
-          LOW: 2,
-          VERY_LOW: 1,
-          INFORMATIONAL: 0.2,
-        } as Record<string, number>;
-        const scoreA = a.count * weightMap[a.severity];
-        const scoreB = b.count * weightMap[b.severity];
+        const weightA = SEVERITY_WEIGHTS[a.severity];
+        const weightB = SEVERITY_WEIGHTS[b.severity];
+        const scoreA = a.count * weightA;
+        const scoreB = b.count * weightB;
         return scoreB - scoreA;
       })
       .slice(0, n);

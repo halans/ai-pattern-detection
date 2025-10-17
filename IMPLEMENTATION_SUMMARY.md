@@ -14,7 +14,7 @@ Successfully implemented a complete pattern-based AI detection system according 
 
 1. **Pattern Registry** (`src/patterns/registry.ts`)
    - 20+ regex patterns with severity weights
-   - Pattern categories: CRITICAL, HIGH, MEDIUM, LOW
+   - Pattern categories: CRITICAL, HIGH, MEDIUM, LOW, VERY_LOW, INFORMATIONAL
    - Patterns detect: AI self-references, collaborative phrases, significance statements, cultural clichés, etc.
    - Pattern engine version: 1.0.0
 
@@ -22,7 +22,7 @@ Successfully implemented a complete pattern-based AI detection system according 
    - Applies all patterns to input text
    - Extracts match context (±50 characters)
    - Calculates weighted scores
-   - Classifies text (0-30: Human, 31-69: Mixed, 70-100: AI)
+   - Classifies text (0-34: Human, 35-64: Mixed, 65-100: AI)
    - Generates explanations
 
 3. **Text Preprocessor** (`src/preprocessing/normalizer.ts`)

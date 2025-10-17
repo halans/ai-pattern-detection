@@ -11,5 +11,5 @@
 
 ## 3. Integration & Testing
 - [x] 3.1 Propagate theme class to root element so Tailwind dark mode responds.
-- [ ] 3.2 Add unit/integration tests verifying persistence and toggle behavior.
-- [ ] 3.3 Run manual accessibility and contrast checks in both themes.
+- [x] 3.2 Add unit/integration tests verifying persistence and toggle behavior.
+- [x] 3.3 Run manual accessibility and contrast checks in both themes.

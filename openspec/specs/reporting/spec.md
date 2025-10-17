@@ -1,7 +1,8 @@
-# Reporting Capability - Spec Delta
+# reporting Specification
 
-## MODIFIED Requirements
-
+## Purpose
+Define reporting requirements for scoring, classification thresholds, and severity presentation in the analysis output.
+## Requirements
 ### Requirement: Scoring Weights
 
 The reporting engine SHALL apply severity-based weights when calculating the confidence score.
@@ -24,11 +25,11 @@ The reporting engine SHALL classify the overall result based on the aggregated s
 
 #### Scenario: Updated thresholds with expanded weights
 - **WHEN** the total score ≥ 65
-- **THEN** the classification is “Likely AI Slop.
+- **THEN** the classification is "Likely AI Slop".
 - **WHEN** the total score is between 35 and 64 (inclusive)
-- **THEN** the classification is “Mixed/Uncertain”.
+- **THEN** the classification is "Mixed/Uncertain".
 - **WHEN** the total score ≤ 34
-- **THEN** the classification is “Likely Human.
+- **THEN** the classification is "Likely Human".
 
 ---
 
@@ -40,4 +41,3 @@ The reporting engine SHALL present detected patterns grouped by severity.
 - **WHEN** the report is generated
 - **THEN** the output includes sections for `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, `VERY_LOW`, and `INFORMATIONAL` severities (if present)
 - **AND** informational patterns are annotated as advisory only.
-

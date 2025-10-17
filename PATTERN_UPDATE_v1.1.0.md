@@ -127,10 +127,10 @@ With the addition of 5 new MEDIUM patterns and 1 new LOW pattern:
 - Texts with "worth mentioning": +5 points
 - Texts with excessive em-dashes: +2 points
 
-### Classification Thresholds (unchanged):
-- 0-30: Likely Human
-- 31-69: Mixed/Uncertain
-- 70-100: Likely AI Slop
+### Classification Thresholds (updated):
+- 0-34: Likely Human
+- 35-64: Mixed/Uncertain
+- 65-100: Likely AI Slop
 
 ---
 

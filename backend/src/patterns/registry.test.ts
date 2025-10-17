@@ -28,7 +28,7 @@ describe('Pattern Registry', () => {
     it('should have valid weights', () => {
       PATTERNS.forEach(pattern => {
         expect(pattern.weight).toBeGreaterThan(0);
-        expect(pattern.weight).toBeLessThanOrEqual(20);
+        expect(pattern.weight).toBeLessThanOrEqual(15);
       });
     });
 
@@ -37,11 +37,15 @@ describe('Pattern Registry', () => {
       const highPatterns = PATTERNS.filter(p => p.severity === 'HIGH');
       const mediumPatterns = PATTERNS.filter(p => p.severity === 'MEDIUM');
       const lowPatterns = PATTERNS.filter(p => p.severity === 'LOW');
+      const veryLowPatterns = PATTERNS.filter(p => p.severity === 'VERY_LOW');
+      const informationalPatterns = PATTERNS.filter(p => p.severity === 'INFORMATIONAL');
 
       criticalPatterns.forEach(p => expect(p.weight).toBe(15));
       highPatterns.forEach(p => expect(p.weight).toBe(8));
       mediumPatterns.forEach(p => expect(p.weight).toBe(4));
       lowPatterns.forEach(p => expect(p.weight).toBe(2));
+      veryLowPatterns.forEach(p => expect(p.weight).toBe(1));
+      informationalPatterns.forEach(p => expect(p.weight).toBeCloseTo(0.2, 5));
     });
 
     it('should have valid regex patterns', () => {

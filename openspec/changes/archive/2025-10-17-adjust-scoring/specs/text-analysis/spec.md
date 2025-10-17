@@ -1,6 +1,6 @@
 # Text Analysis Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Pattern Metadata
 
@@ -29,4 +29,3 @@ The system SHALL validate severity values when initializing the pattern registry
 #### Scenario: Allow new severities
 - **WHEN** a pattern uses `INFORMATIONAL` or `VERY_LOW`
 - **THEN** registry initialization succeeds.
-

@@ -19,4 +19,4 @@
 ## 4. Quality
 - [x] 4.1 Add targeted unit tests covering each threshold band (≤5k, 5–10k, >10k) to confirm activation criteria.
 - [x] 4.2 Add regression tests to ensure common words below threshold do not trigger false positives.
-- [ ] 4.3 Benchmark against existing analyzer performance budget (10k chars) to confirm timing remains acceptable.
+- [x] 4.3 Benchmark against existing analyzer performance budget (10k chars) to confirm timing remains acceptable.

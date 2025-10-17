@@ -1,7 +1,7 @@
 // Pattern Registry - All AI detection patterns with weights
 import { Pattern, Severity } from '../types';
 
-const SEVERITY_WEIGHTS: Record<Severity, number> = {
+export const SEVERITY_WEIGHTS: Record<Severity, number> = {
   CRITICAL: 15,
   HIGH: 8,
   MEDIUM: 4,
@@ -396,7 +396,7 @@ export const PATTERNS: Pattern[] = [
     examples: ['paramount', 'pivotal', 'undeniable', 'demonstrates significant', 'linchpin of'],
   },
 
-  // LOW severity patterns
+  // INFORMATIONAL severity patterns
   {
     id: 'transitional-words',
     name: 'AI Transitional Words',
@@ -406,6 +406,8 @@ export const PATTERNS: Pattern[] = [
     weight: SEVERITY_WEIGHTS.INFORMATIONAL,
     examples: ['accordingly,', 'moreover', 'nevertheless'],
   },
+
+  // VERY LOW severity patterns
   {
     id: 'ai-adjectives',
     name: 'AI-Favored Adjectives',

@@ -1,6 +1,6 @@
 # Frontend UI Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Theme Control
 
@@ -24,4 +24,3 @@ The theme toggle SHALL be accessible to keyboard and screen reader users.
 #### Scenario: Accessible theme toggle
 - **WHEN** the toggle receives focus
 - **THEN** it has a visible focus style and exposes an accessible name describing the current state (e.g., “Switch to dark theme”).
-

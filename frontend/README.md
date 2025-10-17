@@ -113,9 +113,9 @@ See [PLAYWRIGHT_GUIDE.md](PLAYWRIGHT_GUIDE.md) for detailed testing documentatio
 ### Results
 
 - Classification with color coding:
-  - **Red**: Likely AI Slop (70-100)
-  - **Yellow**: Mixed/Uncertain (31-69)
-  - **Green**: Likely Human (0-30)
+  - **Red**: Likely AI Slop (65-100)
+  - **Yellow**: Mixed/Uncertain (35-64)
+  - **Green**: Likely Human (0-34)
 - Confidence score with progress bar
 - Pattern breakdown grouped by severity
 - Metadata display

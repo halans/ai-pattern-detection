@@ -128,9 +128,9 @@ Total Score = Σ (pattern_weight × match_count)
 Normalized Score = min(100, Total Score)
 
 Classification Thresholds:
-- 0-30: Likely Human
-- 31-69: Mixed/Uncertain
-- 70-100: Likely AI Slop
+- 0-34: Likely Human
+- 35-64: Mixed/Uncertain
+- 65-100: Likely AI Slop
 ```
 
 ## Performance

@@ -148,7 +148,7 @@ export class PatternAnalyzer {
    * Classify text based on score
    */
   classify(score: number): 'Likely AI Slop' | 'Mixed/Uncertain' | 'Likely Human' {
-    if (score >= 70) {
+    if (score >= 65) {
       return 'Likely AI Slop';
     } else if (score >= 35) {
       return 'Mixed/Uncertain';

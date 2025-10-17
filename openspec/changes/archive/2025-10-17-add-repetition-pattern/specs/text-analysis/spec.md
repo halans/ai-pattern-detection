@@ -1,6 +1,6 @@
 # Text Analysis Capability - Spec Delta
 
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: Pattern-Based Detection Engine
 
@@ -31,4 +31,3 @@ The system SHALL provide contextual information for each pattern match.
 - **WHEN** the repetition pattern triggers
 - **THEN** the result includes at least one representative context window showing the repeated unit within the source text
 - **AND** the match metadata includes the repetition count.
-

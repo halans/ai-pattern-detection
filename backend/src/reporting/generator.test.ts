@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ReportGenerator } from './generator';
 import type { PatternMatch } from '../types';
+import { SEVERITY_WEIGHTS } from '../patterns/registry';
 
 const makeMatch = (severity: any, count: number): PatternMatch => ({
   patternId: `${severity.toLowerCase()}-pattern`,
@@ -32,15 +33,18 @@ describe('ReportGenerator', () => {
 
   it('ranks top patterns using updated weights', () => {
     const matches = [
-      makeMatch('CRITICAL', 1), // contribution 20
-      makeMatch('HIGH', 2), // 20
+      makeMatch('CRITICAL', 1), // 15
+      makeMatch('HIGH', 2), // 16
       makeMatch('VERY_LOW', 5), // 5
       makeMatch('INFORMATIONAL', 10), // 2
     ];
 
     const top = ReportGenerator.getTopPatterns(matches, 2);
     expect(top).toHaveLength(2);
-    expect(top[0].severity).toBe('CRITICAL');
-    expect(top[1].severity).toBe('HIGH');
+    expect(top[0].severity).toBe('HIGH');
+    expect(top[1].severity).toBe('CRITICAL');
+
+    const contributions = top.map(match => match.count * SEVERITY_WEIGHTS[match.severity]);
+    expect(contributions[0]).toBeGreaterThanOrEqual(contributions[1]);
   });
 });

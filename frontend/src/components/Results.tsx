@@ -15,8 +15,8 @@ export function Results({ result }: ResultsProps) {
   };
 
   const getProgressBarColor = () => {
-    if (confidence_score >= 70) return 'bg-red-500';
-    if (confidence_score >= 31) return 'bg-yellow-500';
+    if (confidence_score >= 65) return 'bg-red-500';
+    if (confidence_score >= 35) return 'bg-yellow-500';
     return 'bg-green-500';
   };
 
