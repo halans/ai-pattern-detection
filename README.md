@@ -307,4 +307,4 @@ JJ Halans
 
 ## Version
 
-1.2.0 - Pattern Engine (46 patterns - Comprehensive coverage of AI writing patterns including business jargon, vocabulary, and contextual phrases)
+1.4.0 - Pattern Engine (45 patterns - Comprehensive coverage of AI writing patterns including business jargon, vocabulary, and contextual phrases. Deduplication fix to prevent double-counting)
