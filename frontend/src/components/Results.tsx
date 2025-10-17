@@ -151,6 +151,12 @@ export function Results({ result }: ResultsProps) {
         </h3>
         <dl className="grid grid-cols-2 gap-4 text-sm text-text-muted dark:text-text-dark-muted">
           <div>
+            <dt className="font-medium">Submission Source</dt>
+            <dd className="mt-1">
+              {metadata.submission_source === 'file' ? 'File Upload' : 'Direct Text Input'}
+            </dd>
+          </div>
+          <div>
             <dt className="font-medium">Character Count</dt>
             <dd className="mt-1">{metadata.character_count.toLocaleString()}</dd>
           </div>
@@ -166,6 +172,22 @@ export function Results({ result }: ResultsProps) {
             <dt className="font-medium">Engine Version</dt>
             <dd className="mt-1">{metadata.pattern_engine_version}</dd>
           </div>
+          {metadata.file_metadata && (
+            <>
+              <div>
+                <dt className="font-medium">File Name</dt>
+                <dd className="mt-1 break-words">{metadata.file_metadata.name}</dd>
+              </div>
+              <div>
+                <dt className="font-medium">File Type</dt>
+                <dd className="mt-1 uppercase">{metadata.file_metadata.type}</dd>
+              </div>
+              <div>
+                <dt className="font-medium">File Characters</dt>
+                <dd className="mt-1">{metadata.file_metadata.character_count.toLocaleString()}</dd>
+              </div>
+            </>
+          )}
         </dl>
 
         {metadata.warnings.length > 0 && (

@@ -8,6 +8,7 @@ Pattern-based AI detection system running on Cloudflare Workers.
 - **Fast**: <50ms CPU time per analysis
 - **Privacy-First**: Zero data retention, ephemeral processing
 - **Serverless**: Cloudflare Workers with automatic scaling
+- **File Uploads**: Process `.txt`, `.md`, and `.html` documents via multipart requests
 
 ## Architecture
 
@@ -58,7 +59,33 @@ Analyze text for AI-generated content patterns.
     "pattern_engine_version": "1.0.0",
     "analysis_duration": 45,
     "timestamp": "2025-10-13T...",
-    "warnings": []
+    "warnings": [],
+    "submission_source": "text"
+  }
+}
+```
+
+### `POST /api/analyze/file`
+
+Analyze `.txt`, `.md`, or `.html` uploads. Accepts `multipart/form-data` payloads with a single `file` field.
+
+**Response excerpt:**
+
+```json
+{
+  "metadata": {
+    "character_count": 4800,
+    "word_count": 820,
+    "pattern_engine_version": "1.0.0",
+    "analysis_duration": 52,
+    "timestamp": "2025-10-17T...",
+    "warnings": [],
+    "submission_source": "file",
+    "file_metadata": {
+      "name": "notes.md",
+      "type": "md",
+      "character_count": 4700
+    }
   }
 }
 ```

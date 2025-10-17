@@ -61,6 +61,7 @@ Successfully implemented a complete pattern-based AI detection system according 
 
 1. **TextInput** (`src/components/TextInput.tsx`)
    - Textarea with character counter (100-20,000 chars)
+   - File upload workflow for `.txt`, `.md`, `.html` with client-side validation
    - Real-time validation with color coding
    - Submit button with loading state
    - Form handling
@@ -70,6 +71,7 @@ Successfully implemented a complete pattern-based AI detection system according 
    - Confidence score with progress bar
    - Pattern breakdown grouped by severity
    - Metadata display
+   - Submission source / file metadata presentation
    - Warnings display
    - JSON download button
 

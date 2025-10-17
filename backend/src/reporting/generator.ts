@@ -14,7 +14,15 @@ export class ReportGenerator {
     characterCount: number,
     wordCount: number,
     duration: number,
-    warnings: string[] = []
+    warnings: string[] = [],
+    options: {
+      submissionSource?: 'text' | 'file';
+      fileMetadata?: {
+        name: string;
+        type: 'txt' | 'md' | 'html';
+        character_count: number;
+      };
+    } = {}
   ): AnalysisResult {
     const metadata: AnalysisMetadata = {
       character_count: characterCount,
@@ -23,7 +31,12 @@ export class ReportGenerator {
       analysis_duration: duration,
       timestamp: new Date().toISOString(),
       warnings,
+      submission_source: options.submissionSource ?? 'text',
     };
+
+    if (options.fileMetadata) {
+      metadata.file_metadata = options.fileMetadata;
+    }
 
     return {
       classification,

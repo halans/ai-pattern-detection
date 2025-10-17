@@ -36,6 +36,12 @@ const sampleResult: AnalysisResult = {
     pattern_engine_version: '1.2.0',
     timestamp: '2025-10-16T12:00:00.000Z',
     warnings: [],
+    submission_source: 'file',
+    file_metadata: {
+      name: 'sample.html',
+      type: 'html',
+      character_count: 480,
+    },
   },
 };
 
@@ -47,5 +53,7 @@ describe('Results component severity display', () => {
     expect(screen.getByText(/INFORMATIONAL/)).toBeInTheDocument();
     expect(screen.getByText(/Very Low Pattern/)).toBeInTheDocument();
     expect(screen.getByText(/Informational Pattern/)).toBeInTheDocument();
+    expect(screen.getByText(/Submission Source/)).toBeInTheDocument();
+    expect(screen.getByText(/File Name/)).toBeInTheDocument();
   });
 });

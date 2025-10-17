@@ -37,6 +37,12 @@ export interface AnalysisMetadata {
   analysis_duration: number;
   timestamp: string;
   warnings: string[];
+  submission_source: 'text' | 'file';
+  file_metadata?: {
+    name: string;
+    type: 'txt' | 'md' | 'html';
+    character_count: number;
+  };
 }
 
 export interface ApiError {

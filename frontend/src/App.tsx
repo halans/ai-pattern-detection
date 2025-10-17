@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TextInput } from './components/TextInput';
 import { Results } from './components/Results';
 import { AnalysisResult } from './types';
-import { analyzeText } from './utils/api';
+import { analyzeText, analyzeFile } from './utils/api';
 import { useTheme } from './theme/ThemeProvider';
 
 function App() {
@@ -26,6 +26,21 @@ function App() {
 
     try {
       const analysisResult = await analyzeText(text);
+      setResult(analysisResult);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAnalyzeFile = async (file: File) => {
+    setIsLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const analysisResult = await analyzeFile(file);
       setResult(analysisResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -66,7 +81,8 @@ function App() {
         aria-live="polite"
       >
         <TextInput
-          onAnalyze={handleAnalyze}
+          onAnalyzeText={handleAnalyze}
+          onAnalyzeFile={handleAnalyzeFile}
           onClear={() => {
             setResult(null);
             setError(null);

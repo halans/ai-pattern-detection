@@ -23,9 +23,20 @@ test.describe('UI Audit and Improvements', () => {
     // Buttons
     await expect(page.locator('button:has-text("Clear")')).toBeVisible();
     await expect(page.locator('button:has-text("Analyze Text")')).toBeVisible();
+    await expect(page.locator('button:has-text("Analyze File")')).toBeVisible();
 
     // Theme toggle button
     await expect(page.locator('button[aria-label*="theme"]')).toBeVisible();
+  });
+
+  test('should expose file upload controls', async ({ page }) => {
+    const fileLabel = page.locator('label[for="file-upload"]');
+    await expect(fileLabel).toBeVisible();
+    await expect(fileLabel).toContainText(/upload a file/i);
+
+    const fileInput = page.locator('input#file-upload');
+    await expect(fileInput).toBeVisible();
+    await expect(fileInput).toHaveAttribute('accept', /\.txt/);
   });
 
   test('should have proper contrast in light mode', async ({ page }) => {

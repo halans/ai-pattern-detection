@@ -2,17 +2,19 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 import type { AnalysisResult } from './types';
-import { analyzeText, downloadJSON, downloadMarkdown, downloadPDF } from './utils/api';
+import { analyzeText, analyzeFile, downloadJSON, downloadMarkdown, downloadPDF } from './utils/api';
 import { ThemeProvider } from './theme/ThemeProvider';
 
 vi.mock('./utils/api', () => ({
   analyzeText: vi.fn(),
+  analyzeFile: vi.fn(),
   downloadJSON: vi.fn(),
   downloadMarkdown: vi.fn(),
   downloadPDF: vi.fn(),
 }));
 
 const analyzeTextMock = vi.mocked(analyzeText);
+const analyzeFileMock = vi.mocked(analyzeFile);
 const downloadJSONMock = vi.mocked(downloadJSON);
 const downloadMarkdownMock = vi.mocked(downloadMarkdown);
 const downloadPDFMock = vi.mocked(downloadPDF);
@@ -37,6 +39,7 @@ describe('App clear text workflow', () => {
       analysis_duration: 10,
       timestamp: new Date().toISOString(),
       warnings: [],
+      submission_source: 'text',
     },
   };
 
@@ -136,6 +139,38 @@ describe('App clear text workflow', () => {
     expect(downloadJSONMock).toHaveBeenCalledTimes(1);
     expect(downloadMarkdownMock).toHaveBeenCalledTimes(1);
     expect(downloadPDFMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('uploads and analyzes a file', async () => {
+    const user = userEvent.setup();
+    const fileContent = '# Heading\\n\\n' + 'Some markdown content. '.repeat(10);
+    const file = new File([fileContent], 'notes.md', { type: 'text/markdown' });
+    const fileResult: AnalysisResult = {
+      ...sampleResult,
+      metadata: {
+        ...sampleResult.metadata,
+        submission_source: 'file',
+        file_metadata: {
+          name: 'notes.md',
+          type: 'md',
+          character_count: fileContent.length,
+        },
+      },
+    };
+
+    analyzeFileMock.mockResolvedValueOnce(fileResult);
+
+    renderWithTheme();
+
+    const fileInput = screen.getByLabelText(/upload a file/i) as HTMLInputElement;
+    await user.upload(fileInput, file);
+
+    expect(await screen.findByText('notes.md')).toBeInTheDocument();
+
+    const analyzeFileButton = screen.getByRole('button', { name: /analyze file/i });
+    await user.click(analyzeFileButton);
+
+    expect(analyzeFileMock).toHaveBeenCalledWith(file);
   });
 
   it('provides a skip link for keyboard navigation', async () => {

@@ -21,6 +21,29 @@ export async function analyzeText(text: string): Promise<AnalysisResult> {
   return response.json();
 }
 
+export async function analyzeFile(file: File): Promise<AnalysisResult> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch(`${API_URL}/api/analyze/file`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    let error: ApiError | null = null;
+    try {
+      error = await response.json();
+    } catch (_err) {
+      // ignore parse errors
+    }
+
+    throw new Error(error?.message || 'File analysis failed');
+  }
+
+  return response.json();
+}
+
 export function downloadJSON(data: AnalysisResult, filename: string = 'ai-detection-report.json') {
   const blob = new Blob([JSON.stringify(data, null, 2)], {
     type: 'application/json',

@@ -56,6 +56,7 @@ describe('downloadPDF', () => {
       analysis_duration: 15,
       timestamp: '2025-10-14T12:34:56.000Z',
       warnings: [],
+      submission_source: 'text',
     },
   };
 

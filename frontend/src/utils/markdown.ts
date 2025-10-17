@@ -75,13 +75,26 @@ export function analysisResultToMarkdown(result: AnalysisResult): string {
     metadata,
   } = result;
 
-  const metadataSection = [
+  const metadataLines = [
     `- **Character Count:** ${metadata.character_count.toLocaleString()}`,
     `- **Word Count:** ${metadata.word_count.toLocaleString()}`,
     `- **Pattern Engine Version:** ${metadata.pattern_engine_version}`,
     `- **Analysis Duration:** ${metadata.analysis_duration}ms`,
     `- **Timestamp:** ${metadata.timestamp}`,
-  ].join('\n');
+    `- **Submission Source:** ${
+      metadata.submission_source === 'file' ? 'File Upload' : 'Direct Text Input'
+    }`,
+  ];
+
+  if (metadata.file_metadata) {
+    metadataLines.push(
+      `- **File Name:** ${metadata.file_metadata.name}`,
+      `- **File Type:** ${metadata.file_metadata.type.toUpperCase()}`,
+      `- **File Characters (post-parse):** ${metadata.file_metadata.character_count.toLocaleString()}`
+    );
+  }
+
+  const metadataSection = metadataLines.join('\n');
 
   const patternsSection = formatPatternsSection(patterns_detected);
   const warningsSection = formatWarnings(metadata.warnings);

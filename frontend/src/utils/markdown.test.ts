@@ -32,6 +32,12 @@ describe('analysisResultToMarkdown', () => {
       analysis_duration: 17,
       timestamp: '2025-10-14T12:00:00.000Z',
       warnings: ['Sample warning'],
+      submission_source: 'file',
+      file_metadata: {
+        name: 'report.md',
+        type: 'md',
+        character_count: 1100,
+      },
     },
   };
 
@@ -52,16 +58,25 @@ describe('analysisResultToMarkdown', () => {
     expect(markdown).toContain('Pattern Engine Version');
     expect(markdown).toContain('## Warnings');
     expect(markdown).toContain('Sample warning');
+    expect(markdown).toContain('**Submission Source:** File Upload');
+    expect(markdown).toContain('**File Name:** report.md');
+    expect(markdown).toContain('**File Type:** MD');
   });
 
   it('handles empty pattern and warning lists gracefully', () => {
     const markdown = analysisResultToMarkdown({
       ...baseResult,
       patterns_detected: [],
-      metadata: { ...baseResult.metadata, warnings: [] },
+      metadata: {
+        ...baseResult.metadata,
+        warnings: [],
+        submission_source: 'text',
+        file_metadata: undefined,
+      },
     });
 
     expect(markdown).toContain('_No patterns detected._');
     expect(markdown).toContain('_None._');
+    expect(markdown).toContain('**Submission Source:** Direct Text Input');
   });
 });

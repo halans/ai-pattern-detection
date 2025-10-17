@@ -109,6 +109,7 @@ See [PLAYWRIGHT_GUIDE.md](PLAYWRIGHT_GUIDE.md) for detailed testing documentatio
 - Real-time validation
 - Submit button with loading state
 - Disabled state during analysis
+- File upload control for `.txt`, `.md`, `.html` with client-side validation
 
 ### Results
 
@@ -119,6 +120,7 @@ See [PLAYWRIGHT_GUIDE.md](PLAYWRIGHT_GUIDE.md) for detailed testing documentatio
 - Confidence score with progress bar
 - Pattern breakdown grouped by severity
 - Metadata display
+- Submission source & file metadata (filename, type, processed length)
 - Export buttons
 
 ## Color Scheme

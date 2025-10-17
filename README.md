@@ -14,6 +14,7 @@ This tool uses **regex-based pattern matching** to detect characteristic pattern
 - **Transparent**: See exactly which patterns were detected
 - **No ML Required**: Simple pattern matching, no transformers or GPUs
 - **Serverless**: Cloudflare Workers backend with automatic scaling
+- **File Uploads**: Analyze `.txt`, `.md`, or `.html` documents alongside pasted text
 
 ## Architecture
 
@@ -150,7 +151,35 @@ Classification Thresholds:
     "pattern_engine_version": "1.2.0",
     "analysis_duration": 45,
     "timestamp": "2025-10-13T...",
-    "warnings": []
+    "warnings": [],
+    "submission_source": "text"
+  }
+}
+```
+
+### `POST /api/analyze/file`
+
+Accepts `multipart/form-data` payloads containing a single `file` field. Supported extensions: `.txt`, `.md`, `.html`.
+
+**Response (excerpt):**
+
+```json
+{
+  "classification": "Mixed/Uncertain",
+  "confidence_score": 42,
+  "metadata": {
+    "character_count": 4800,
+    "word_count": 820,
+    "pattern_engine_version": "1.4.0",
+    "analysis_duration": 58,
+    "timestamp": "2025-10-17T...",
+    "warnings": [],
+    "submission_source": "file",
+    "file_metadata": {
+      "name": "notes.md",
+      "type": "md",
+      "character_count": 4700
+    }
   }
 }
 ```
