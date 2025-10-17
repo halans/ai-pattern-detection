@@ -68,6 +68,34 @@ test.describe('UI Audit and Improvements', () => {
     expect(hasDarkFinal).toBe(hasDarkInitially);
   });
 
+  test('should persist theme preference between visits', async ({ page }) => {
+    await page.evaluate(() => window.localStorage.clear());
+
+    const html = page.locator('html');
+    const themeButton = page.locator('button[aria-label*="theme"]');
+
+    await expect(themeButton).toHaveAttribute('aria-label', /Switch to dark theme/i);
+    await expect(themeButton).toHaveAttribute('aria-pressed', 'false');
+
+    await themeButton.click();
+    await page.waitForTimeout(200);
+
+    await expect(themeButton).toHaveAttribute('aria-pressed', 'true');
+    await expect(themeButton).toHaveAttribute('aria-label', /Switch to light theme/i);
+
+    const hasDarkAfterToggle = await html.evaluate((el) => el.classList.contains('dark'));
+    expect(hasDarkAfterToggle).toBe(true);
+
+    await page.reload();
+
+    const reloadedButton = page.locator('button[aria-label*="theme"]');
+    await expect(reloadedButton).toHaveAttribute('aria-pressed', 'true');
+    await expect(reloadedButton).toHaveAttribute('aria-label', /Switch to light theme/i);
+
+    const hasDarkAfterReload = await html.evaluate((el) => el.classList.contains('dark'));
+    expect(hasDarkAfterReload).toBe(true);
+  });
+
   test('should enforce text length requirements', async ({ page }) => {
     const textarea = page.locator('textarea#text-input');
     const analyzeButton = page.locator('button:has-text("Analyze Text")');
