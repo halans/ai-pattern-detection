@@ -42,3 +42,4 @@ lerna-debug.log*
 
 # OS
 Thumbs.db
+.playwright-mcp/*
