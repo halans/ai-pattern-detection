@@ -113,7 +113,7 @@ function App() {
               </ul>
               <p>
                 Each pattern is weighted by severity (CRITICAL, HIGH, MEDIUM, LOW, VERY LOW, INFORMATIONAL) and combined
-                into a confidence score (0-100). Unfortunately, this does not exclude human-written academic text being flagged as AI-generated text.
+                into a confidence score (0-100). Unfortunately, this does not exclude human-written academic writing being flagged as AI-generated text.
               </p>
               <div className="pt-4 border-t border-primary-soft/40 dark:border-primary/40">
                 <h3 className="font-semibold mb-2">Privacy Guarantee</h3>
