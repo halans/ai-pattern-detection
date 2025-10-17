@@ -64,11 +64,11 @@ Frontend runs on `http://localhost:3000`
 
 The system detects **45 AI writing patterns** grouped by severity:
 
-### CRITICAL (20 points each)
+### CRITICAL (15 points each)
 - **AI self-references** - "as an AI language model", "as an AI assistant"
 - **Knowledge cutoff disclaimers** - "as of my last update", "as at my latest training"
 
-### HIGH (10 points each)
+### HIGH (8 points each)
 - **Collaborative phrases** - "let me know if", "I hope this helps", "would you like"
 - **Significance statements** - "stands as a testament", "serves as a symbol"
 - **Editorializing** - "it's important to note", "it is important to remember"
@@ -77,7 +77,7 @@ The system detects **45 AI writing patterns** grouped by severity:
 - **Data analysis jargon** - "deliver actionable insights through in-depth data analysis", "leveraging data-driven insights", "drive insightful data-driven decisions"
 - **Business/tech jargon** - "bandwidth", "stakeholders", "value proposition", "scalable", "paradigm shift", "synergy", "ROI"
 
-### MEDIUM (5 points each)
+### MEDIUM (4 points each)
 - **Cultural clichés** - "rich cultural heritage", "profound legacy", "rich historical tapestry"
 - **Negative parallelisms** - "not only...but also", "not just...rather"
 - **Vague attributions** - "studies show", "research suggests", "experts indicate"
@@ -99,15 +99,20 @@ The system detects **45 AI writing patterns** grouped by severity:
 - **Emoji headings** - "# 🎯 Getting Started", "## 🚀 Features"
 
 ### LOW (2 points each)
-- **AI transitional words** - "accordingly", "moreover", "nevertheless", "nonetheless", "thus", "undoubtedly"
-- **AI-favored adjectives** - "robust", "seamless", "innovative", "holistic", "nuanced", "multifaceted", "groundbreaking", "quintessential", "visionary", "revolutionary", "paradigm-shifting"
-- **AI-favored nouns** - "landscape", "realm", "tapestry", "expertise", "paradigm", "kaleidoscope", "epitome", "odyssey", "pinnacle", "nexus", "spectrum"
-- **AI-favored verbs** - "delve", "facilitate", "underscore", "augment", "leverage", "utilize"
-- **AI descriptors** - "meticulous", "ever-evolving", "cutting-edge", "labyrinthine", "gossamer", "key", "valuable", "fresh perspectives"
 - **Ritual conclusions** - "in summary", "overall", "in conclusion"
 - **Artificial ranges** - "from beginners to experts", "from design to deployment"
 - **Title case headings** - "# The Complete Guide To Modern Development"
 - **Em-dash spam** - Excessive use of em-dashes (—) in text
+
+### VERY_LOW (1 point each)
+- **AI-favored adjectives** - "robust", "seamless", "innovative", "holistic", "nuanced", "multifaceted", "groundbreaking", "quintessential", "visionary", "revolutionary", "paradigm-shifting"
+- **AI-favored nouns** - "landscape", "realm", "expertise", "paradigm", "kaleidoscope", "epitome", "odyssey", "pinnacle", "nexus", "spectrum"
+- **AI-favored verbs** - "facilitate", "underscore", "augment", "align", "maximize", "utilize"
+- **AI descriptors** - "meticulous", "ever-evolving", "cutting-edge", "labyrinthine", "gossamer", "key", "valuable", "fresh perspectives"
+- **Repetition patterns** - Repeated words, bigrams, or trigrams (3+ occurrences)
+
+### INFORMATIONAL (0.2 points each)
+- **AI transitional words** - "accordingly", "moreover", "nevertheless", "nonetheless", "thus", "undoubtedly", "certainly", "equally", "hence"
 
 ## Scoring
 
@@ -116,8 +121,8 @@ Total Score = Σ (pattern_weight × match_count)
 Normalized Score = min(100, Total Score)
 
 Classification Thresholds:
-- 0-30:   Likely Human
-- 31-69:  Mixed/Uncertain
+- 0-34:   Likely Human
+- 35-69:  Mixed/Uncertain
 - 70-100: Likely AI Slop
 ```
 
