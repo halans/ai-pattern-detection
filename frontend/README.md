@@ -123,6 +123,12 @@ See [PLAYWRIGHT_GUIDE.md](PLAYWRIGHT_GUIDE.md) for detailed testing documentatio
 - Submission source & file metadata (filename, type, processed length)
 - Export buttons
 
+### Social Sharing
+
+- Open Graph metadata is embedded in `index.html`
+- Preview image: `public/slopdetector_og.jpg` (1200x630)
+- Update the image and corresponding `og:` tags if branding or messaging changes
+
 ## Color Scheme
 
 - **AI-generated**: Red (`text-red-600`)
