@@ -173,6 +173,31 @@ describe('App clear text workflow', () => {
     expect(analyzeFileMock).toHaveBeenCalledWith(file);
   });
 
+  it('supports keyboard navigation for the file upload controls', async () => {
+    const user = userEvent.setup();
+    renderWithTheme();
+
+    const fileContent =
+      'This is a text file with enough characters for analysis. '.repeat(5);
+    const file = new File([fileContent], 'sample.txt', { type: 'text/plain' });
+    const fileInput = screen.getByLabelText(/upload a file/i) as HTMLInputElement;
+
+    await user.upload(fileInput, file);
+    expect(await screen.findByText('sample.txt')).toBeInTheDocument();
+
+    const removeButton = screen.getByRole('button', { name: /remove file/i });
+    const analyzeFileButton = screen.getByRole('button', { name: /analyze file/i });
+
+    fileInput.focus();
+    expect(fileInput).toHaveFocus();
+
+    await user.tab();
+    expect(removeButton).toHaveFocus();
+
+    await user.tab();
+    expect(analyzeFileButton).toHaveFocus();
+  });
+
   it('provides a skip link for keyboard navigation', async () => {
     const user = userEvent.setup();
     renderWithTheme();
