@@ -202,6 +202,24 @@ export function Results({ result }: ResultsProps) {
             </ul>
           </div>
         )}
+
+        {/* Writing Style Guide Download */}
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h4 className="text-sm font-semibold mb-2">AI Writing Style Guide</h4>
+          <p className="text-sm text-text-muted dark:text-text-dark-muted mb-3">
+            Download the AI Writing Style Guide to help LLMs avoid these patterns when writing, improving the overall quality and authenticity of the generated content. Attach it as context when prompting AI models.
+          </p>
+          <a
+            href="/AI_WRITING_STYLE_GUIDE.md"
+            download="AI_WRITING_STYLE_GUIDE.md"
+            className="inline-block px-4 py-2 bg-surface dark:bg-surface-dark border border-primary text-primary dark:text-primary-light rounded-lg text-sm font-medium
+                     hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary-light
+                     transition-colors"
+            aria-label="Download AI Writing Style Guide"
+          >
+            Download Style Guide (MD)
+          </a>
+        </div>
       </section>
 
       {/* Export Buttons */}
