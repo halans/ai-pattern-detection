@@ -11,5 +11,12 @@ export default defineConfig({
     setupFiles: './src/test/setup.ts',
     globals: true,
     css: true,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/tests/e2e/**', // Exclude Playwright e2e tests
+    ],
   },
 });
