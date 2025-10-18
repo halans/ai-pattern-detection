@@ -1,0 +1,339 @@
+:root {
+  color-scheme: light dark;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, rgba(24, 90, 134, 0.12) 0%, rgba(24, 90, 134, 0) 60%), #f5f7fb;
+  min-height: 100vh;
+  color: #132238;
+  padding: 0;
+}
+
+body.dark {
+  background: linear-gradient(180deg, rgba(57, 139, 177, 0.22) 0%, rgba(14, 27, 42, 0.85) 60%), #0f2134;
+  color: #e8f2ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+.extension-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.extension-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.extension-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.extension-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.extension-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.extension-button {
+  border-radius: 999px;
+  border: 1px solid rgba(24, 90, 134, 0.3);
+  background: rgba(24, 90, 134, 0.12);
+  color: inherit;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.extension-button:hover,
+.extension-button:focus-visible {
+  background: rgba(24, 90, 134, 0.2);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.extension-button.ghost {
+  background: transparent;
+}
+
+.extension-panel {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(24, 90, 134, 0.2);
+  padding: 16px;
+  box-shadow: 0 16px 32px -24px rgba(24, 90, 134, 0.45);
+  backdrop-filter: blur(18px);
+}
+
+body.dark .extension-panel {
+  background: rgba(15, 33, 52, 0.65);
+  border-color: rgba(144, 215, 255, 0.2);
+  box-shadow: 0 16px 24px -20px rgba(7, 27, 42, 0.75);
+}
+
+.extension-panel.error {
+  border-color: rgba(214, 77, 46, 0.5);
+  background: rgba(214, 77, 46, 0.1);
+}
+
+.panel-title {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.panel-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.result-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.summary-label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.summary-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.result-details {
+  font-size: 0.85rem;
+}
+
+.json-output {
+  max-height: 260px;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.07);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+body.dark .json-output {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.extension-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-top: auto;
+}
+
+.footer-note {
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .extension-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.pattern-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pattern-group {
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  padding: 12px;
+  border: 1px solid rgba(24, 90, 134, 0.15);
+}
+
+body.dark .pattern-group {
+  background: rgba(15, 33, 52, 0.55);
+  border-color: rgba(144, 215, 255, 0.15);
+}
+
+.pattern-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.severity-critical {
+  background: rgba(214, 77, 46, 0.15);
+  color: #8f2d13;
+}
+
+.severity-high {
+  background: rgba(241, 137, 57, 0.18);
+  color: #874200;
+}
+
+.severity-medium {
+  background: rgba(238, 191, 48, 0.2);
+  color: #6a5200;
+}
+
+.severity-low {
+  background: rgba(57, 139, 177, 0.18);
+  color: #154b68;
+}
+
+.severity-very_low {
+  background: rgba(36, 167, 152, 0.18);
+  color: #0b695f;
+}
+
+.severity-informational {
+  background: rgba(24, 90, 134, 0.12);
+  color: #13354d;
+}
+
+body.dark .severity-critical {
+  background: rgba(214, 77, 46, 0.25);
+  color: #f5c2b5;
+}
+
+body.dark .severity-high {
+  background: rgba(241, 137, 57, 0.28);
+  color: #ffd8b5;
+}
+
+body.dark .severity-medium {
+  background: rgba(238, 191, 48, 0.32);
+  color: #fff0b5;
+}
+
+body.dark .severity-low {
+  background: rgba(57, 139, 177, 0.32);
+  color: #d2efff;
+}
+
+body.dark .severity-very_low {
+  background: rgba(36, 167, 152, 0.28);
+  color: #caf3ee;
+}
+
+body.dark .severity-informational {
+  background: rgba(24, 90, 134, 0.32);
+  color: #cdeaff;
+}
+
+.pattern-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pattern-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(24, 90, 134, 0.12);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+body.dark .pattern-item {
+  background: rgba(12, 26, 41, 0.65);
+  border-color: rgba(124, 191, 226, 0.15);
+}
+
+.pattern-name {
+  font-weight: 600;
+}
+
+.pattern-meta {
+  font-size: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  opacity: 0.8;
+}
+
+.pattern-example {
+  font-style: italic;
+}
+
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.metadata-grid dt {
+  font-size: 0.75rem;
+  opacity: 0.65;
+}
+
+.metadata-grid dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+}
+
+.warning-callout {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(214, 162, 46, 0.12);
+  border: 1px solid rgba(214, 162, 46, 0.3);
+}
+
+body.dark .warning-callout {
+  background: rgba(214, 162, 46, 0.22);
+  border-color: rgba(214, 162, 46, 0.4);
+}
+
+.warning-callout h3 {
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+
+.warning-callout ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.8rem;
+}

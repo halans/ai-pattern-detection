@@ -14,6 +14,7 @@ This tool uses **regex-based pattern matching** to detect characteristic pattern
 - **Transparent**: See exactly which patterns were detected
 - **No ML Required**: Simple pattern matching, no transformers or GPUs
 - **Serverless**: Cloudflare Workers backend with automatic scaling
+- **Chrome Extension**: Analyze text directly from any webpage via the Slop Detector side panel
 - **File Uploads**: Analyze `.txt`, `.md`, or `.html` documents alongside pasted text
 
 ## Architecture
@@ -190,6 +191,7 @@ Accepts `multipart/form-data` payloads containing a single `file` field. Support
 - **Ephemeral Processing**: All processing in memory
 - **No Logging**: Text content never logged
 - **GDPR/CCPA Compliant**: No personal data collected
+- **Privacy Policy**: [slopdetector.me/privacy](https://slopdetector.me/privacy)
 
 ## Performance
 
@@ -342,3 +344,25 @@ JJ Halans
 ## Version
 
 1.4.0 - Pattern Engine (45 patterns - Comprehensive coverage of AI writing patterns including business jargon, vocabulary, and contextual phrases. Deduplication fix to prevent double-counting)
+## Chrome Extension
+
+The repository includes a Chrome side panel extension under `browser-extension/`.
+
+### Build & Load
+
+```bash
+cd browser-extension
+npm install
+# Optional: override default API base URL (defaults to https://api.slopdetector.me)
+export VITE_EXTENSION_API_URL="https://your-worker-domain"  # base URL only
+npm run build
+```
+
+Load the generated `browser-extension/dist` folder via `chrome://extensions` (Developer Mode → Load unpacked).
+
+### API Usage
+
+- The extension sends a `POST ${BASE_URL}/api/analyze` request with JSON `{ "text": "..." }`.
+- Ensure your backend exposes the `/api/analyze` route and accepts POST requests with raw text.
+- If you override `VITE_EXTENSION_API_URL`, provide the base origin only (e.g., `https://your-worker-domain`) and the code will append `/api/analyze` when making requests.
+- Failed responses surface in the panel as “Analysis failed” with the backend error message if available.
