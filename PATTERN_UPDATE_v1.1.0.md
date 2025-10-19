@@ -1,258 +1,145 @@
-# Pattern Registry Update v1.1.0
+# Pattern Registry Update v1.5.0
 
-**Date:** 2025-10-14
-**Update Type:** Feature Enhancement
-**Pattern Engine:** v1.0.0 → v1.1.0
+**Date:** 2025-10-19
+**Update Type:** Feature Expansion
+**Pattern Engine:** v1.1.0 → v1.5.0
 
 ---
 
 ## Summary
 
-Added **5 new detection patterns** to the pattern registry, expanding coverage from 16 to **21 total patterns**. All new patterns follow established severity classifications and weighting system.
+This release more than doubles the pattern surface area. We introduced 24 new regex signatures, refactored em-dash detection into a heuristic with length-aware thresholds, and refreshed the documentation/UI to publish version `v1.5.0`. The registry now covers 44 regex-based signals plus the heuristic detector, providing broader coverage of AI lexical quirks, corporate jargon, and structural markers.
 
 ---
 
-## New Patterns Added
+## Highlights
 
-### MEDIUM Severity (5 points each)
+- Added new HIGH-severity families targeting data-analysis jargon and overused AI helper phrases
+- Expanded MEDIUM coverage with contextual, motivational, and metaphorical constructions frequently emitted by LLMs
+- Introduced VERY_LOW lexical lists for AI-favored adjectives, nouns, verbs, and descriptors, plus repetition heuristics
+- Moved em-dash spam detection out of the regex array into the analyzer with dynamic thresholds and downgraded severity to VERY_LOW
+- Updated tests, docs, and UI chrome to surface the new pattern engine version and counts
 
-#### 1. worth-mentioning
-- **Description**: Editorializing phrase for emphasis
-- **Regex**: `/worth mentioning/gi`
-- **Examples**:
-  - "worth mentioning that"
-  - "it is worth mentioning"
-- **Rationale**: Common AI phrase for introducing additional information
+---
 
-#### 2. profound-legacy
-- **Description**: Cultural heritage cliché about lasting impact
-- **Regex**: `/profound legacy/gi`
-- **Examples**:
-  - "profound legacy of"
-  - "left a profound legacy"
-- **Rationale**: Overused phrase in AI-generated historical/cultural content
+## New Patterns Added (since v1.1.0)
 
-#### 3. broken-citation
-- **Description**: Placeholder citations
-- **Regex**: `/\[(citation needed|source)\]/gi`
-- **Examples**:
-  - "[citation needed]"
-  - "[source]"
-- **Rationale**: AI sometimes includes placeholder citation markers
+### HIGH Severity (6 additions)
+- `data-analysis-actionable-insights`
+- `data-analysis-driven-decisions`
+- `data-analysis-leverage-insights`
+- `data-analysis-extract-insights`
+- `most-overused`
+- `business-jargon`
 
-#### 4. emoji-heading
-- **Description**: Emoji characters in markdown-style headings
-- **Regex**: `/^#+\s+.*[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gmu`
-- **Examples**:
-  - "# 🎯 Getting Started"
-  - "## 🚀 Features"
-- **Rationale**: AI tends to use emojis in headings for visual appeal
+### MEDIUM Severity (12 additions)
+- `ai-stock-phrases`
+- `communication-styles`
+- `action-words`
+- `contextual-phrases`
+- `conductor-music-analogy`
+- `hyperbolic-phrases`
+- `additional-connectives`
+- `empowerment-verbs`
+- `deep-noun-pattern`
+- `hustle-and-bustle`
+- `quantity-phrases`
+- `significance-intensifiers`
 
-### LOW Severity (2 points each)
+### LOW / VERY_LOW / INFORMATIONAL Additions
+- `ai-adjectives`, `ai-nouns`, `ai-verbs`, `ai-descriptors`, `repetition-ngrams` (VERY_LOW)
+- `transitional-words` (INFORMATIONAL)
 
-#### 5. title-case-heading
-- **Description**: Excessive title case in headings
-- **Regex**: `/^#+\s+([A-Z][a-z]+\s+){3,}/gm`
-- **Examples**:
-  - "# The Complete Guide To Modern Development"
-  - "## Best Practices For Writing Code"
-- **Rationale**: AI often uses formal title case in all headings
-
-#### 6. em-dash-spam
-- **Description**: Excessive use of em-dashes
-- **Regex**: `/(—.*){3,}/g`
-- **Examples**:
-  - "text—more text—even more—and more"
-- **Rationale**: Some AI models overuse em-dashes for connecting clauses
+> Legacy pattern `editorializing` was superseded by the broader `ai-stock-phrases` detector. `em-dash-spam` now lives in the analyzer with dynamic thresholds instead of the registry and now scores as VERY_LOW.
 
 ---
 
 ## Updated Pattern Count
 
-### By Severity:
-- **CRITICAL** (20 points): 2 patterns
-- **HIGH** (10 points): 8 patterns
-- **MEDIUM** (5 points): 7 patterns (+5 new)
-- **LOW** (2 points): 4 patterns (+1 new)
+| Severity | Weight | Count |
+|----------|--------|-------|
+| CRITICAL | 15     | 2     |
+| HIGH     | 8      | 13    |
+| MEDIUM   | 4      | 20    |
+| LOW      | 2      | 3     |
+| VERY_LOW | 1      | 5     |
+| INFORMATIONAL | 0.2 | 1 |
 
-**Total: 21 patterns** (was 16)
+**Total:** 44 regex patterns + 1 heuristic (em-dash spam)
+
+---
+
+## Pattern Adjustments
+
+- Em-dash spam detection is now handled in `PatternAnalyzer.detectEmDashSpam`, enforcing thresholds of 3/5/6 dashes depending on text length and scoring the detector as VERY_LOW.
+- Custom patterns are scored alongside registry patterns via `customPatterns` metadata to keep `calculateScore` accurate.
+- Footer copy and documentation now surface `Pattern Engine v1.5.0 (44 patterns)`.
 
 ---
 
 ## Files Updated
 
-### Backend Code
-1. **`backend/src/patterns/registry.ts`**
-   - Added 6 new pattern definitions
-   - Updated `PATTERN_ENGINE_VERSION` to `1.1.0`
-   - Added ~40 lines of code
-
-### Documentation
-2. **`README.md`**
-   - Updated pattern count (20+ → 21)
-   - Expanded pattern descriptions with new examples
-   - Added new patterns to categorized lists
-
-3. **`backend/README.md`**
-   - Updated pattern registry section
-   - Added detailed breakdown by severity with all 21 patterns
-
-4. **`IMPLEMENTATION_SUMMARY.md`**
-   - Updated pattern count in file structure
-   - Added new patterns to Pattern Registry Summary
-   - Changed version from v1.0.0 to v1.1.0
-
-### Frontend
-5. **`frontend/src/App.tsx`**
-   - Updated "How It Works" section (20 → 21 patterns)
-   - Added new pattern examples to bullet list
-   - Updated footer with new version number
-   - Changed footer text to show "Pattern Engine v1.1.0 (21 patterns)"
+1. `backend/src/patterns/registry.ts` — added new pattern definitions and bumped `PATTERN_ENGINE_VERSION`
+2. `backend/src/patterns/analyzer.ts` — added custom em-dash detection, heuristic scoring, and registry integration updates
+3. `backend/src/patterns/analyzer.test.ts` & `backend/src/patterns/registry.test.ts` — expanded unit coverage for new thresholds and counts
+4. `frontend/src/App.tsx` — refreshed footer version/count string
+5. Documentation: `IMPLEMENTATION_SUMMARY.md`, this update note, and related OpenSpec deltas
 
 ---
 
 ## Scoring Impact
 
-With the addition of 5 new MEDIUM patterns and 1 new LOW pattern:
-
-### Maximum Possible Score (theoretical):
-- If all patterns trigger once: 2×20 + 8×10 + 7×5 + 4×2 = 40 + 80 + 35 + 8 = **163 points**
-- Normalized to 100: **100 points** (AI-generated)
-
-### Typical Score Increases:
-- Texts with emoji headings: +5 points
-- Texts with title case headings: +2 points
-- Texts with broken citations: +5 points
-- Texts with "profound legacy": +5 points
-- Texts with "worth mentioning": +5 points
-- Texts with excessive em-dashes: +2 points
-
-### Classification Thresholds (updated):
-- 0-34: Likely Human
-- 35-64: Mixed/Uncertain
-- 65-100: Likely AI Slop
+- Theoretical maximum raw score: **225.2** (before clamping to 100)
+- Existing classification bands remain unchanged (`Likely Human` <35, `Mixed/Uncertain` 35-64, `Likely AI Slop` ≥65)
+- Em-dash spam now contributes 1 point per occurrence above threshold (VERY_LOW)
 
 ---
 
-## Testing Recommendations
+## Testing
 
-To validate the new patterns, test with:
-
-### Test Case 1: Emoji Headings
-```markdown
-# 🎯 Getting Started
-
-This guide will help you get started quickly.
-
-## 🚀 Features
-
-Here are the main features...
-```
-**Expected:** Should detect `emoji-heading` pattern (2 matches)
-
-### Test Case 2: Broken Citations
-```
-The study showed significant results [citation needed]. According to research [source],
-this approach is effective.
-```
-**Expected:** Should detect `broken-citation` pattern (2 matches)
-
-### Test Case 3: Cultural Clichés
-```
-This tradition left a profound legacy that continues today. It's worth mentioning that
-the rich cultural heritage stands as a testament to their achievements.
-```
-**Expected:** Should detect `profound-legacy`, `worth-mentioning`, `cultural-cliche`,
-and `significance-statement` patterns
-
-### Test Case 4: Title Case Headings
-```markdown
-# The Complete Guide To Modern Development
-
-## Best Practices For Writing Clean Code
-
-### Understanding The Fundamentals Of Programming
-```
-**Expected:** Should detect `title-case-heading` pattern (3 matches)
-
-### Test Case 5: Em-Dash Spam
-```
-The system is fast—really fast—incredibly fast—and reliable too.
-```
-**Expected:** Should detect `em-dash-spam` pattern (1 match)
+- Vitest suites updated to cover em-dash threshold logic and registry counts
+- Playwright E2E checks refreshed to assert the new footer version and conditional "Analyze File" button behavior
+- `openspec validate` run to confirm spec deltas for the frontend UI capability
 
 ---
 
 ## Performance Impact
 
-### Estimated Performance:
-- **Regex Compilation**: Negligible (patterns pre-compiled at initialization)
-- **Runtime Impact**: <1ms additional processing time
-- **Memory**: ~2KB additional pattern definitions
-
-### Measured Performance (should remain):
-- Target: <50ms CPU time per request ✅
-- Typical: 20-40ms for 1000-word text ✅
+- Regex compilation cost remains negligible; added patterns are precompiled on analyzer construction
+- Runtime profiling shows <5 ms increase on 1,000-word samples (still well below the 50 ms CPU target)
 
 ---
 
 ## Migration Notes
 
-### For Existing Deployments:
-1. No breaking changes
-2. No database migrations required (stateless)
-3. Simply deploy updated code
-4. Version number in responses will automatically update to 1.1.0
-
-### For API Consumers:
-- API response format unchanged
-- New patterns will appear in `patterns_detected` array
-- `metadata.pattern_engine_version` will show `1.1.0`
+- No API contract changes; responses include the new `pattern_engine_version` automatically
+- `em-dash-spam` moves from the registry into analyzer heuristics — no consumer changes required
+- Re-run automated tests after integrating to confirm local environment picks up the new version string
 
 ---
 
 ## Future Enhancements
 
-Potential additional patterns to consider:
-
-1. **rule-of-three-lists** - Lists with exactly 3 items (common AI pattern)
-2. **quote-mixing** - Mixed straight and curly quotes
-3. **excessive-bold** - >10% of text in bold formatting
-4. **transition-words** - Overuse of "moreover", "furthermore", "additionally"
-5. **semantic-redundancy** - Repetitive phrasing variations
+- Add binary file parsers (PDF/DOCX) and multilingual pattern variants
+- Explore punctuation cadence detectors and sentence-structure heuristics
+- Continue tuning weights based on production sample feedback
 
 ---
 
 ## Changelog
 
+### [1.5.0] - 2025-10-19
+- Added 24 new patterns across HIGH/MEDIUM/VERY_LOW severities
+- Moved em-dash spam detection into analyzer with dynamic thresholds and VERY_LOW severity
+- Updated documentation and UI to display `Pattern Engine v1.5.0 (44 patterns)`
+- Expanded automated tests for new detectors and thresholds
+
 ### [1.1.0] - 2025-10-14
-
-#### Added
-- `worth-mentioning` pattern (MEDIUM)
-- `profound-legacy` pattern (MEDIUM)
-- `broken-citation` pattern (MEDIUM)
-- `emoji-heading` pattern (MEDIUM)
-- `title-case-heading` pattern (LOW)
-- `em-dash-spam` pattern (LOW)
-
-#### Changed
-- Pattern count: 16 → 21
-- Pattern engine version: 1.0.0 → 1.1.0
-- Updated all documentation to reflect new pattern count
-
-#### Performance
-- No performance degradation
-- Maintains <50ms CPU time target
+- Added initial legal/disclaimer and formatting patterns
+- Raised pattern count to 21
+- Updated docs to reflect version change
 
 ---
 
-## Contributors
-
-- Pattern additions based on original specification
-- Implementation: Halans
-- Version: 1.1.0
-
----
-
-**Status**: ✅ Complete and Deployed
-**Next Review**: Consider adding additional patterns based on real-world testing
+**Status:** ✅ Complete and merged
+**Next Review:** Evaluate multilingual detectors and binary file support
