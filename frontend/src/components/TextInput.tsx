@@ -154,7 +154,13 @@ export function TextInput({ onAnalyzeText, onAnalyzeFile, onClear, isLoading }: 
               }`}
               aria-label={isLoading ? 'Analyzing text' : 'Analyze text'}
             >
-              {isLoading ? 'Analyzing...' : 'Analyze Text'}
+              {isLoading ? (
+                'Analyzing...'
+              ) : (
+                <>
+                  Analyze<span className="hidden sm:inline"> Text</span>
+                </>
+              )}
             </button>
           </div>
         </div>
