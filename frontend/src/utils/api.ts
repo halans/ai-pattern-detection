@@ -105,8 +105,6 @@ interface TextSegment {
 
 function parseMarkdownFormatting(text: string): TextSegment[] {
   const segments: TextSegment[] = [];
-  let remaining = text;
-
   // Pattern to match _`text`_ (italic monospace)
   const italicMonoRegex = /_`([^`]+)`_/g;
   // Pattern to match **text** (bold)
@@ -120,58 +118,62 @@ function parseMarkdownFormatting(text: string): TextSegment[] {
   const matches: Array<{ start: number; end: number; segment: TextSegment }> = [];
 
   // Find all formatted segments
-  let match;
+  let match: RegExpExecArray | null;
 
   // Check for italic monospace first (most specific)
   while ((match = italicMonoRegex.exec(text)) !== null) {
+    const currentMatch = match as RegExpExecArray;
     matches.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      segment: { text: match[1], italic: true, monospace: true }
+      start: currentMatch.index,
+      end: currentMatch.index + currentMatch[0].length,
+      segment: { text: currentMatch[1], italic: true, monospace: true }
     });
   }
 
   // Check for bold
   while ((match = boldRegex.exec(text)) !== null) {
+    const currentMatch = match as RegExpExecArray;
     const overlaps = matches.some(m =>
-      (match.index >= m.start && match.index < m.end) ||
-      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+      (currentMatch.index >= m.start && currentMatch.index < m.end) ||
+      (currentMatch.index + currentMatch[0].length > m.start && currentMatch.index + currentMatch[0].length <= m.end)
     );
     if (!overlaps) {
       matches.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        segment: { text: match[1], bold: true }
+        start: currentMatch.index,
+        end: currentMatch.index + currentMatch[0].length,
+        segment: { text: currentMatch[1], bold: true }
       });
     }
   }
 
   // Check for monospace only
   while ((match = monoRegex.exec(text)) !== null) {
+    const currentMatch = match as RegExpExecArray;
     const overlaps = matches.some(m =>
-      (match.index >= m.start && match.index < m.end) ||
-      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+      (currentMatch.index >= m.start && currentMatch.index < m.end) ||
+      (currentMatch.index + currentMatch[0].length > m.start && currentMatch.index + currentMatch[0].length <= m.end)
     );
     if (!overlaps) {
       matches.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        segment: { text: match[1], monospace: true }
+        start: currentMatch.index,
+        end: currentMatch.index + currentMatch[0].length,
+        segment: { text: currentMatch[1], monospace: true }
       });
     }
   }
 
   // Check for italic only
   while ((match = italicRegex.exec(text)) !== null) {
+    const currentMatch = match as RegExpExecArray;
     const overlaps = matches.some(m =>
-      (match.index >= m.start && match.index < m.end) ||
-      (match.index + match[0].length > m.start && match.index + match[0].length <= m.end)
+      (currentMatch.index >= m.start && currentMatch.index < m.end) ||
+      (currentMatch.index + currentMatch[0].length > m.start && currentMatch.index + currentMatch[0].length <= m.end)
     );
     if (!overlaps) {
       matches.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        segment: { text: match[1], italic: true }
+        start: currentMatch.index,
+        end: currentMatch.index + currentMatch[0].length,
+        segment: { text: currentMatch[1], italic: true }
       });
     }
   }
@@ -227,6 +229,27 @@ export async function downloadPDF(
   const renderTextWithFormatting = (segments: TextSegment[], x: number, y: number, fontSize: number) => {
     let currentX = x;
 
+    const measureText = (content: string) => {
+      const docAny = doc as unknown as {
+        getTextWidth?: (text: string) => number;
+        getStringUnitWidth?: (text: string) => number;
+        getFontSize?: () => number;
+      };
+
+      if (typeof docAny.getTextWidth === 'function') {
+        return docAny.getTextWidth(content);
+      }
+
+      if (typeof docAny.getStringUnitWidth === 'function') {
+        const unitWidth = docAny.getStringUnitWidth(content);
+        const currentFontSize =
+          typeof docAny.getFontSize === 'function' ? docAny.getFontSize() : fontSize;
+        return unitWidth * currentFontSize;
+      }
+
+      return content.length * (fontSize * 0.5);
+    };
+
     for (const segment of segments) {
       const font = segment.monospace ? 'courier' : 'helvetica';
       const style = segment.bold ? 'bold' : (segment.italic ? 'italic' : 'normal');
@@ -235,7 +258,7 @@ export async function downloadPDF(
       doc.setFontSize(fontSize);
 
       doc.text(segment.text, currentX, y);
-      currentX += doc.getTextWidth(segment.text);
+      currentX += measureText(segment.text);
     }
   };
 

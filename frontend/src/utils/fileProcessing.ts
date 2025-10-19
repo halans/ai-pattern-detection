@@ -21,7 +21,7 @@ export async function processUploadedFile(file: File): Promise<ClientFileInfo> {
     throw new ClientFileError('Unsupported file type. Allowed: .txt, .md, .html');
   }
 
-  const raw = (await file.text()).trim();
+  const raw = (await readFileAsText(file)).trim();
 
   if (!raw) {
     throw new ClientFileError('Uploaded file is empty');
@@ -53,6 +53,33 @@ export async function processUploadedFile(file: File): Promise<ClientFileInfo> {
     type: info.type,
     characterCount: processed.length,
   };
+}
+
+async function readFileAsText(file: File): Promise<string> {
+  if (typeof file.text === 'function') {
+    return file.text();
+  }
+
+  if (typeof FileReader !== 'undefined') {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result;
+        if (typeof result === 'string') {
+          resolve(result);
+        } else if (result instanceof ArrayBuffer) {
+          const decoder = new TextDecoder();
+          resolve(decoder.decode(result));
+        } else {
+          reject(new ClientFileError('Unable to process file upload'));
+        }
+      };
+      reader.onerror = () => reject(new ClientFileError('Unable to process file upload'));
+      reader.readAsText(file);
+    });
+  }
+
+  throw new ClientFileError('File reading is not supported in this environment');
 }
 
 function determineType(file: File): { type: SupportedType } | null {
