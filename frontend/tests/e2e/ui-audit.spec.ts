@@ -23,7 +23,6 @@ test.describe('UI Audit and Improvements', () => {
     // Buttons
     await expect(page.locator('button:has-text("Clear")')).toBeVisible();
     await expect(page.locator('button:has-text("Analyze Text")')).toBeVisible();
-    await expect(page.locator('button:has-text("Analyze File")')).toBeVisible();
 
     // Theme toggle button
     await expect(page.locator('button[aria-label*="theme"]')).toBeVisible();
@@ -37,6 +36,20 @@ test.describe('UI Audit and Improvements', () => {
     const fileInput = page.locator('input#file-upload');
     await expect(fileInput).toBeVisible();
     await expect(fileInput).toHaveAttribute('accept', /\.txt/);
+  });
+
+  test('should reveal Analyze File action after uploading a file', async ({ page }) => {
+    const fileInput = page.locator('input#file-upload');
+
+    await fileInput.setInputFiles({
+      name: 'sample.txt',
+      mimeType: 'text/plain',
+      buffer: Buffer.from('synthetic test content'),
+    });
+
+    const analyzeFileButton = page.locator('button:has-text("Analyze File")');
+    await expect(analyzeFileButton).toBeVisible();
+    await expect(analyzeFileButton).toBeEnabled();
   });
 
   test('should have proper contrast in light mode', async ({ page }) => {
@@ -357,8 +370,10 @@ test.describe('UI Audit and Improvements', () => {
     await expect(themeButton).toBeVisible();
 
     // Check footer text
-    await expect(footer).toContainText('Pattern Engine v1.3.0');
+    await expect(footer).toContainText('Pattern Engine v1.5.0');
     await expect(footer).toContainText('Zero Data Retention');
+    await expect(footer).toContainText('T&C');
+    await expect(footer).toContainText('Privacy Policy');
   });
 
   test('should verify all interactive elements are keyboard accessible', async ({ page }) => {
