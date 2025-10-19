@@ -321,9 +321,9 @@ function PatternsPanel({ result }: { result: AnalysisResult }) {
                   <li key={pattern.patternId} className="pattern-item">
                     <div className="pattern-name">{pattern.patternName}</div>
                     <div className="pattern-meta">
-                      <span>{pattern.count} match{pattern.count !== 1 ? 'es' : ''}</span>
+                      <span>{pattern.count} match{pattern.count !== 1 ? 'es' : ''}, example:</span>
                       {pattern.matches[0]?.text && (
-                        <span className="pattern-example">
+                        <span className="pattern-example"> 
                           “{pattern.matches[0].text.trim()}”
                         </span>
                       )}

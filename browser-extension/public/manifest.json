@@ -1,18 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Slop Detector Sidebar",
+  "name": "Slop Detector",
   "description": "Analyze webpage content with the Slop Detector API inside a Chrome side panel.",
   "version": "0.1.0",
+  "minimum_chrome_version": "116",
   "action": {
-    "default_title": "Open Slop Detector Sidebar"
+    "default_title": "Open Slop Detector Side Panel"
   },
   "side_panel": {
     "default_path": "sidepanel.html"
   },
   "permissions": ["activeTab", "scripting", "sidePanel"],
   "host_permissions": [
-    "https://api.slopdetector.me/*",
-    "http://localhost:8787/*"
+    "https://api.slopdetector.me/*"
   ],
   "background": {
     "service_worker": "assets/background.js",

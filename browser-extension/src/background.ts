@@ -1,23 +1,67 @@
 chrome.runtime.onInstalled.addListener(async () => {
   try {
     await chrome.sidePanel.setOptions({ path: 'sidepanel.html', enabled: true });
+
+    // Enable automatic side panel opening when the toolbar icon is clicked (Chrome 116+).
+    if (typeof chrome.sidePanel.setPanelBehavior === 'function') {
+      await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+    } else {
+      console.warn('chrome.sidePanel.setPanelBehavior is unavailable; requires Chrome 116 or later.');
+    }
   } catch (error) {
-    console.error('Failed to configure side panel on install', error);
+    console.error('Failed to configure side panel behavior on install', error);
   }
 });
 
-const ensureSidePanel = async (tabId: number) => {
-  try {
-    await chrome.sidePanel.setOptions({ tabId, path: 'sidepanel.html' });
+const configureSidePanelForTab = async (tabId: number) => {
+  await chrome.sidePanel.setOptions({ tabId, path: 'sidepanel.html', enabled: true });
+
+  if (typeof chrome.sidePanel.setPanelBehavior !== 'function') {
     await chrome.sidePanel.open({ tabId });
+  }
+};
+
+const hasTabAccess = async (tabId: number): Promise<boolean> => {
+  try {
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => true,
+    });
+
+    return Boolean(result?.result);
   } catch (error) {
-    console.error('Failed to open side panel', error);
+    const message = error instanceof Error ? error.message : String(error);
+
+    // Ignore expected restricted contexts (e.g., chrome://, Chrome Web Store).
+    if (
+      message.includes('Cannot access contents of the page') ||
+      message.includes('is a Chrome URL') ||
+      message.includes('the same origin as the context script')
+    ) {
+      return false;
+    }
+
+    console.warn('Unable to verify tab access', error);
+    return false;
   }
 };
 
 chrome.action.onClicked.addListener(async (tab) => {
-  if (tab.id !== undefined) {
-    await ensureSidePanel(tab.id);
+  if (tab.id === undefined) {
+    return;
+  }
+
+  try {
+    // Ensure the side panel is configured for the clicked tab so the extension
+    // receives the temporary activeTab permission for content capture.
+    await configureSidePanelForTab(tab.id);
+
+    const hasAccess = await hasTabAccess(tab.id);
+    if (!hasAccess) {
+      await chrome.sidePanel.open({ tabId: tab.id });
+    }
+  } catch (error) {
+    console.error('Failed to prepare side panel for tab', error);
   }
 });
 
