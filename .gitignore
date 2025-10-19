@@ -44,3 +44,4 @@ lerna-debug.log*
 Thumbs.db
 .playwright-mcp/*
 frontend/src/utils/fileProcessing.ts
+vitest-output.log
