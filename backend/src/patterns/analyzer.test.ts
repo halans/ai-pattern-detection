@@ -8,6 +8,12 @@ describe('PatternAnalyzer', () => {
     analyzer = new PatternAnalyzer();
   });
 
+  const createEmDashText = (fillerWord: string, repeats: number, dashCount: number): string => {
+    const filler = `${fillerWord} `.repeat(repeats);
+    const dashSegments = Array.from({ length: dashCount }, (_, index) => `clause${index} — continuation${index}.`).join(' ');
+    return `${filler}${dashSegments}`.trim();
+  };
+
   describe('analyze', () => {
     it('should detect AI self-reference patterns', () => {
       const text = 'As an AI language model, I can help you with that.';
@@ -71,6 +77,23 @@ describe('PatternAnalyzer', () => {
       expect(jargon!.count).toBeGreaterThan(0);
     });
 
+    it('should detect em-dash spam with count greater than sampled contexts', () => {
+      const text = [
+        'This passage — with an extended clause that keeps elaborating on a single idea for far too long — continues to stack even more commentary — while stretching across multiple segments — ensuring that the detection logic has plenty to evaluate — and still going with additional elaboration.',
+        'Another paragraph — includes more excessive usage — to reinforce the spammy pattern and demonstrate the detector handling multiple lines — with additional descriptive language for good measure.'
+      ].join('\n');
+
+      const matches = analyzer.analyze(text);
+
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeDefined();
+      const totalDashes = (text.match(/—/g) ?? []).length;
+      expect(emDash!.count).toBe(totalDashes);
+      expect(emDash!.matches.length).toBeLessThanOrEqual(10);
+      expect(emDash!.matches[0].text).toBe('—');
+      expect(emDash!.matches[0].context).toContain('—');
+    });
+
     it('should detect repetition of targeted words based on thresholds', () => {
       const text =
         'Also we can share updates. Also, the system highlights patterns. Also it repeats frequently.';
@@ -130,8 +153,90 @@ describe('PatternAnalyzer', () => {
       const repetition = matches.find(m => m.patternId === 'repetition-ngrams');
       expect(repetition).toBeUndefined();
     });
+
+    it('should not flag short text when em-dash count is within threshold', () => {
+      const text = createEmDashText('intro', 400, 3);
+      expect(text.length).toBeLessThan(5000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeUndefined();
+    });
+
+    it('should flag short text when em-dash count exceeds threshold', () => {
+      const text = createEmDashText('intro', 400, 4);
+      expect(text.length).toBeLessThan(5000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeDefined();
+      expect(emDash!.count).toBe(4);
+    });
+
+    it('should not flag medium text when em-dash count is within threshold', () => {
+      const text = createEmDashText('body', 1200, 5);
+      expect(text.length).toBeGreaterThanOrEqual(5000);
+      expect(text.length).toBeLessThan(10000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeUndefined();
+    });
+
+    it('should flag medium text when em-dash count exceeds threshold', () => {
+      const text = createEmDashText('body', 1200, 6);
+      expect(text.length).toBeGreaterThanOrEqual(5000);
+      expect(text.length).toBeLessThan(10000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeDefined();
+      expect(emDash!.count).toBe(6);
+    });
+
+    it('should not flag long text when em-dash count is within threshold', () => {
+      const text = createEmDashText('content', 1700, 6);
+      expect(text.length).toBeGreaterThan(10000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeUndefined();
+    });
+
+    it('should flag long text when em-dash count exceeds threshold', () => {
+      const text = createEmDashText('content', 1700, 7);
+      expect(text.length).toBeGreaterThan(10000);
+
+      const matches = analyzer.analyze(text);
+      const emDash = matches.find(m => m.patternId === 'em-dash-spam');
+      expect(emDash).toBeDefined();
+      expect(emDash!.count).toBe(7);
+    });
   });
 
+  describe('em-dash utilities', () => {
+    it('determines thresholds based on text length', () => {
+      const determineThreshold = (length: number) =>
+        (analyzer as any).determineEmDashThreshold(length) as number;
+
+      expect(determineThreshold(1000)).toBe(3);
+      expect(determineThreshold(4999)).toBe(3);
+      expect(determineThreshold(5000)).toBe(5);
+      expect(determineThreshold(7500)).toBe(5);
+      expect(determineThreshold(10000)).toBe(5);
+      expect(determineThreshold(10001)).toBe(6);
+      expect(determineThreshold(20000)).toBe(6);
+    });
+
+    it('counts em-dashes accurately', () => {
+      const countEmDashes = (input: string) => (analyzer as any).countEmDashes(input) as number;
+
+      expect(countEmDashes('No em dash here.')).toBe(0);
+      expect(countEmDashes('—Starting with one.')).toBe(1);
+      expect(countEmDashes('Wrapped — in — middle — positions.')).toBe(3);
+      expect(countEmDashes('Multiple — lines\n— with extra — usage — across lines.')).toBe(4);
+    });
+  });
   describe('calculateScore', () => {
     it('should calculate score based on pattern weights', () => {
       const text = 'As an AI language model, I hope this helps!';
@@ -151,7 +256,7 @@ describe('PatternAnalyzer', () => {
     });
 
     it('should return 0 for no matches', () => {
-      const matches = [];
+      const matches: ReturnType<PatternAnalyzer['analyze']> = [];
       const score = analyzer.calculateScore(matches);
 
       expect(score).toBe(0);

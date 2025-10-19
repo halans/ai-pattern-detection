@@ -8,8 +8,8 @@ describe('Pattern Registry', () => {
       expect(PATTERNS.length).toBeGreaterThan(0);
     });
 
-    it('should have at least 45 patterns', () => {
-      expect(PATTERNS.length).toBeGreaterThanOrEqual(45);
+    it('should have at least 44 patterns', () => {
+      expect(PATTERNS.length).toBeGreaterThanOrEqual(44);
     });
 
     it('should have unique pattern IDs', () => {
@@ -208,8 +208,8 @@ describe('Pattern Registry', () => {
       expect(PATTERN_ENGINE_VERSION).toMatch(/^\d+\.\d+\.\d+$/);
     });
 
-    it('should be version 1.4.0 or higher', () => {
-      expect(PATTERN_ENGINE_VERSION).toBe('1.4.0');
+    it('should match the current pattern engine version', () => {
+      expect(PATTERN_ENGINE_VERSION).toBe('1.5.0');
     });
   });
 });

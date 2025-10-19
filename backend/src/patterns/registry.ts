@@ -507,15 +507,6 @@ export const PATTERNS: Pattern[] = [
     weight: SEVERITY_WEIGHTS.LOW,
     examples: ['# The Complete Guide To Modern Development', '## Best Practices For Writing Code'],
   },
-  {
-    id: 'em-dash-spam',
-    name: 'Em-Dash Spam',
-    description: 'Excessive use of em-dashes',
-    regex: /(—.*){3,}/g,
-    severity: 'LOW',
-    weight: SEVERITY_WEIGHTS.LOW,
-    examples: ['text—more text—even more—and more'],
-  },
 ];
 
 export function getPatternById(id: string): Pattern | undefined {
@@ -526,4 +517,4 @@ export function getPatternsBySeverity(severity: Severity): Pattern[] {
   return PATTERNS.filter((p) => p.severity === severity);
 }
 
-export const PATTERN_ENGINE_VERSION = '1.4.0';
+export const PATTERN_ENGINE_VERSION = '1.5.0';

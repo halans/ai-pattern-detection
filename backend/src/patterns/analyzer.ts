@@ -5,16 +5,32 @@ import {
   REPETITION_BIGRAMS,
   REPETITION_TRIGRAMS,
   REPETITION_WORDS,
+  SEVERITY_WEIGHTS,
 } from './registry';
 
 export class PatternAnalyzer {
   private patterns: Pattern[];
   private patternPhrases: Set<string>;
+  private customPatterns: Record<
+    string,
+    {
+      name: string;
+      severity: Pattern['severity'];
+      weight: number;
+    }
+  >;
 
   constructor() {
     // Pre-compile patterns on initialization
     this.patterns = PATTERNS;
     this.patternPhrases = this.buildPatternPhrasesSet();
+    this.customPatterns = {
+      'em-dash-spam': {
+        name: 'Em-Dash Spam',
+        severity: 'LOW',
+        weight: SEVERITY_WEIGHTS.LOW,
+      },
+    };
   }
 
   /**
@@ -73,6 +89,11 @@ export class PatternAnalyzer {
       results.push(...repetitionMatches);
     }
 
+    const emDashMatch = this.detectEmDashSpam(text);
+    if (emDashMatch) {
+      results.push(emDashMatch);
+    }
+
     return results;
   }
 
@@ -91,9 +112,11 @@ export class PatternAnalyzer {
     let match: RegExpExecArray | null;
 
     while ((match = regex.exec(text)) !== null) {
+      const rawMatch = match[0];
+
       matches.push({
-        text: match[0],
-        context: this.extractContext(text, match.index, match[0].length),
+        text: rawMatch,
+        context: this.extractContext(text, match.index, rawMatch.length),
         index: match.index,
       });
 
@@ -137,6 +160,12 @@ export class PatternAnalyzer {
       const pattern = this.patterns.find((p) => p.id === match.patternId);
       if (pattern) {
         totalScore += pattern.weight * match.count;
+        continue;
+      }
+
+      const customPattern = this.customPatterns[match.patternId];
+      if (customPattern) {
+        totalScore += customPattern.weight * match.count;
       }
     }
 
@@ -215,6 +244,59 @@ export class PatternAnalyzer {
       return 4;
     }
     return 5;
+  }
+
+  // Em-dash thresholds scale with text length to reduce false positives on long-form writing.
+  private determineEmDashThreshold(length: number): number {
+    if (length < 5000) {
+      return 3;
+    }
+    if (length <= 10000) {
+      return 5;
+    }
+    return 6;
+  }
+
+  private countEmDashes(text: string): number {
+    const matches = text.match(/—/g);
+    return matches ? matches.length : 0;
+  }
+
+  private detectEmDashSpam(text: string): PatternMatch | null {
+    const totalEmDashes = this.countEmDashes(text);
+    if (totalEmDashes === 0) {
+      return null;
+    }
+
+    const threshold = this.determineEmDashThreshold(text.length);
+    if (totalEmDashes <= threshold) {
+      return null;
+    }
+
+    const matches: PatternMatch['matches'] = [];
+    const MAX_CONTEXT_MATCHES = 10;
+
+    let index = text.indexOf('—');
+    while (index !== -1) {
+      if (matches.length < MAX_CONTEXT_MATCHES) {
+        matches.push({
+          text: '—',
+          context: this.extractContext(text, index, 1),
+          index,
+        });
+      }
+      index = text.indexOf('—', index + 1);
+    }
+
+    const patternMeta = this.customPatterns['em-dash-spam'];
+
+    return {
+      patternId: 'em-dash-spam',
+      patternName: patternMeta.name,
+      severity: patternMeta.severity,
+      matches,
+      count: totalEmDashes,
+    };
   }
 
   private findUnitOccurrences(
