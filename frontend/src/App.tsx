@@ -141,7 +141,7 @@ function App() {
                 <div className="space-y-4 text-sm text-text-muted dark:text-text-dark-muted">
                   <p>
                     This tool uses <strong>pattern-based detection</strong> to identify common
-                    characteristics of AI-generated text. It analyzes <strong>45 linguistic patterns</strong>{' '}
+                    characteristics of AI-generated text. It analyzes <strong>44 linguistic patterns</strong>{' '}
                     including:
                   </p>
                   <ul className="list-disc list-inside ml-4 space-y-2">
