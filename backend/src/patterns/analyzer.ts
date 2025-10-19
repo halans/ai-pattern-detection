@@ -27,8 +27,8 @@ export class PatternAnalyzer {
     this.customPatterns = {
       'em-dash-spam': {
         name: 'Em-Dash Spam',
-        severity: 'LOW',
-        weight: SEVERITY_WEIGHTS.LOW,
+        severity: 'VERY_LOW',
+        weight: SEVERITY_WEIGHTS.VERY_LOW,
       },
     };
   }
