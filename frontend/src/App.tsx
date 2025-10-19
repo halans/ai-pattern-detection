@@ -5,14 +5,26 @@ import { AnalysisResult } from './types';
 import { analyzeText, analyzeFile } from './utils/api';
 import { useTheme } from './theme/ThemeProvider';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 function App() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [view, setView] = useState<'home' | 'privacy'>(() =>
-    typeof window !== 'undefined' && window.location.pathname.startsWith('/privacy') ? 'privacy' : 'home'
-  );
+  const getInitialView = (): 'home' | 'privacy' | 'terms' => {
+    if (typeof window === 'undefined') {
+      return 'home';
+    }
+    const path = window.location.pathname;
+    if (path.startsWith('/terms')) {
+      return 'terms';
+    }
+    if (path.startsWith('/privacy')) {
+      return 'privacy';
+    }
+    return 'home';
+  };
+  const [view, setView] = useState<'home' | 'privacy' | 'terms'>(getInitialView);
   const { theme, toggleTheme } = useTheme();
 
   const handleSkipToContent = (event: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>) => {
@@ -54,8 +66,11 @@ function App() {
   };
 
   useEffect(() => {
-    const targetPath = view === 'privacy' ? '/privacy' : '/';
-    if (typeof window !== 'undefined' && window.location.pathname !== targetPath) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const targetPath = view === 'privacy' ? '/privacy' : view === 'terms' ? '/terms' : '/';
+    if (window.location.pathname !== targetPath) {
       window.history.replaceState({}, '', targetPath);
     }
   }, [view]);
@@ -152,8 +167,10 @@ function App() {
               </div>
             )}
           </>
-        ) : (
+        ) : view === 'privacy' ? (
           <PrivacyPolicy />
+        ) : (
+          <TermsAndConditions />
         )}
       </main>
 
@@ -161,24 +178,47 @@ function App() {
       <footer className="mt-16 py-8 border-t border-primary-soft/40 dark:border-primary/40 transition-colors">
         <div className="max-w-7xl mx-auto px-4 flex flex-col gap-4 text-center text-sm text-text-muted dark:text-text-dark-muted md:flex-row md:items-center md:justify-between">
           <p>
-            <a className="mx-auto md:mx-0 text-sm underline hover:no-underline"
-                href="/">Slop Detector</a> • Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention •{' '}
-            <a 
+            <a
               className="mx-auto md:mx-0 text-sm underline hover:no-underline"
-              href="https://github.com/halans/ai-pattern-detection" target="blank" rel="me">
+              href="/"
+              onClick={(event) => {
+                event.preventDefault();
+                setView('home');
+              }}
+            >
+              Slop Detector
+            </a>
+            &nbsp;•&nbsp;Pattern Engine v1.4.0 (45 patterns) • Zero Data Retention •{' '}
+            <a
+              className="mx-auto md:mx-0 text-sm underline hover:no-underline"
+              href="https://github.com/halans/ai-pattern-detection"
+              rel="me"
+              target="blank"
+            >
               Github
             </a>
             &nbsp;•&nbsp;
             <a
-            href="/privacy"
-            onClick={(event) => {
-              event.preventDefault();
-              setView('privacy');
-            }}
-            className="mx-auto md:mx-0 text-sm underline hover:no-underline"
-          >
-            Privacy Policy
-          </a>
+              href="/privacy"
+              onClick={(event) => {
+                event.preventDefault();
+                setView('privacy');
+              }}
+              className="mx-auto md:mx-0 text-sm underline hover:no-underline"
+            >
+              Privacy Policy
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              href="/terms"
+              onClick={(event) => {
+                event.preventDefault();
+                setView('terms');
+              }}
+              className="mx-auto md:mx-0 text-sm underline hover:no-underline"
+            >
+              T&amp;C
+            </a>
           </p>
           
           <button
