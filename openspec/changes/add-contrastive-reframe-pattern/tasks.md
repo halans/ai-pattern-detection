@@ -2,7 +2,7 @@
 
 ## Pattern Registry Updates
 
-- [ ] Add contrastive-reframe pattern to PATTERNS array in `backend/src/patterns/registry.ts`
+- [x] Add contrastive-reframe pattern to PATTERNS array in `backend/src/patterns/registry.ts`
   - Locate the HIGH severity section (after line 242, after business-jargon pattern)
   - Insert new pattern object before the MEDIUM severity comment
   - Use the following structure:
@@ -24,130 +24,130 @@
     ```
   - Ensure proper comma placement and formatting
 
-- [ ] Increment PATTERN_ENGINE_VERSION in `backend/src/patterns/registry.ts`
+- [x] Increment PATTERN_ENGINE_VERSION in `backend/src/patterns/registry.ts`
   - Locate PATTERN_ENGINE_VERSION constant (line 520)
   - Change value from '1.5.0' to '1.6.0'
   - Add comment documenting the change: `// v1.6.0: Added contrastive-reframe pattern`
 
 ## Testing - Basic Pattern Matching
 
-- [ ] Add test suite for contrastive-reframe pattern in `backend/src/patterns/registry.test.ts`
+- [x] Add test suite for contrastive-reframe pattern in `backend/src/patterns/registry.test.ts`
   - Create new describe block: `describe('Contrastive Reframe Pattern', () => { ... })`
   - Place after existing pattern matching tests (around line 163)
 
-- [ ] Test basic pattern matching with "just" intensifier
+- [x] Test basic pattern matching with "just" intensifier
   - Test string: "It's not just a tool, it's a paradigm shift"
   - Verify pattern.regex.test() returns true
   - Verify match is found
 
-- [ ] Test pattern matching with "only" intensifier
+- [x] Test pattern matching with "only" intensifier
   - Test string: "It's not only about efficiency, it's about transformation"
   - Verify pattern matches
 
-- [ ] Test pattern matching with "merely" intensifier
+- [x] Test pattern matching with "merely" intensifier
   - Test string: "It is not merely a framework; it is a comprehensive ecosystem"
   - Verify pattern matches
 
-- [ ] Test pattern matching with "simply" intensifier
+- [x] Test pattern matching with "simply" intensifier
   - Test string: "It's not simply a design choice. It's a fundamental philosophy"
   - Verify pattern matches
 
-- [ ] Test pattern matching without intensifier
+- [x] Test pattern matching without intensifier
   - Test string: "It's not a bug—it's a feature request"
   - Verify pattern matches
 
 ## Testing - Punctuation Variations
 
-- [ ] Test comma separator
+- [x] Test comma separator
   - Test string: "It's not just efficiency, it's transformation"
   - Verify pattern matches
 
-- [ ] Test semicolon separator
+- [x] Test semicolon separator
   - Test string: "It's not just efficiency; it's transformation"
   - Verify pattern matches
 
-- [ ] Test colon separator
+- [x] Test colon separator
   - Test string: "It's not just efficiency: it's transformation"
   - Verify pattern matches
 
-- [ ] Test em-dash separator
+- [x] Test em-dash separator
   - Test string: "It's not just efficiency—it's transformation"
   - Verify pattern matches
 
-- [ ] Test en-dash separator
+- [x] Test en-dash separator
   - Test string: "It's not just efficiency–it's transformation"
   - Verify pattern matches
 
-- [ ] Test period separator
+- [x] Test period separator
   - Test string: "It's not just efficiency. It's transformation"
   - Verify pattern matches
 
 ## Testing - Apostrophe and Case Variations
 
-- [ ] Test curly apostrophe (')
+- [x] Test curly apostrophe (')
   - Test string: "It's not just a tool, it's a paradigm shift" (with ' instead of ')
   - Verify pattern matches
 
-- [ ] Test straight apostrophe (')
+- [x] Test straight apostrophe (')
   - Test string: "It's not just a tool, it's a paradigm shift" (with ' standard apostrophe)
   - Verify pattern matches
 
-- [ ] Test "It is" spelled out
+- [x] Test "It is" spelled out
   - Test string: "It is not just a framework, it is an ecosystem"
   - Verify pattern matches
 
-- [ ] Test lowercase "it's"
+- [x] Test lowercase "it's"
   - Test string: "it's not just a tool, it's a paradigm shift"
   - Verify pattern matches (case-insensitive)
 
 ## Testing - Negative Cases (Must NOT Match)
 
-- [ ] Test incomplete structure with no Y clause
+- [x] Test incomplete structure with no Y clause
   - Test string: "It's not ready yet"
   - Verify pattern does NOT match
 
-- [ ] Test different subject ("This is")
+- [x] Test different subject ("This is")
   - Test string: "This is not just a tool, this is a paradigm shift"
   - Verify pattern does NOT match
 
-- [ ] Test "not only...but also" structure
+- [x] Test "not only...but also" structure
   - Test string: "Not only a tool but also a paradigm shift"
   - Verify contrastive-reframe pattern does NOT match
   - Note: This should match negative-parallelism pattern instead
 
-- [ ] Test contraction "isn't" instead of "is not"
+- [x] Test contraction "isn't" instead of "is not"
   - Test string: "It isn't just a tool, it's a paradigm shift"
   - Verify pattern does NOT match
 
-- [ ] Test missing second "it's/it is"
+- [x] Test missing second "it's/it is"
   - Test string: "It's not just a tool, a paradigm shift"
   - Verify pattern does NOT match
 
 ## Testing - Named Capture Groups
 
-- [ ] Test named capture group extraction for X clause
+- [x] Test named capture group extraction for X clause
   - Test string: "It's not just simple, it's complex"
   - Use match with named groups: `match.groups.X`
   - Verify X group contains "simple"
 
-- [ ] Test named capture group extraction for Y clause
+- [x] Test named capture group extraction for Y clause
   - Test string: "It's not just simple, it's complex"
   - Use match with named groups: `match.groups.Y`
   - Verify Y group contains "complex"
 
-- [ ] Test capture groups with punctuation
+- [x] Test capture groups with punctuation
   - Test string: "It's not just a framework; it is a comprehensive ecosystem"
   - Verify X does not include semicolon
   - Verify Y starts with "a comprehensive ecosystem"
 
 ## Testing - Edge Cases
 
-- [ ] Test multiple matches in one text
+- [x] Test multiple matches in one text
   - Test string: "It's not just a tool, it's a framework. It's not only about code, it's about architecture."
   - Verify global flag finds both matches
   - Verify match count is 2
 
-- [ ] Test multiline text
+- [x] Test multiline text
   - Test string with newline between clauses:
     ```
     It's not just a tool,
@@ -155,26 +155,26 @@
     ```
   - Verify pattern matches (dotall flag should handle this)
 
-- [ ] Test long X and Y clauses
+- [x] Test long X and Y clauses
   - Test with clauses over 50 characters each
   - Verify pattern matches and captures correctly
 
 ## Testing - Pattern Metadata
 
-- [ ] Test pattern is registered in registry
+- [x] Test pattern is registered in registry
   - Use getPatternById('contrastive-reframe')
   - Verify pattern is not undefined
 
-- [ ] Test pattern has correct severity
+- [x] Test pattern has correct severity
   - Verify pattern.severity === 'HIGH'
   - Verify pattern.weight === 8
 
-- [ ] Test pattern has correct metadata
+- [x] Test pattern has correct metadata
   - Verify pattern.name === 'Contrastive Reframe'
   - Verify pattern.description is defined and meaningful
   - Verify pattern.examples.length >= 4
 
-- [ ] Test pattern regex has correct flags
+- [x] Test pattern regex has correct flags
   - Verify pattern.regex.flags includes 'i' (case-insensitive)
   - Verify pattern.regex.flags includes 's' (dotall)
   - Verify pattern.regex.flags includes 'g' (global)
@@ -182,17 +182,17 @@
 
 ## Pattern Engine Version Tests
 
-- [ ] Update version test in `backend/src/patterns/registry.test.ts`
+- [x] Update version test in `backend/src/patterns/registry.test.ts`
   - Locate test "should match the current pattern engine version" (line 211-213)
   - Update expected version from '1.5.0' to '1.6.0'
 
-- [ ] Update pattern count test in `backend/src/patterns/registry.test.ts`
-  - Locate test "should have at least 44 patterns" (line 11-13)
+- [x] Update pattern count test in `backend/src/patterns/registry.test.ts`
+  - Locate test "should have at least 45 patterns" (line 11-13)
   - Update expected count from 44 to 45
 
 ## Code Quality and Documentation
 
-- [ ] Add code comment above pattern definition
+- [x] Add code comment above pattern definition
   - Explain the contrastive reframe structure
   - Reference proposal document for rationale
   - Example:
@@ -207,9 +207,7 @@
   - Verify indentation matches existing patterns
   - Check trailing commas match project style
 
-## Validation and Build
-
-- [ ] Run unit tests to verify all functionality
+- [x] Run unit tests to verify all functionality
   - Execute `npm test` in backend directory
   - Verify all new contrastive-reframe tests pass
   - Ensure no regressions in existing tests
@@ -219,12 +217,12 @@
   - Verify no type errors
   - Confirm Pattern type compatibility
 
-- [ ] Run linter
+- [x] Run linter
   - Execute `npm run lint` in backend
   - Fix any ESLint warnings or errors
   - Ensure code meets project standards
 
-- [ ] Test with sample texts
+- [x] Test with sample texts
   - Create sample text files with contrastive reframe patterns
   - Run through analyzer
   - Verify detection works end-to-end
@@ -248,7 +246,7 @@
 
 ## Documentation Updates
 
-- [ ] Update pattern count in documentation (if applicable)
+- [x] Update pattern count in documentation (if applicable)
   - Check README or docs for pattern count references
   - Update from 44 to 45 patterns
   - Note version 1.6.0 addition
@@ -270,7 +268,7 @@
 
 ## Final Validation
 
-- [ ] Run OpenSpec validation
+- [x] Run OpenSpec validation
   - Execute `openspec validate add-contrastive-reframe-pattern --strict`
   - Resolve any validation errors
   - Ensure all specs and tasks align
