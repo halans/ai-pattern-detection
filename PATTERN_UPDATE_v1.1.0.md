@@ -1,4 +1,65 @@
-# Pattern Registry Update v1.5.0
+# Pattern Registry Update v1.6.0
+
+**Date:** 2025-11-01
+**Update Type:** Targeted Enhancement
+**Pattern Engine:** v1.5.0 → v1.6.0
+
+---
+
+## Summary
+
+This incremental release introduces the `contrastive-reframe` detector for the signature “It’s not just X, it’s Y” construction, expands high-severity coverage to 14 patterns, and aligns all documentation and UI surfaces with `v1.6.0`. The registry now spans 45 regex-based signals plus the em-dash heuristic.
+
+---
+
+## Highlights
+
+- Added the HIGH-severity `contrastive-reframe` pattern that captures contrastive reframes with named groups for the X/Y clauses
+- Hardened `registry.test.ts` with exhaustive positive, negative, capture-group, multiline, and multi-match scenarios
+- Updated backend version constants, frontend footer messaging, E2E assertions, and documentation to show `Pattern Engine v1.6.0 (45 patterns)`
+
+---
+
+## New Patterns Added (since v1.5.0)
+
+- `contrastive-reframe` (HIGH)
+
+---
+
+## Updated Pattern Count
+
+| Severity | Weight | Count |
+|----------|--------|-------|
+| CRITICAL | 15     | 2     |
+| HIGH     | 8      | 14    |
+| MEDIUM   | 4      | 20    |
+| LOW      | 2      | 3     |
+| VERY_LOW | 1      | 5     |
+| INFORMATIONAL | 0.2 | 1 |
+
+**Total:** 45 regex patterns + 1 heuristic (em-dash spam)
+
+---
+
+## Files Updated
+
+1. `backend/src/patterns/registry.ts` — added `contrastive-reframe` pattern and bumped `PATTERN_ENGINE_VERSION` to 1.6.0
+2. `backend/src/patterns/registry.test.ts` — expanded coverage, updated expectations, and validated capture groups
+3. `frontend/src/App.tsx` & `frontend/tests/e2e/ui-audit.spec.ts` — refreshed footer copy and Playwright assertions for the new version/count
+4. Documentation (`IMPLEMENTATION_SUMMARY.md`, `README.md`) — synchronized pattern totals and release notes
+5. `openspec/changes/add-contrastive-reframe-pattern/tasks.md` — recorded documentation and tooling follow-through
+
+---
+
+## Testing
+
+- `npm test` (backend)
+- `npm run lint` (backend)
+- `openspec validate add-contrastive-reframe-pattern --strict`
+
+---
+
+# Pattern Registry Update v1.5.0 (Historical)
 
 **Date:** 2025-10-19
 **Update Type:** Feature Expansion
@@ -127,6 +188,11 @@ This release more than doubles the pattern surface area. We introduced 24 new re
 ---
 
 ## Changelog
+
+### [1.6.0] - 2025-11-01
+- Added HIGH-severity `contrastive-reframe` detector with named capture groups for contrastive rhetoric
+- Updated backend/frontend/docs to surface `Pattern Engine v1.6.0 (45 patterns)`
+- Extended registry tests to cover multi-match, multiline, and capture-group scenarios specific to the new pattern
 
 ### [1.5.0] - 2025-10-19
 - Added 24 new patterns across HIGH/MEDIUM/VERY_LOW severities
