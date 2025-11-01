@@ -299,7 +299,7 @@ The tests use Vitest with a custom configuration (`vitest.config.ts`) that:
 
 ### Known Issues & Workarounds
 
-**Memory Issues:** Due to the comprehensive regex pattern matching (44 patterns), tests may encounter memory limits when run all together.
+**Memory Issues:** Due to the comprehensive regex pattern matching (45 patterns), tests may encounter memory limits when run all together.
 
 **Recommended approach:**
 ```bash
@@ -343,7 +343,7 @@ JJ Halans
 
 ## Version
 
-1.5.0 - Pattern Engine (44 patterns - Comprehensive coverage of AI writing patterns including business jargon, vocabulary, and contextual phrases. Deduplication fix to prevent double-counting)
+1.6.0 - Pattern Engine (45 patterns - Adds contrastive reframe detection and refreshes documentation/test coverage)
 ## Chrome Extension
 
 The repository includes a Chrome side panel extension under `browser-extension/`.

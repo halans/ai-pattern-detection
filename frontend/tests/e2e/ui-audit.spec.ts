@@ -370,7 +370,7 @@ test.describe('UI Audit and Improvements', () => {
     await expect(themeButton).toBeVisible();
 
     // Check footer text
-    await expect(footer).toContainText('Pattern Engine v1.5.0');
+    await expect(footer).toContainText('Pattern Engine v1.6.0');
     await expect(footer).toContainText('Zero Data Retention');
     await expect(footer).toContainText('T&C');
     await expect(footer).toContainText('Privacy Policy');

@@ -13,10 +13,10 @@ Successfully implemented a complete pattern-based AI detection system according 
 #### Core Components
 
 1. **Pattern Registry** (`src/patterns/registry.ts`)
-   - 44 regex-based patterns with severity weights plus heuristic detectors
+   - 45 regex-based patterns with severity weights plus heuristic detectors
    - Pattern categories: CRITICAL, HIGH, MEDIUM, LOW, VERY_LOW, INFORMATIONAL
    - Coverage now includes collaborative phrases, data-analysis clichés, AI-favored lexicon, cultural references, structural signals, and more
-   - Pattern engine version: 1.5.0
+   - Pattern engine version: 1.6.0
 
 2. **Pattern Analyzer** (`src/patterns/analyzer.ts`)
    - Applies all patterns to input text
@@ -129,7 +129,7 @@ ai-detection/
 ├── backend/
 │   ├── src/
 │   │   ├── patterns/
-│   │   │   ├── registry.ts          ✅ 44 patterns with weights (v1.5.0)
+│   │   │   ├── registry.ts          ✅ 45 patterns with weights (v1.6.0)
 │   │   │   └── analyzer.ts          ✅ Pattern matching engine
 │   │   ├── preprocessing/
 │   │   │   └── normalizer.ts        ✅ Text normalization
@@ -173,8 +173,8 @@ ai-detection/
 
 ## Pattern Registry Summary
 
-- **Pattern engine version:** 1.5.0
-- **Detection coverage:** 44 regex-based patterns plus a heuristic, length-aware em-dash spam detector
+- **Pattern engine version:** 1.6.0
+- **Detection coverage:** 45 regex-based patterns plus a heuristic, length-aware em-dash spam detector
 - **Severity weights:** CRITICAL=15, HIGH=8, MEDIUM=4, LOW=2, VERY_LOW=1, INFORMATIONAL=0.2
 
 ### CRITICAL (2)
@@ -334,7 +334,7 @@ curl -X POST http://localhost:8787/api/analyze \
 
 From `openspec/changes/add-ai-detection-tool/proposal.md`:
 
-- ✅ **Pattern detection coverage: ≥20 unique AI signal patterns** — 44 regex patterns plus a heuristic detector are live
+- ✅ **Pattern detection coverage: ≥20 unique AI signal patterns** — 45 regex patterns plus a heuristic detector are live
 - ✅ **Average response time: ≤500ms per 1,000 words** — Pattern matching remains O(n); typical latency stays well below 50 ms
 - ⚠️ **Support for 5 file formats** — Currently handles `.txt`, `.md`, and `.html`; PDF/DOCX intake is planned
 - ✅ **Zero data retention** — All processing is ephemeral; no logs or storage
@@ -350,8 +350,8 @@ From `openspec/changes/add-ai-detection-tool/proposal.md`:
 
 ## Conclusion
 
-The AI pattern detection stack is **production ready** at pattern engine v1.5.0 with:
-- A 44-pattern registry plus heuristic detectors and weighted scoring
+The AI pattern detection stack is **production ready** at pattern engine v1.6.0 with:
+- A 45-pattern registry plus heuristic detectors and weighted scoring
 - Hardened API backend (Cloudflare Worker) with text/file ingest and automated tests
 - React/Vite frontend covering analysis flows, legal pages, and accessibility commitments
 - Playwright + Vitest coverage and updated documentation for future contributors
