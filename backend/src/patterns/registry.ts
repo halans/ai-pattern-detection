@@ -240,6 +240,22 @@ export const PATTERNS: Pattern[] = [
     weight: SEVERITY_WEIGHTS.HIGH,
     examples: ['bandwidth', 'stakeholders', 'value proposition', 'scalable', 'paradigm shift', 'synergy'],
   },
+  // Contrastive Reframe: Detects "It's not just X, it's Y" structures where AI negates a simpler idea and replaces it with a more complex one.
+  // See: openspec/changes/add-contrastive-reframe-pattern/proposal.md
+  {
+    id: 'contrastive-reframe',
+    name: 'Contrastive Reframe',
+    description: 'AI pattern that negates a simpler idea (X) and replaces it with a more complex one (Y)',
+    regex: /\b(?:it['’]s|it\s+is)\s+not\s+(?:(?:just|only|merely|simply)\s+)?(?<X>.+?(?=\s*(?:[,;:]|[—–-]|\.\s*)\s*(?:it['’]s|it\s+is)\s+))\s*(?:[,;:]|[—–-]|\.\s*)\s*(?:it['’]s|it\s+is)\s+(?<Y>.+?(?=(?:\s*(?:[,;:]|[—–-]|\.\s*)\s*(?:it['’]s|it\s+is)\s+not)|[.!?](?:\s|$)|$))/gius,
+    severity: 'HIGH',
+    weight: SEVERITY_WEIGHTS.HIGH,
+    examples: [
+      "It's not just a tool, it's a paradigm shift",
+      "It's not only about efficiency, it's about transformation",
+      'It is not merely a framework; it is a comprehensive ecosystem',
+      "It's not simply a design choice. It's a fundamental philosophy",
+    ],
+  },
 
   // MEDIUM severity patterns
   {
@@ -517,4 +533,4 @@ export function getPatternsBySeverity(severity: Severity): Pattern[] {
   return PATTERNS.filter((p) => p.severity === severity);
 }
 
-export const PATTERN_ENGINE_VERSION = '1.5.0';
+export const PATTERN_ENGINE_VERSION = '1.6.0'; // v1.6.0: Added contrastive-reframe pattern

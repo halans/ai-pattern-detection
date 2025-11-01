@@ -8,8 +8,8 @@ describe('Pattern Registry', () => {
       expect(PATTERNS.length).toBeGreaterThan(0);
     });
 
-    it('should have at least 44 patterns', () => {
-      expect(PATTERNS.length).toBeGreaterThanOrEqual(44);
+    it('should have at least 45 patterns', () => {
+      expect(PATTERNS.length).toBeGreaterThanOrEqual(45);
     });
 
     it('should have unique pattern IDs', () => {
@@ -160,6 +160,140 @@ describe('Pattern Registry', () => {
       expect('transcend'.match(pattern!.regex)).toBeTruthy();
       expect('galvanize'.match(pattern!.regex)).toBeTruthy();
     });
+
+    describe('Contrastive Reframe Pattern', () => {
+      const pattern = getPatternById('contrastive-reframe');
+      const makeRegex = () => new RegExp(pattern!.regex.source, pattern!.regex.flags);
+
+      it('should be registered with correct metadata', () => {
+        expect(pattern).toBeDefined();
+        expect(pattern!.severity).toBe('HIGH');
+        expect(pattern!.weight).toBe(8);
+        expect(pattern!.name).toBe('Contrastive Reframe');
+        expect(pattern!.description.length).toBeGreaterThan(0);
+        expect(pattern!.examples.length).toBeGreaterThanOrEqual(4);
+        expect(pattern!.regex.flags).toContain('g');
+        expect(pattern!.regex.flags).toContain('i');
+        expect(pattern!.regex.flags).toContain('s');
+        expect(pattern!.regex.flags).toContain('u');
+      });
+
+      it('should match intensifier variations', () => {
+        const samples = [
+          "It's not just a tool, it's a paradigm shift",
+          "It's not only about efficiency, it's about transformation",
+          'It is not merely a framework; it is a comprehensive ecosystem',
+          "It's not simply a design choice. It's a fundamental philosophy",
+          "It's not a bug—it's a feature request",
+        ];
+
+        samples.forEach(sample => {
+          const regex = makeRegex();
+          const match = regex.exec(sample);
+          expect(match).not.toBeNull();
+        });
+      });
+
+      it('should match punctuation variations', () => {
+        const samples = [
+          "It's not just efficiency, it's transformation",
+          "It's not just efficiency; it's transformation",
+          "It's not just efficiency: it's transformation",
+          "It's not just efficiency\u2014it's transformation",
+          "It's not just efficiency\u2013it's transformation",
+          "It's not just efficiency. It's transformation",
+        ];
+
+        samples.forEach(sample => {
+          const regex = makeRegex();
+          const match = regex.exec(sample);
+          expect(match).not.toBeNull();
+        });
+      });
+
+      it('should match apostrophe and case variations', () => {
+        const samples = [
+          "It\u2019s not just a tool, it\u2019s a paradigm shift",
+          "It is not just a framework, it is an ecosystem",
+          "it's not just a tool, it's a paradigm shift",
+        ];
+
+        samples.forEach(sample => {
+          const regex = makeRegex();
+          const match = regex.exec(sample);
+          expect(match).not.toBeNull();
+        });
+      });
+
+      it('should capture X and Y clauses via named groups', () => {
+        const sample = "It's not just a tool, it's a paradigm shift";
+        const match = makeRegex().exec(sample);
+        expect(match?.groups?.X).toBe('a tool');
+        expect(match?.groups?.Y).toBe('a paradigm shift');
+      });
+
+      it('should capture named groups for simple clauses', () => {
+        const sample = "It's not just simple, it's complex";
+        const match = makeRegex().exec(sample);
+        expect(match?.groups?.X).toBe('simple');
+        expect(match?.groups?.Y).toBe('complex');
+      });
+
+      it('should capture clauses without punctuation bleed', () => {
+        const sample = 'It is not merely a framework; it is a comprehensive ecosystem';
+        const match = makeRegex().exec(sample);
+        expect(match?.groups?.X).toBe('a framework');
+        expect(match?.groups?.Y).toBe('a comprehensive ecosystem');
+      });
+
+      it('should support multiple matches within the same text', () => {
+        const sample =
+          "It's not just a tool, it's a paradigm shift. It's not only a feature, it's an entire solution.";
+        const regex = makeRegex();
+        const matches = Array.from(sample.matchAll(regex));
+        expect(matches.length).toBe(2);
+        expect(matches[0]?.groups?.X).toBe('a tool');
+        expect(matches[0]?.groups?.Y).toBe('a paradigm shift');
+        expect(matches[1]?.groups?.X).toBe('a feature');
+        expect(matches[1]?.groups?.Y).toBe('an entire solution');
+      });
+
+      it('should match when clauses span multiple lines', () => {
+        const sample = "It's not just a tool,\nit's a paradigm shift";
+        const match = makeRegex().exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.X).toBe('a tool');
+        expect(match?.groups?.Y).toBe('a paradigm shift');
+      });
+
+      it('should handle long X and Y clauses', () => {
+        const sample =
+          "It's not just a collection of loosely connected features that happen to coexist in the same interface—it's a rigorously orchestrated platform experience designed to anticipate user intent across the entire workflow";
+        const match = makeRegex().exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.X).toBe(
+          'a collection of loosely connected features that happen to coexist in the same interface'
+        );
+        expect(match?.groups?.Y).toBe(
+          'a rigorously orchestrated platform experience designed to anticipate user intent across the entire workflow'
+        );
+      });
+
+      it('should not match invalid structures', () => {
+        const negatives = [
+          "It's not ready yet",
+          "This is not just a tool, this is a paradigm shift",
+          'Not only a tool but also a paradigm shift',
+          "It isn't just a tool, it's a paradigm shift",
+          "It's not just a tool, a paradigm shift",
+        ];
+
+        negatives.forEach(sample => {
+          const regex = makeRegex();
+          expect(regex.test(sample)).toBe(false);
+        });
+      });
+    });
   });
 
   describe('getPatternById', () => {
@@ -209,7 +343,7 @@ describe('Pattern Registry', () => {
     });
 
     it('should match the current pattern engine version', () => {
-      expect(PATTERN_ENGINE_VERSION).toBe('1.5.0');
+      expect(PATTERN_ENGINE_VERSION).toBe('1.6.0');
     });
   });
 });
