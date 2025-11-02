@@ -1,28 +1,28 @@
-# Pattern Registry Update v1.6.0
+# Pattern Registry Update v1.7.0
 
-**Date:** 2025-11-01
-**Update Type:** Targeted Enhancement
-**Pattern Engine:** v1.5.0 → v1.6.0
+**Date:** 2025-11-01  
+**Update Type:** Targeted Enhancement  
+**Pattern Engine:** v1.6.0 → v1.7.0
 
 ---
 
 ## Summary
 
-This incremental release introduces the `contrastive-reframe` detector for the signature “It’s not just X, it’s Y” construction, expands high-severity coverage to 14 patterns, and aligns all documentation and UI surfaces with `v1.6.0`. The registry now spans 45 regex-based signals plus the em-dash heuristic.
+This release adds the `undue-notability` detector to flag exaggerated multi-outlet coverage claims and lifts the registry to 46 regex-based signals plus the em-dash heuristic. Documentation, UI surfaces, and automated tests now reference `Pattern Engine v1.7.0 (46 patterns)`.
 
 ---
 
 ## Highlights
 
-- Added the HIGH-severity `contrastive-reframe` pattern that captures contrastive reframes with named groups for the X/Y clauses
-- Hardened `registry.test.ts` with exhaustive positive, negative, capture-group, multiline, and multi-match scenarios
-- Updated backend version constants, frontend footer messaging, E2E assertions, and documentation to show `Pattern Engine v1.6.0 (45 patterns)`
+- Added HIGH-severity `undue-notability` pattern with named `outlet_list` capture for enumerated media outlets.
+- Expanded registry tests with comprehensive positive, negative, multi-match, and capture-group scenarios for coverage claims.
+- Updated backend version constants, frontend footer messaging, README/implementation summary, and release notes for the new version/count.
 
 ---
 
-## New Patterns Added (since v1.5.0)
+## New Patterns Added (since v1.6.0)
 
-- `contrastive-reframe` (HIGH)
+- `undue-notability` (HIGH)
 
 ---
 
@@ -31,23 +31,23 @@ This incremental release introduces the `contrastive-reframe` detector for the s
 | Severity | Weight | Count |
 |----------|--------|-------|
 | CRITICAL | 15     | 2     |
-| HIGH     | 8      | 14    |
+| HIGH     | 8      | 15    |
 | MEDIUM   | 4      | 20    |
 | LOW      | 2      | 3     |
 | VERY_LOW | 1      | 5     |
 | INFORMATIONAL | 0.2 | 1 |
 
-**Total:** 45 regex patterns + 1 heuristic (em-dash spam)
+**Total:** 46 regex patterns + 1 heuristic (em-dash spam)
 
 ---
 
 ## Files Updated
 
-1. `backend/src/patterns/registry.ts` — added `contrastive-reframe` pattern and bumped `PATTERN_ENGINE_VERSION` to 1.6.0
-2. `backend/src/patterns/registry.test.ts` — expanded coverage, updated expectations, and validated capture groups
-3. `frontend/src/App.tsx` & `frontend/tests/e2e/ui-audit.spec.ts` — refreshed footer copy and Playwright assertions for the new version/count
-4. Documentation (`IMPLEMENTATION_SUMMARY.md`, `README.md`) — synchronized pattern totals and release notes
-5. `openspec/changes/add-contrastive-reframe-pattern/tasks.md` — recorded documentation and tooling follow-through
+1. `backend/src/patterns/registry.ts` — added `undue-notability` pattern and bumped `PATTERN_ENGINE_VERSION` to 1.7.0.
+2. `backend/src/patterns/registry.test.ts` — added dedicated test suite, updated counts, and version assertions.
+3. `frontend/src/App.tsx` & `frontend/tests/e2e/ui-audit.spec.ts` — refreshed footer copy and Playwright assertions for the latest version/count.
+4. Documentation (`IMPLEMENTATION_SUMMARY.md`, `README.md`, this update log) — synchronized totals and release notes.
+5. `openspec/changes/add-undue-notability-pattern/*` — proposal, tasks, and specs describing the new detector.
 
 ---
 
@@ -55,9 +55,11 @@ This incremental release introduces the `contrastive-reframe` detector for the s
 
 - `npm test` (backend)
 - `npm run lint` (backend)
-- `openspec validate add-contrastive-reframe-pattern --strict`
+- `openspec validate add-undue-notability-pattern --strict`
 
 ---
+
+# Pattern Registry Update v1.6.0 (Historical)
 
 # Pattern Registry Update v1.5.0 (Historical)
 
@@ -188,6 +190,11 @@ This release more than doubles the pattern surface area. We introduced 24 new re
 ---
 
 ## Changelog
+
+### [1.7.0] - 2025-11-01
+- Added HIGH-severity `undue-notability` detector for multi-outlet coverage claims with captured outlet lists
+- Bumped documentation, UI surfaces, and version constants to `Pattern Engine v1.7.0 (46 patterns)`
+- Expanded registry tests with positive, negative, multi-match, and capture-group expectations for coverage claims
 
 ### [1.6.0] - 2025-11-01
 - Added HIGH-severity `contrastive-reframe` detector with named capture groups for contrastive rhetoric

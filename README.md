@@ -8,7 +8,7 @@ This tool uses **regex-based pattern matching** to detect characteristic pattern
 
 ## Features
 
-- **45 Detection Patterns**: Significance statements, AI meta-text, collaborative phrases, cultural clichés, AI-favored vocabulary, business jargon, data analysis phrases, and more
+- **46 Detection Patterns**: Significance statements, AI meta-text, collaborative phrases, cultural clichés, AI-favored vocabulary, business jargon, data analysis phrases, and more
 - **Fast Analysis**: <50ms CPU time per request
 - **Privacy-First**: Zero data retention, ephemeral processing
 - **Transparent**: See exactly which patterns were detected
@@ -46,7 +46,7 @@ ai-detection/
 ```bash
 cd backend
 npm install
-npm run dev
+npm run dev -- --port 8787
 ```
 
 Backend runs on `http://localhost:8787`
@@ -64,7 +64,7 @@ Frontend runs on `http://localhost:3000`
 
 ## Pattern Detection
 
-The system detects **45 AI writing patterns** grouped by severity:
+The system detects **46 AI writing patterns** grouped by severity:
 
 ### CRITICAL (15 points each)
 - **AI self-references** - "as an AI language model", "as an AI assistant"
@@ -299,7 +299,7 @@ The tests use Vitest with a custom configuration (`vitest.config.ts`) that:
 
 ### Known Issues & Workarounds
 
-**Memory Issues:** Due to the comprehensive regex pattern matching (45 patterns), tests may encounter memory limits when run all together.
+**Memory Issues:** Due to the comprehensive regex pattern matching (46 patterns), tests may encounter memory limits when run all together.
 
 **Recommended approach:**
 ```bash
@@ -312,7 +312,7 @@ npm test -- --run index.test.ts
 NODE_OPTIONS="--max-old-space-size=4096" npm test -- --run
 ```
 
-**Why this happens:** The pattern analyzer processes text against 45 complex regex patterns. While individual file tests work fine, running all tests concurrently can exceed default memory limits.
+**Why this happens:** The pattern analyzer processes text against 46 complex regex patterns. While individual file tests work fine, running all tests concurrently can exceed default memory limits.
 
 **Production impact:** None - the API runs efficiently in Cloudflare Workers with proper memory management. This only affects comprehensive test execution.
 
@@ -343,7 +343,7 @@ JJ Halans
 
 ## Version
 
-1.6.0 - Pattern Engine (45 patterns - Adds contrastive reframe detection and refreshes documentation/test coverage)
+1.7.0 - Pattern Engine (46 patterns - Adds undue notability coverage detection with expanded documentation/tests)
 ## Chrome Extension
 
 The repository includes a Chrome side panel extension under `browser-extension/`.
