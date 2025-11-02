@@ -8,8 +8,8 @@ describe('Pattern Registry', () => {
       expect(PATTERNS.length).toBeGreaterThan(0);
     });
 
-    it('should have at least 45 patterns', () => {
-      expect(PATTERNS.length).toBeGreaterThanOrEqual(45);
+    it('should have at least 46 patterns', () => {
+      expect(PATTERNS.length).toBeGreaterThanOrEqual(47);
     });
 
     it('should have unique pattern IDs', () => {
@@ -294,6 +294,246 @@ describe('Pattern Registry', () => {
         });
       });
     });
+
+    describe('Undue Notability Pattern', () => {
+      const pattern = getPatternById('undue-notability');
+      const makeRegex = () => new RegExp(pattern!.regex.source, pattern!.regex.flags);
+      const normalize = (value?: string) =>
+        value?.replace(/^\s*(?:including\s+)?/i, '').replace(/\s*\.$/, '');
+
+      it('should be registered with correct metadata', () => {
+        expect(pattern).toBeDefined();
+        expect(pattern!.severity).toBe('HIGH');
+        expect(pattern!.weight).toBe(8);
+        expect(pattern!.name).toBe('Undue Notability Claim');
+        expect(pattern!.description.length).toBeGreaterThan(0);
+        expect(pattern!.examples.length).toBeGreaterThanOrEqual(3);
+        expect(pattern!.regex.flags).toContain('g');
+        expect(pattern!.regex.flags).toContain('i');
+        expect(pattern!.regex.flags).toContain('s');
+        expect(pattern!.regex.flags).toContain('u');
+      });
+
+      it('should match coverage claims with including lists', () => {
+        const sample =
+          'Our launch has been featured in multiple media outlets including Forbes, TechCrunch, and Bloomberg.';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(normalize(match?.groups?.outlet_list)).toBe('Forbes, TechCrunch, and Bloomberg');
+      });
+
+      it('should match colon-separated outlet lists', () => {
+        const sample =
+          'The project was reported by national press: The New York Times, The Washington Post, and The Guardian.';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(normalize(match?.groups?.outlet_list)).toBe(
+          'The New York Times, The Washington Post, and The Guardian'
+        );
+      });
+
+      it('should match dash-separated outlet lists', () => {
+        const sample =
+          'Our story has been covered by various tech outlets—Wired, Fast Company, and VentureBeat.';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(normalize(match?.groups?.outlet_list)).toBe('Wired, Fast Company, and VentureBeat');
+      });
+
+      it('should match independent coverage phrasing', () => {
+        const sample =
+          'Independent coverage has examined the initiative with coverage by international tech media.';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.outlet_list).toBeUndefined();
+      });
+
+      it('should support multiple matches in one paragraph', () => {
+        const sample =
+          'We were highlighted by several media outlets including CNBC and Bloomberg. Independent coverage has analyzed our approach with coverage by international tech media.';
+        const regex = makeRegex();
+        const matches = Array.from(sample.matchAll(regex));
+        expect(matches.length).toBe(2);
+        expect(normalize(matches[0]?.groups?.outlet_list)).toBe('CNBC and Bloomberg');
+        expect(matches[1]?.groups?.outlet_list).toBeUndefined();
+      });
+
+      it('should not match invalid or single-outlet statements', () => {
+        const negatives = [
+          'Our product was featured in Forbes last week.',
+          'We were featured in media outlets across the globe.',
+          'Recently featured by local press in berlin.',
+          'Coverage noted by analysts and experts.',
+        ];
+
+        negatives.forEach(sample => {
+          const regex = makeRegex();
+          expect(regex.test(sample)).toBe(false);
+        });
+      });
+    });
+
+    describe('superficial-analyses pattern', () => {
+      const makeRegex = () => {
+        const pattern = PATTERNS.find(p => p.id === 'superficial-analyses');
+        expect(pattern).toBeDefined();
+        return new RegExp(pattern!.regex.source, pattern!.regex.flags);
+      };
+
+      it('should detect gerund form after comma', () => {
+        const sample = "The policy was announced, highlighting the government's commitment to reform";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.gerund).toBe('highlighting');
+        expect(match?.groups?.claim).toMatch(/government.*commitment/);
+      });
+
+      it('should detect gerund form after semicolon', () => {
+        const sample = 'The company expanded operations; underscoring its market dominance';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.gerund).toBe('underscoring');
+      });
+
+      it('should detect gerund form after em-dash', () => {
+        const sample = "The monument was unveiled—showcasing the city's rich heritage";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.gerund).toBe('showcasing');
+      });
+
+      it('should detect gerund form with "further" modifier', () => {
+        const sample = 'The event occurred, further emphasizing stakeholder engagement';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.gerund).toBe('emphasizing');
+      });
+
+      it('should detect multi-word gerund verb phrases', () => {
+        const sample = 'The report was published, attesting to widespread support';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        // Multi-word verbs like "attesting to" capture the full phrase in the gerund group
+        expect(match?.groups?.gerund).toMatch(/attesting/);
+      });
+
+      it('should detect finite form with demonstrative "This"', () => {
+        const sample = 'This underscores the importance of early intervention';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('underscores');
+        expect(match?.groups?.claim2).toMatch(/importance/);
+      });
+
+      it('should detect finite form with demonstrative "That"', () => {
+        const sample = 'That highlights the challenges facing the industry';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('highlights');
+      });
+
+      it('should detect finite form with demonstrative "It"', () => {
+        const sample = 'It demonstrates significant progress in the field';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('demonstrates');
+      });
+
+      it('should detect finite form with noun subject "the move"', () => {
+        const sample = "The move underscores the organization's commitment to transparency";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('underscores');
+      });
+
+      it('should detect finite form with noun subject "the decision"', () => {
+        const sample = "The decision highlights the committee's priorities";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('highlights');
+      });
+
+      it('should detect finite form with noun subject "the event"', () => {
+        const sample = "The event showcases the city's cultural diversity";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite).toBe('showcases');
+      });
+
+      it('should detect standalone finite form "aligns with"', () => {
+        const sample = 'The strategy aligns with our core values';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite2).toMatch(/aligns with/);
+        expect(match?.groups?.claim3).toMatch(/core values/);
+      });
+
+      it('should detect standalone finite form "contributes to"', () => {
+        const sample = 'This approach contributes to long-term sustainability';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.finite2).toMatch(/contributes to/);
+      });
+
+      it('should support multiple matches in one paragraph', () => {
+        const sample =
+          'The policy was announced, highlighting its importance. This underscores the committee\'s dedication. The move aligns with international standards.';
+        const regex = makeRegex();
+        const matches = Array.from(sample.matchAll(regex));
+        expect(matches.length).toBe(3);
+        expect(matches[0]?.groups?.gerund).toBe('highlighting');
+        expect(matches[1]?.groups?.finite).toBe('underscores');
+        // "The move aligns with" matches the finite form (noun subject pattern), not finite2
+        expect(matches[2]?.groups?.finite).toMatch(/aligns with/);
+      });
+
+      it('should not match simple past tense', () => {
+        const sample = 'They highlighted key issues in the meeting';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match gerund as sentence subject', () => {
+        const sample = 'Highlighting important points requires careful reading';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match noun usage', () => {
+        const sample = 'The highlighting tool is useful for students';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match participial adjective', () => {
+        const sample = 'Underscored text appears darker on the page';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match standard subject-verb construction', () => {
+        const sample = 'She emphasizes quality over quantity in her work';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+    });
   });
 
   describe('getPatternById', () => {
@@ -343,7 +583,7 @@ describe('Pattern Registry', () => {
     });
 
     it('should match the current pattern engine version', () => {
-      expect(PATTERN_ENGINE_VERSION).toBe('1.6.0');
+      expect(PATTERN_ENGINE_VERSION).toBe('1.8.0');
     });
   });
 });

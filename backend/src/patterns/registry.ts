@@ -256,6 +256,37 @@ export const PATTERNS: Pattern[] = [
       "It's not simply a design choice. It's a fundamental philosophy",
     ],
   },
+  // Undue Notability: Flags exaggerated multi-outlet coverage claims with enumerated media lists.
+  // See: openspec/changes/add-undue-notability-pattern/proposal.md
+  {
+    id: 'undue-notability',
+    name: 'Undue Notability Claim',
+    description: 'Flags exaggerated multi-outlet media coverage claims with enumerated outlet lists',
+    regex: /\b(?:(?:(?:has\s+been\s+)?(?:featured|profiled|covered|mentioned|highlighted|reported)\s+(?:in|by)\s+(?:multiple|several|various|numerous)?\s*(?:(?:(?:local|regional|national|international)\s+)?(?:(?:[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+)?(?:(?:media|news|press|business|tech|music)\s+)?(?:outlets?|publications?|sources?|media|press))\s*(?:\s*(?:,?\s*including|\s+including|\s+such\s+as|\s+like|\s+among)\s+|\s*[:—–-]\s*)(?<outlet_list>(?:[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*)(?:\s+[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*)*(?:\s*,\s*(?:and\s+)?[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*(?:\s+[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*)*)*(?:\s*,?\s*(?:and|&)\s+[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*(?:\s+[A-Z][\w’'&-]*(?:\.[A-Z][\w’'&-]*)*)?)?))|(?:Independent\s+coverage(?:\s+has\s+(?:examined|analy[sz]ed|covered|noted|highlighted|discussed|assessed|reported)\b[^.]*?)?)|(?:(?:Trade|Regional|National|International)?\s*coverage\s+has\s+(?:noted|highlighted|examined|mentioned|reported)\b[^.]*?(?:with\s+)?coverage\s+by\s+(?:(?:local|regional|national|international)\s+)?(?:(?:business|tech|music)\s+)?media\b))/gius,
+    severity: 'HIGH',
+    weight: SEVERITY_WEIGHTS.HIGH,
+    examples: [
+      'Our launch has been featured in multiple media outlets including Forbes, TechCrunch, and Bloomberg',
+      'The project was reported by national press: The New York Times, The Washington Post, and The Guardian',
+      'Independent coverage has examined the initiative with coverage by international tech media',
+    ],
+  },
+  // Superficial Analyses: Detects gerund riders and finite verb constructions that create appearance of analysis without substantive insight.
+  // See: openspec/changes/add-superficial-analyses-pattern/proposal.md
+  {
+    id: 'superficial-analyses',
+    name: 'Superficial Analyses Phrasing',
+    description: 'AI pattern using gerund or finite verbs to create appearance of analysis without substantive insight',
+    regex: /\b(?:(?:[,;]\s*|[—–-]\s*)(?:(?:further\s+)?(?<gerund>ensuring|highlighting|emphasizing|reflecting|underscoring|showcasing|illustrating|signaling|demonstrating|attesting(?:\s+to)?|pointing(?:\s+to)?|speaking(?:\s+to)?|serving(?:\s+to)?|aligning(?:\s+with)?|contributing(?:\s+to)?|reinforcing|bolstering|cementing))\s+(?<claim>[^.?!;]+)|(?:(?:(?:[Tt]his|[Tt]hat|[Ii]t|[Tt]hese|[Tt]hose)\b|the\s+(?:move|decision|event|change|designation|recognition|invitation|citation(?:s)?|monument(?:\s+sign)?|policy|initiative|agreement|appointment|award|honou?r|report|study|finding|milestone|federation|summit|participation|monument))(?:\s+(?:has\s+been|was|were|is|are))?\s+(?<finite>underscores?|highlights?|emphasizes?|illustrates?|reflects?|showcases?|signals?|demonstrates?|attests?\s+to|points?\s+to|speaks?\s+to|aligns?\s+with|contributes?\s+to|reinforces?|bolsters?|cements?)\s+(?<claim2>[^.?!;]+))|(?:\b(?<finite2>aligns?\s+with|contributes?\s+to)\s+(?<claim3>[^.?!;]+)))/gisu,
+    severity: 'HIGH',
+    weight: SEVERITY_WEIGHTS.HIGH,
+    examples: [
+      'The policy was announced, highlighting the government\'s commitment',
+      'This underscores the importance of early intervention',
+      'The move reflects the committee\'s priorities',
+      'The strategy aligns with our core values',
+    ],
+  },
 
   // MEDIUM severity patterns
   {
@@ -411,6 +442,22 @@ export const PATTERNS: Pattern[] = [
     weight: SEVERITY_WEIGHTS.MEDIUM,
     examples: ['paramount', 'pivotal', 'undeniable', 'demonstrates significant', 'linchpin of'],
   },
+  // Rule of Three: Detects triplet constructions (X, Y, and Z) commonly overused in AI-generated text.
+  // See: openspec/changes/add-rule-of-three-pattern/proposal.md
+  {
+    id: 'rule-of-three',
+    name: 'Rule of Three Phrasing',
+    description: 'AI pattern using triplet constructions (X, Y, and Z) and triple-adjective phrases',
+    regex: /\b(?<item1>[A-Za-z][\w''-]*(?:\s+[A-Za-z][\w''-]*){0,3})\s*,\s+(?<item2>[A-Za-z][\w''-]*(?:\s+[A-Za-z][\w''-]*){0,3})\s*,\s*(?:and|or)\s+(?<item3>[A-Za-z][\w''-]*(?:\s+[A-Za-z][\w''-]*){0,3})/gi,
+    severity: 'MEDIUM',
+    weight: SEVERITY_WEIGHTS.MEDIUM,
+    examples: [
+      'keynote sessions, panel discussions, and networking opportunities',
+      'global SEO professionals, marketing experts, and growth hackers',
+      'innovative, dynamic, and transformative solutions',
+      'efficiency, innovation, and growth',
+    ],
+  },
 
   // INFORMATIONAL severity patterns
   {
@@ -533,4 +580,4 @@ export function getPatternsBySeverity(severity: Severity): Pattern[] {
   return PATTERNS.filter((p) => p.severity === severity);
 }
 
-export const PATTERN_ENGINE_VERSION = '1.6.0'; // v1.6.0: Added contrastive-reframe pattern
+export const PATTERN_ENGINE_VERSION = '1.9.0'; // v1.9.0: Added rule-of-three pattern

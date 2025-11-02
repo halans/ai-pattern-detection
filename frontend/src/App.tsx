@@ -188,7 +188,7 @@ function App() {
             >
               Slop Detector
             </a>
-            &nbsp;•&nbsp;Pattern Engine v1.6.0 (45 patterns) • Zero Data Retention •{' '}
+            &nbsp;•&nbsp;Pattern Engine v1.7.0 (46 patterns) • Zero Data Retention •{' '}
             <a
               className="mx-auto md:mx-0 text-sm underline hover:no-underline"
               href="https://github.com/halans/ai-pattern-detection"
