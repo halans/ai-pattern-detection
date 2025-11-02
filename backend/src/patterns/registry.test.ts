@@ -9,7 +9,7 @@ describe('Pattern Registry', () => {
     });
 
     it('should have at least 46 patterns', () => {
-      expect(PATTERNS.length).toBeGreaterThanOrEqual(47);
+      expect(PATTERNS.length).toBeGreaterThanOrEqual(48);
     });
 
     it('should have unique pattern IDs', () => {
@@ -534,6 +534,145 @@ describe('Pattern Registry', () => {
         expect(regex.test(sample)).toBe(false);
       });
     });
+
+    describe('rule-of-three pattern', () => {
+      const makeRegex = () => {
+        const pattern = PATTERNS.find(p => p.id === 'rule-of-three');
+        expect(pattern).toBeDefined();
+        return new RegExp(pattern!.regex.source, pattern!.regex.flags);
+      };
+
+      it('should detect short-phrase triplet with "and"', () => {
+        const sample = 'keynote sessions, panel discussions, and networking opportunities';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('keynote sessions');
+        expect(match?.groups?.item2).toBe('panel discussions');
+        expect(match?.groups?.item3).toBe('networking opportunities');
+      });
+
+      it('should detect short-phrase triplet with "or"', () => {
+        const sample = 'fast, reliable, or affordable solutions';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('fast');
+        expect(match?.groups?.item2).toBe('reliable');
+        expect(match?.groups?.item3).toBe('affordable solutions');
+      });
+
+      it('should detect single-word triplet', () => {
+        const sample = 'efficiency, innovation, and growth';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('efficiency');
+        expect(match?.groups?.item2).toBe('innovation');
+        expect(match?.groups?.item3).toBe('growth');
+      });
+
+      it('should detect multi-word phrase triplet', () => {
+        const sample = 'global SEO professionals, marketing experts, and growth hackers';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('global SEO professionals');
+        expect(match?.groups?.item2).toBe('marketing experts');
+        expect(match?.groups?.item3).toBe('growth hackers');
+      });
+
+      it('should detect triple-adjective construction', () => {
+        const sample = 'innovative, dynamic, and transformative solutions';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('innovative');
+        expect(match?.groups?.item2).toBe('dynamic');
+        expect(match?.groups?.item3).toBe('transformative solutions');
+      });
+
+      it('should handle case-insensitive matching', () => {
+        const sample = 'INNOVATION, EFFICIENCY, AND GROWTH';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+      });
+
+      it('should handle mixed case', () => {
+        const sample = 'Fast, Reliable, And Affordable';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+      });
+
+      it('should handle compound words with hyphens', () => {
+        const sample = 'co-founders, co-workers, and co-creators';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        expect(match?.groups?.item1).toBe('co-founders');
+      });
+
+      it('should handle apostrophes', () => {
+        const sample = "SEO's importance, PPC's effectiveness, and ROI's measurement";
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+      });
+
+      it('should support multiple matches in one paragraph', () => {
+        const sample =
+          'We offer consulting, training, and support services. Our team includes experts, specialists, and consultants. Join us for sessions, workshops, and seminars.';
+        const regex = makeRegex();
+        const matches = Array.from(sample.matchAll(regex));
+        expect(matches.length).toBe(3);
+        // Each triplet match captures items; the regex allows up to 4 words per item
+        // "We offer consulting" matches because it's ≤4 words before the comma
+        expect(matches[0]?.groups?.item1).toMatch(/consulting/);
+        expect(matches[0]?.groups?.item2).toBe('training');
+        expect(matches[0]?.groups?.item3).toMatch(/support/);
+        expect(matches[1]?.groups?.item1).toMatch(/experts/);
+        expect(matches[2]?.groups?.item1).toMatch(/sessions/);
+      });
+
+      it('should not match two-item list', () => {
+        const sample = 'apples and oranges';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match two-adjective list', () => {
+        const sample = 'fast and reliable service';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should match triplet within four-item list', () => {
+        // Note: Four-item lists will match the last 3 items (blue, green, yellow)
+        // This is acceptable behavior as the pattern detects triplets wherever they occur
+        const sample = 'red, blue, green, and yellow';
+        const regex = makeRegex();
+        const match = regex.exec(sample);
+        expect(match).not.toBeNull();
+        // Matches "blue, green, and yellow" (the last 3 items)
+        expect(match?.groups?.item1).toBe('blue');
+        expect(match?.groups?.item2).toBe('green');
+        expect(match?.groups?.item3).toBe('yellow');
+      });
+
+      it('should not match single item', () => {
+        const sample = 'innovation drives success';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+
+      it('should not match triplet without commas', () => {
+        const sample = 'sessions discussions and opportunities';
+        const regex = makeRegex();
+        expect(regex.test(sample)).toBe(false);
+      });
+    });
   });
 
   describe('getPatternById', () => {
@@ -583,7 +722,7 @@ describe('Pattern Registry', () => {
     });
 
     it('should match the current pattern engine version', () => {
-      expect(PATTERN_ENGINE_VERSION).toBe('1.8.0');
+      expect(PATTERN_ENGINE_VERSION).toBe('1.9.0');
     });
   });
 });
