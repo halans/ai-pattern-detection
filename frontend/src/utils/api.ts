@@ -226,9 +226,24 @@ export async function downloadPDF(
     }
   };
 
-  const renderTextWithFormatting = (segments: TextSegment[], x: number, y: number, fontSize: number) => {
+  /**
+   * Renders formatted text segments with word wrapping to prevent overflow.
+   * Preserves bold, italic, and monospace formatting across line breaks.
+   * @param segments - Array of text segments with formatting flags
+   * @param x - Starting X position (left margin)
+   * @param y - Starting Y position
+   * @param fontSize - Font size in points
+   * @param lineSpacing - Line height for wrapped lines (defaults to baseLineHeight)
+   * @returns Final Y position after rendering all segments
+   */
+  const renderTextWithFormatting = (segments: TextSegment[], x: number, y: number, fontSize: number, lineSpacing: number = baseLineHeight): number => {
     let currentX = x;
+    let currentY = y;
 
+    /**
+     * Measures the width of text in the current font settings.
+     * Accounts for bold and italic variations.
+     */
     const measureText = (content: string) => {
       const docAny = doc as unknown as {
         getTextWidth?: (text: string) => number;
@@ -257,9 +272,40 @@ export async function downloadPDF(
       doc.setFont(font, style);
       doc.setFontSize(fontSize);
 
-      doc.text(segment.text, currentX, y);
-      currentX += measureText(segment.text);
+      // Split segment text into words to enable wrapping at word boundaries
+      const words = segment.text.split(/(\s+)/); // Preserve whitespace
+
+      for (const word of words) {
+        if (!word) continue;
+
+        const wordWidth = measureText(word);
+
+        // Check if adding this word would exceed the page width
+        if (currentX + wordWidth > margin + contentWidth && currentX > x) {
+          // Wrap to new line
+          currentX = x;
+          currentY += lineSpacing;
+
+          // Update outer cursorY before calling ensureSpace so page break detection works
+          cursorY = currentY;
+          ensureSpace();
+
+          // Sync currentY with cursorY in case ensureSpace added a page break
+          currentY = cursorY;
+
+          // Skip leading whitespace on new lines
+          if (/^\s+$/.test(word)) {
+            continue;
+          }
+        }
+
+        doc.text(word, currentX, currentY);
+        currentX += wordWidth;
+      }
     }
+
+    // Return Y position for next line (add spacing after the last rendered line)
+    return currentY + lineSpacing;
   };
 
   const lines = markdown.split('\n');
@@ -320,11 +366,9 @@ export async function downloadPDF(
 
       const segments = parseMarkdownFormatting(text);
 
-      // For now, render on a single line (wrapping complex segments is difficult)
-      // If the line is too long, we'll just let it render as-is
+      // Render formatted text with proper wrapping at word boundaries
       ensureSpace();
-      renderTextWithFormatting(segments, margin + indent, cursorY, fontSize);
-      cursorY += lineHeight;
+      cursorY = renderTextWithFormatting(segments, margin + indent, cursorY, fontSize, lineHeight);
     } else {
       // For headings, keep simple rendering
       const wrappedLines = wrapText(text, Math.max(20, Math.floor((contentWidth - indent) / 6)));
