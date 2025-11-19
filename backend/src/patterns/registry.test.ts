@@ -133,6 +133,26 @@ describe('Pattern Registry', () => {
       expect(negative.test('Meaningful production-grade sentence.')).toBe(false);
       expect(negative.test('[Topic]')).toBe(false);
       expect(negative.test('[PLACEHOLD]')).toBe(false);
+      // Should not match numeric citations
+      expect(negative.test('[3]')).toBe(false);
+      expect(negative.test('[19]')).toBe(false);
+      expect(negative.test('[123]')).toBe(false);
+      expect(negative.test('{456}')).toBe(false);
+      expect(negative.test('<789>')).toBe(false);
+      // Should not match multiple numeric citations
+      expect(negative.test('[2][7]')).toBe(false);
+      expect(negative.test('[3][8][13]')).toBe(false);
+      expect(negative.test('[1][2][3][4]')).toBe(false);
+      // Should not match array/indexing notation
+      expect(negative.test('ideas[6][7]')).toBe(false);
+      expect(negative.test('array[0]')).toBe(false);
+      expect(negative.test('matrix[1][2]')).toBe(false);
+      // Should not match citations after words or closing brackets/parens
+      expect(negative.test('car[7][8].')).toBe(false);
+      expect(negative.test('kg[2][20].')).toBe(false);
+      expect(negative.test('mobility[10][11]')).toBe(false);
+      expect(negative.test('(The Red Devil)[19]')).toBe(false);
+      expect(negative.test('early 1899[9][8].')).toBe(false);
     });
 
     it('should match business jargon', () => {

@@ -13,7 +13,7 @@ export const SEVERITY_WEIGHTS: Record<Severity, number> = {
 const PLACEHOLDER_TEMPLATE_REGEX = new RegExp(
   [
     '\\b(?:[Ii]nsert|[Ee]nter)\\s+(?:[A-Za-z0-9_]+\\s*)[Hh]ere\\b',
-    '(?:\\[(?!PLACEHOLD\\])[A-Z0-9 _]+\\]|\\{[A-Z0-9 _]+\\}|<[A-Z0-9 _]+>)',
+    '(?:(?<=^|[\\s.,;!?])\\[(?!PLACEHOLD\\])(?!\\d+\\])(?=.*[A-Z_])[A-Z0-9 _]+\\]|(?<=^|[\\s.,;!?])\\{(?!\\d+\\})(?=.*[A-Z_])[A-Z0-9 _]+\\}|(?<=^|[\\s.,;!?])<(?!\\d+>)(?=.*[A-Z_])[A-Z0-9 _]+>)',
     '\\b[Pp][Ll][Aa][Cc][Ee][Hh][Oo][Ll][Dd][Ee][Rr]\\b',
     '\\[(?:[Pp][Ll][Aa][Cc][Ee][Hh][Oo][Ll][Dd][Ee][Rr](?:\\s+[Tt][Ee][Xx][Tt])?)\\]',
     '\\b(?:REPLACE_ME|REPLACE THIS|TO_BE_FILLED|TO BE FILLED)\\b',
