@@ -37,9 +37,32 @@ h1.font-extrabold {
   font-size: 3em;
 }
 
+.bg-surface {
+    /* Grid background pattern */
+  background-image: 
+    linear-gradient(to right, rgb(128 184 214 / 0.2) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, rgb(128 184 214 / 0.2) 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+  background-position: center center;
+}
+
+html.dark .bg-surface {
+    /* Grid background pattern */
+  background-image: 
+    linear-gradient(to right, #000 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, #000 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+  background-position: center center;
+}
+
 .bg-surface-alt {
   background-color: rgba(255, 255, 255, 0.8);
 }
 html.dark .bg-surface-alt {
   background-color: #333;
+}
+
+footer.bg-surface,
+html.dark footer.bg-surface {
+  background-image: none;
 }

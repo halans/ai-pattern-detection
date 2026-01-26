@@ -76,7 +76,7 @@ function App() {
   }, [view]);
 
   return (
-    <div className="min-h-screen bg-surface text-text-primary dark:bg-surface-dark dark:text-text-dark transition-colors">
+    <div className="min-h-screen flex flex-col bg-surface text-text-primary dark:bg-surface-dark dark:text-text-dark transition-colors">
       <a
         href="#main-content"
         onClick={handleSkipToContent}
@@ -104,7 +104,7 @@ function App() {
       <main
         id="main-content"
         tabIndex={-1}
-        className="max-w-7xl mx-auto px-4 py-8 space-y-8 outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-offset-surface-dark"
+        className="flex-1 max-w-7xl mx-auto px-4 py-8 space-y-8 outline-none focus-visible:ring-2 focus-visible:ring-primary-light focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-offset-surface-dark"
         aria-live="polite"
       >
         {view === 'home' ? (
@@ -175,7 +175,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 py-8 border-t border-primary-soft/40 dark:border-primary/40 transition-colors">
+      <footer className="mt-auto py-8 border-t border-primary-soft/40 dark:border-primary/40 bg-surface dark:bg-surface-dark transition-colors">
         <div className="max-w-7xl mx-auto px-4 flex flex-col gap-4 text-center text-sm text-text-muted dark:text-text-dark-muted md:flex-row md:items-center md:justify-between">
           <p>
             <a
