@@ -14,6 +14,7 @@ const ALLOWED_ORIGINS = new Set([
   'http://127.0.0.1:3000',
   'https://slopdetector.me',
   'https://ai.slopdetector.me',
+  'https://ai.socialrecommendator.com',
 ]);
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
