@@ -192,8 +192,8 @@ function App() {
             <a
               className="mx-auto md:mx-0 text-sm underline hover:no-underline"
               href="https://github.com/halans/ai-pattern-detection"
-              rel="me"
-              target="blank"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Github
             </a>
@@ -218,6 +218,15 @@ function App() {
               className="mx-auto md:mx-0 text-sm underline hover:no-underline"
             >
               T&amp;C
+            </a>
+            &nbsp;•&nbsp;Used on&nbsp;
+            <a
+              className="mx-auto md:mx-0 text-sm underline hover:no-underline"
+              href="https://socialrecommendator.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Social Recommendator
             </a>
           </p>
           
