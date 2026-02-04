@@ -14,6 +14,7 @@ const ALLOWED_ORIGINS = new Set([
   'http://127.0.0.1:3000',
   'http://localhost:8788',
   'https://slopdetector.me',
+  'https://slop.halans.dev',
   'https://ai.slopdetector.me',
   'https://ai.socialrecommendator.com',
 ]);
