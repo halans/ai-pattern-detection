@@ -45,3 +45,4 @@ Thumbs.db
 .playwright-mcp/*
 frontend/src/utils/fileProcessing.ts
 vitest-output.log
+.claude/settings.local.json
