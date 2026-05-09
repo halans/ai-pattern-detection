@@ -17,7 +17,6 @@ const ALLOWED_ORIGINS = new Set([
   'https://slop.halans.dev',
   'https://ai.slopdetector.me',
   'https://ai.socialrecommendator.com',
-  '*',
 ]);
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
