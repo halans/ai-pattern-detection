@@ -11,12 +11,17 @@ const app = new Hono();
 
 const ALLOWED_ORIGINS = new Set([
   'http://localhost:3000',
+  'http://localhost:1313',
   'http://127.0.0.1:3000',
   'http://localhost:8788',
   'https://slopdetector.me',
   'https://slop.halans.dev',
   'https://ai.slopdetector.me',
   'https://ai.socialrecommendator.com',
+  'https://strangelove-ai.com',
+  'https://agentcoding.dev',
+  'https://halans.com',
+  'https://artimitates.life',
 ]);
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
