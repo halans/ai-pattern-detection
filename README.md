@@ -1,3 +1,5 @@
+
+
 # Slop Detector
 
 A simple, pattern-based AI detection system that analyzes text for AI-generated content signals.
@@ -28,6 +30,8 @@ ai-detection/
 │   │   ├── reporting/    # Report generation
 │   │   └── index.ts      # Hono API
 │   └── package.json
+│
+├── browser-extension/ # Chrome side panel extension (React + Vite)
 │
 ├── frontend/         # React + Vite + TailwindCSS
 │   ├── src/
